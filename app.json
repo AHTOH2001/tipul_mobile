@@ -1,33 +1,14 @@
 {
   "expo": {
-    "name": "tipul_mobile",
-    "slug": "tipul_mobile",
+    "name": "Lab2_tabata_timer",
+    "slug": "Lab2_tabata_timer",
     "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
-    },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
+      "package": "com.antoha007.Lab2_tabata_timer"
     }
-  }
+  },
+  "name": "Lab2_tabata_timer"
 }

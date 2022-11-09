@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "790974388416",
+    "project_id": "ppo-lab2-tabata-timer",
+    "storage_bucket": "ppo-lab2-tabata-timer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:790974388416:android:bf067ba15bb058ce36f525",
+        "android_client_info": {
+          "package_name": "com.antoha007.Lab2_tabata_timer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "790974388416-7b38eqco09chvn4lgoe72hb5de9ng4vk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.antoha007.Lab2_tabata_timer",
+            "certificate_hash": "7f26fd233077139e01cb0fad5a9a12c6e3ef8fa2"
+          }
+        },
+        {
+          "client_id": "790974388416-s4o6ttvtpa3vvboo0vnc0e00teo82bm6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4p5gGA3cjBWdPL2bYJff8_DCdLEF6cCM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "790974388416-s4o6ttvtpa3vvboo0vnc0e00teo82bm6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
