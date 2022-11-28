@@ -7,6 +7,7 @@ import TrainingScreen from './components/screens/TrainingScreen';
 import TrainingDetailScreen from './components/screens/TrainingDetailScreen';
 import SettingsScreen from './components/screens/SettingsScreen'
 import ActionScreen from './components/screens/ActionScreen'
+import AuthScreen from './components/screens/AuthScreen'
 import { decode, encode } from 'base-64'
 import { ActivityIndicator, LogBox, StyleSheet, View } from 'react-native';
 import { connect, Provider } from 'react-redux'
@@ -36,6 +37,11 @@ function MyStack() {
         },
       }}
     >
+      <Stack.Screen
+        name="AuthScreen"
+        component={AuthScreen}
+        options={{ title: 'Authorisation' }}
+      />
       <Stack.Screen
         name="TrainingScreen"
         component={TrainingScreen}
