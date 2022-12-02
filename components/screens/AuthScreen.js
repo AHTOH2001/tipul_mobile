@@ -1,24 +1,30 @@
 import React, { Component } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { Input, Slider, Icon, Button } from 'react-native-elements'
 import { connect } from 'react-redux';
 import { resolve_back_color, resolve_front_color } from '../../utils/settings-utils';
 import translate from '../../utils/translate';
+import { auth } from '../../api/api';
 
 class AuthScreen extends Component {
     constructor() {
         super();
         this.state = {
-            isLoading: true,
+            isLoading: false,
+            name: ''
         };
-        console.log('OHOHO')
-        console.log(resolve_back_color)
-        console.log(resolve_front_color)
     }
 
     inputValueUpdate = (val, prop) => {
         const state = this.state;
         state[prop] = val;
         this.setState(state);
+    }
+
+    componentDidMount() {
+        auth('').then(resp => {
+            
+        })
     }
 
     render() {
@@ -29,14 +35,16 @@ class AuthScreen extends Component {
                 </View>
             )
         }
-        <View style={styles.inputGroup}>
-            <Input
-                value={this.state.name}
-                color={resolve_front_color(this.props)}
-                onChangeText={(val) => this.inputValueUpdate(val, 'name')}
-                label={translate('Name', this.props.root.language)}
-            />
-        </View>
+        return (
+            <View style={styles.inputGroup}>
+                <Input
+                    value={this.state.name}
+                    color={resolve_front_color(this.props)}
+                    onChangeText={(val) => this.inputValueUpdate(val, 'name')}
+                    label={translate('Phone', this.props.root.language)}
+                />
+            </View>
+        )
     }
 }
 

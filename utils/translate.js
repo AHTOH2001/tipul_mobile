@@ -9,13 +9,22 @@ russian_dictionary = {
     'Workout': 'Работа',
     'Warm-up': 'Разминка',
     'Cooldown': 'Передышка',
-    'Duration': 'Длительность'
+    'Duration': 'Длительность',
+    'Phone': 'Телефон',
 }
 
 export default translate = (text, language) => {
+    let res = null;
+    console.log(text)
+    console.log(res)
     switch (language) {
-        case 'русский': return russian_dictionary[text]
-        default: return text
+        case 'русский': res = russian_dictionary[text]
+        default: res = text
     }
+    console.log(res)
+    if (res === null) {
+        res = text
+    }
+    return res
 
 }
