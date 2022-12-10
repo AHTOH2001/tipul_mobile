@@ -25,6 +25,7 @@ russian_dictionary = {
     'Registration': 'Регистрация',
     'Main screen': 'Главный экран',
     'Settings': 'Настройки',
+    'Medicine': 'Медикаменты',
 }
 
 export default translate = (text, language) => {
@@ -33,7 +34,7 @@ export default translate = (text, language) => {
         case 'русский': res = russian_dictionary[text] || text; break;
         default: res = text
     }
-    
+
     return res
 
 }

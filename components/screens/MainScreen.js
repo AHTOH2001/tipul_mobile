@@ -14,13 +14,6 @@ class MainScreen extends Component {
         };
     }
 
-    componentDidMount() {
-        // TODO already authorised
-        auth('').then(resp => {
-
-        })
-    }
-
     render() {
         if (this.state.isLoading) {
             return (
@@ -79,12 +72,11 @@ class MainScreen extends Component {
 const styles = StyleSheet.create({
     mainGroup: {
         padding: 20,
-        marginHorizontal: 13,
         marginBottom: 15,
     },
     button: {
         padding: 20,
-        margin: 20,
+        margin: 15,
         borderRadius: 10
     },
     button_text: {

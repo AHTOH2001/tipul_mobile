@@ -10,6 +10,7 @@ import ActionScreen from './components/screens/ActionScreen'
 import AuthScreen from './components/screens/AuthScreen'
 import RegistrationScreen from './components/screens/RegistrationScreen'
 import MainScreen from './components/screens/MainScreen'
+import MedicineScreen from './components/screens/MedicineScreen'
 import { decode, encode } from 'base-64'
 import { ActivityIndicator, LogBox, StyleSheet, View } from 'react-native';
 import { connect, Provider } from 'react-redux'
@@ -41,6 +42,11 @@ function MyStack(props) {
       }}
     >
       <Stack.Screen
+        name="MainScreen"
+        component={MainScreen}
+        options={{ title: translate('Main screen', props.props.root.language) }}
+      />
+      <Stack.Screen
         name="AuthScreen"
         component={AuthScreen}
         options={{ title: translate('Authorisation', props.props.root.language) }}
@@ -49,11 +55,11 @@ function MyStack(props) {
         name="RegistrationScreen"
         component={RegistrationScreen}
         options={{ title: translate('Registration', props.props.root.language) }}
-      />
+      />      
       <Stack.Screen
-        name="MainScreen"
-        component={MainScreen}
-        options={{ title: translate('Main screen', props.props.root.language) }}
+        name="MedicineScreen"
+        component={MedicineScreen}
+        options={{ title: translate('Medicine', props.props.root.language) }}
       />
       <Stack.Screen
         name="TrainingScreen"
