@@ -109,7 +109,7 @@ class AuthScreen extends Component {
                     title={translate('Log in', this.props.root.language)}
                 />
                 <Button
-                    type='clear'                    
+                    type='clear'
                     onPress={() => { this.props.navigation.navigate('RegistrationScreen'); }}
                     title={translate('Not registered yet?', this.props.root.language)}
                 />
@@ -121,7 +121,7 @@ class AuthScreen extends Component {
 const styles = StyleSheet.create({
     inputGroup: {
         flex: 1,
-        padding: 20,        
+        padding: 20,
         marginBottom: 15,
     },
     preloader: {

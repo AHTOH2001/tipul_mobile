@@ -81,7 +81,7 @@ class SettingsScreen extends Component {
                 theme: '',
                 isLoading: true,
             });
-            this.props.navigation.navigate('MainScreen');
+            this.props.navigation.goBack();
         })
             .catch((error) => {
                 console.error("Error: ", error);
@@ -140,7 +140,7 @@ class SettingsScreen extends Component {
                         </ListItem>
                     ))}
                 </ListItem.Accordion>
-                <ListItem.Accordion         // Theme
+                {/* <ListItem.Accordion         // Theme
                     containerStyle={{ backgroundColor: this.resolve_back_color() }}
                     content={
                         <>
@@ -208,7 +208,7 @@ class SettingsScreen extends Component {
                         }}
                         style={{ padding: 0 }}
                     />
-                </ListItem>
+                </ListItem> */}
             </ScrollView>
         )
     }
