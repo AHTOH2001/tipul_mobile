@@ -1,3 +1,5 @@
+import { create_medicine } from '../api/api';
+
 // TODO change to english names
 export var type_to_icon = {
     'УКОЛ': 'syringe',
@@ -13,8 +15,10 @@ export var type_choices = [
     'СУСПЕНЗИЯ',
 ]
 
-export var create_medicine = (type, medicines_amount) => (
-    {
+// TODO and create medicine on back end
+export var create_empty_medicine = (type, medicines_amount) => {
+    var new_medicine = {
+        "id": medicines_amount + Math.floor(Math.random() * 9999),
         "cure": {
             "title": `New medicine ${medicines_amount + 1}`,
             "dose": 1.0,
@@ -27,4 +31,6 @@ export var create_medicine = (type, medicines_amount) => (
             }
         ]
     }
-)
+    create_medicine(new_medicine).catch(reason => console.error(reason))
+    return new_medicine
+}

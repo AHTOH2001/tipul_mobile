@@ -4,8 +4,8 @@ import { Input, Slider, Icon, Button, Text, SpeedDial } from 'react-native-eleme
 import { connect } from 'react-redux';
 import { resolve_back_color, resolve_front_color } from '../../utils/settings-utils';
 import translate from '../../utils/translate';
-import { type_to_icon, type_choices, create_medicine } from '../../utils/medicine';
-import { medicine } from '../../api/api';
+import { type_to_icon, type_choices, create_empty_medicine } from '../../utils/medicine';
+import { medicine_list } from '../../api/api';
 
 class MedicineScreen extends Component {
     constructor() {
@@ -19,7 +19,7 @@ class MedicineScreen extends Component {
     }
 
     componentDidMount() {
-        medicine().then(resp => {
+        medicine_list().then(resp => {
             this.setState({ ...this.state, medicines: resp.data, isLoading: false })
         })
     }
@@ -44,7 +44,7 @@ class MedicineScreen extends Component {
                                 onPress={() => { this.props.navigation.navigate('MedicineDetail', { medicine: medicine }) }}
                                 icon={{ type: 'font-awesome-5', name: type_to_icon[medicine.cure.type], size: 40, color: 'white' }}
                                 iconContainerStyle={styles.iconContainerStyle}
-                                key={medicine.cure.title}
+                                key={medicine.id}
                             />
                         ))
                     }
@@ -65,8 +65,9 @@ class MedicineScreen extends Component {
                                 icon={{ name: type_to_icon[type], type: 'font-awesome-5', color: 'white', size: 19 }}
                                 color='#0d98ba'
                                 title={translate(type, this.props.root.language)}
+                                key={type}
                                 onPress={() => {
-                                    this.setState({ medicines: [...this.state.medicines, create_medicine(type, this.state.medicines.length)] })
+                                    this.setState({ medicines: [...this.state.medicines, create_empty_medicine(type, this.state.medicines.length)] })
                                     setTimeout(() => this.myRef.current.scrollToEnd({ animated: true }), 200)
 
                                 }}
