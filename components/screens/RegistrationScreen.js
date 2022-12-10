@@ -15,6 +15,8 @@ class AuthScreen extends Component {
             username_error: '',
             password: '',
             password_error: '',
+            email: '',
+            email_error: '',
         };
     }
 
@@ -22,6 +24,10 @@ class AuthScreen extends Component {
         const state = this.state;
         state[prop] = val;
         this.setState(state);
+    }
+
+    inputEmailUpdate = (val) => {
+        this.inputValueUpdate(val, 'email')
     }
 
     inputUsernameUpdate = (val) => {
@@ -33,44 +39,68 @@ class AuthScreen extends Component {
     }
 
     onSubmitEditingUsername = () => {
-        if (this.state.password !== '') {
+        if (this.state.email !== '' || this.state.password !== '') {
             this.onSubmitEditing()
         }
     }
 
+    onSubmitEditingEmail = () => {
+        if (this.state.username !== '' || this.state.password !== '') {
+            this.onSubmitEditing()
+        }
+    }
+
+    validateEmail = () => {
+        if (this.state.email === '') {
+            return { email_error: translate('Please, fill in your email', this.props.root.language) }
+        }
+        if (!String(this.state.email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            )) {
+            return { email_error: translate('Enter valid email', this.props.root.language) }
+        }
+        return false
+    }
+
     validateUsername = () => {
         if (this.state.username === '') {
-            this.setState({ ...this.state, username_error: translate('Please, fill in your username', this.props.root.language) })
-            return false
+            return { username_error: translate('Please, fill in your username', this.props.root.language) }
         }
-        return true
+        return false
     }
 
     validatePassword = () => {
-        if (this.state.password == false) {
-            this.setState({ ...this.state, password_error: translate('Please, fill in your password', this.props.root.language) })
-            return false
+        if (this.state.password === '') {
+            return { password_error: translate('Please, fill in your password', this.props.root.language) }
         }
-        return true
+        return false
     }
 
     onSubmitEditing = () => {
-        this.setState({ ...this.state, username_error: '', password_error: '' })
-        if (this.validateUsername() && this.validatePassword()) {
+        var new_state = { ...this.state, email_error: '', username_error: '', password_error: '' }
+        var v1 = this.validateEmail()
+        var v2 = this.validateUsername()
+        var v3 = this.validatePassword()
+        if (v1) {
+            new_state = { ...new_state, ...v1 }
+        }
+        if (v2) {
+            new_state = { ...new_state, ...v2 }
+        }
+        if (v3) {
+            new_state = { ...new_state, ...v3 }
+        }
+        this.setState(new_state)
+        if (!v1 && !v2 && !v3) {
             // TODO request back end
-            console.log('LOG IN')
+            console.log('Register')
+            console.log(this.state.email)
             console.log(this.state.username)
             console.log(this.state.password)
             this.props.navigation.navigate('MainScreen')
         }
-    }
-
-
-    componentDidMount() {
-        // TODO already authorised
-        auth('').then(resp => {
-
-        })
     }
 
     render() {
@@ -83,6 +113,15 @@ class AuthScreen extends Component {
         }
         return (
             <View style={styles.inputGroup}>
+                <Input
+                    value={this.state.email}
+                    color={resolve_front_color(this.props)}
+                    onChangeText={this.inputEmailUpdate}
+                    leftIcon={{ type: 'font-awesome', name: 'envelope' }}
+                    onSubmitEditing={this.onSubmitEditingEmail}
+                    label={translate('Email', this.props.root.language)}
+                    errorMessage={this.state.email_error}
+                />
                 <Input
                     value={this.state.username}
                     color={resolve_front_color(this.props)}
@@ -104,12 +143,12 @@ class AuthScreen extends Component {
                 />
                 <Button
                     onPress={this.onSubmitEditing}
-                    title={translate('Log in', this.props.root.language)}
+                    title={translate('Register', this.props.root.language)}
                 />
                 <Button
                     type='clear'
-                    onPress={() => { this.props.navigation.navigate('RegistrationScreen'); }}
-                    title={translate('Not registered yet?', this.props.root.language)}
+                    onPress={() => { this.props.navigation.navigate('AuthScreen') }}
+                    title={translate('Already registered?', this.props.root.language)}
                 />
             </View>
         )

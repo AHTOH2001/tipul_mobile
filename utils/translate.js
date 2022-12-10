@@ -10,18 +10,25 @@ russian_dictionary = {
     'Warm-up': 'Разминка',
     'Cooldown': 'Передышка',
     'Duration': 'Длительность',
-    'Phone': 'Телефон',
+    'Username': 'Имя пользователя',
+    'Password': 'Пароль',
+    'Log in': 'Войти',
+    'Register': 'Зарегистрироваться',
+    'Email': 'Электронная почта',
+    'Not registered yet?': 'Еще не зарегистрировались?',
+    'Already registered?': 'Уже зарегистрировались?',
+    'Please, fill in your email': 'Пожалуйста, введите вашу почту',
+    'Please, fill in your username': 'Пожалуйста, введите ваше имя пользователя',
+    'Please, fill in your password': 'Пожалуйста, введите ваш пароль',
+    'Enter valid email': 'Введите правильную почту'
 }
 
 export default translate = (text, language) => {
-    let res = null;
-    console.log(text)
-    console.log(res)
+    let res = null;    
     switch (language) {
         case 'русский': res = russian_dictionary[text]
         default: res = text
-    }
-    console.log(res)
+    }    
     if (res === null) {
         res = text
     }
