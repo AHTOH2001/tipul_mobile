@@ -27,7 +27,7 @@ class MainScreen extends Component {
                 <Button
                     buttonStyle={styles.button}
                     titleStyle={styles.button_text}
-                    title={translate('Medicine', this.props.root.language)}
+                    title={translate('Medicines', this.props.root.language)}
                     onPress={() => { this.props.navigation.navigate('MedicineScreen') }}
                     icon={{ type: 'font-awesome', name: 'stethoscope', size: 40, color: 'white' }}
                     iconContainerStyle={styles.iconContainerStyle}

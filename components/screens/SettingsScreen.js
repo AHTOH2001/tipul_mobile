@@ -74,13 +74,6 @@ class SettingsScreen extends Component {
             font_size: this.state.font_size,
             theme: this.state.theme
         }).then((docRef) => {
-            this.setState({
-                key: '',
-                language: 0,
-                font_size: 0,
-                theme: '',
-                isLoading: true,
-            });
             this.props.navigation.goBack();
         })
             .catch((error) => {

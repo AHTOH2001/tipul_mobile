@@ -42,7 +42,7 @@ class MedicineScreen extends Component {
                                 titleStyle={styles.button_text}
                                 title={medicine.cure.title}
                                 onPress={() => { this.props.navigation.navigate('MedicineDetail', { medicine: medicine }) }}
-                                icon={{ type: 'font-awesome-5', name: type_to_icon[medicine.cure.type], size: 40, color: 'white' }} // TODO get icon from type
+                                icon={{ type: 'font-awesome-5', name: type_to_icon[medicine.cure.type], size: 40, color: 'white' }}
                                 iconContainerStyle={styles.iconContainerStyle}
                                 key={medicine.cure.title}
                             />

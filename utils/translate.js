@@ -25,7 +25,8 @@ russian_dictionary = {
     'Registration': 'Регистрация',
     'Main screen': 'Главный экран',
     'Settings': 'Настройки',
-    'Medicine': 'Медикаменты',
+    'Medicines': 'Медикаменты',
+    'Medicine': 'Медикамент',
 }
 
 export default translate = (text, language) => {
