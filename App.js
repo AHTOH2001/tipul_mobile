@@ -9,12 +9,14 @@ import SettingsScreen from './components/screens/SettingsScreen'
 import ActionScreen from './components/screens/ActionScreen'
 import AuthScreen from './components/screens/AuthScreen'
 import RegistrationScreen from './components/screens/RegistrationScreen'
+import MainScreen from './components/screens/MainScreen'
 import { decode, encode } from 'base-64'
 import { ActivityIndicator, LogBox, StyleSheet, View } from 'react-native';
 import { connect, Provider } from 'react-redux'
 import store from './redux/store';
 import { change_font_size, change_language, change_theme } from './redux/action/root';
 import firestore, { db } from './firebase/firebaseDb';
+import translate from './utils/translate';
 global.crypto = require("@firebase/firestore");
 global.crypto.getRandomValues = byteArray => { for (let i = 0; i < byteArray.length; i++) { byteArray[i] = Math.floor(256 * Math.random()); } }
 
@@ -25,7 +27,7 @@ if (!global.atob) { global.atob = decode; }
 const Stack = createStackNavigator();
 LogBox.ignoreAllLogs()
 // console.ignoredYellowBox = ['Setting a timer'];
-function MyStack() {
+function MyStack(props) {  
   return (
     <Stack.Navigator
       screenOptions={{
@@ -41,12 +43,17 @@ function MyStack() {
       <Stack.Screen
         name="AuthScreen"
         component={AuthScreen}
-        options={{ title: 'Authorisation' }}
+        options={{ title: translate('Authorisation', props.props.root.language) }}
       />
       <Stack.Screen
         name="RegistrationScreen"
         component={RegistrationScreen}
-        options={{ title: 'Registration' }}
+        options={{ title: translate('Registration', props.props.root.language) }}
+      />
+      <Stack.Screen
+        name="MainScreen"
+        component={MainScreen}
+        options={{ title: translate('Main screen', props.props.root.language) }}
       />
       <Stack.Screen
         name="TrainingScreen"
@@ -66,7 +73,7 @@ function MyStack() {
       <Stack.Screen
         name="SettingsScreen"
         component={SettingsScreen}
-        options={{ title: 'Settings' }}
+        options={{ title: translate('Settings', props.props.root.language) }}
       />
       <Stack.Screen
         name="ActionScreen"
@@ -123,7 +130,7 @@ class App extends Component {
     return (
 
       <NavigationContainer>
-        <MyStack />
+        <MyStack props={this.props} />
       </NavigationContainer>
     )
   };

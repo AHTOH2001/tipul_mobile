@@ -6,7 +6,7 @@ import { resolve_back_color, resolve_front_color } from '../../utils/settings-ut
 import translate from '../../utils/translate';
 import { auth } from '../../api/api';
 
-class AuthScreen extends Component {
+class RegistrationScreen extends Component {
     constructor() {
         super();
         this.state = {
@@ -179,4 +179,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(AuthScreen)
+export default connect(mapStateToProps)(RegistrationScreen)
