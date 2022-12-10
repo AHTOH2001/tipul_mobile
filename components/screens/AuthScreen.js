@@ -11,7 +11,10 @@ class AuthScreen extends Component {
         super();
         this.state = {
             isLoading: false,
-            name: ''
+            username: '',
+            username_error: '',
+            password: '',
+            password_error: '',
         };
     }
 
@@ -21,11 +24,49 @@ class AuthScreen extends Component {
         this.setState(state);
     }
 
-    onSubmitEditing = () => {
-        console.log('HER')
+    inputUsernameUpdate = (val) => {
+        this.inputValueUpdate(val, 'username')
     }
 
+    inputPasswordUpdate = (val) => {
+        this.inputValueUpdate(val, 'password')
+    }
+
+    onSubmitEditingUsername = () => {
+        if (this.state.password !== '') {
+            this.onSubmitEditing()
+        }
+    }
+
+    validateUsername = () => {
+        if (this.state.username === '') {
+            this.setState({ ...this.state, username_error: 'Please, fill in your username' })
+            return false
+        }
+        return true
+    }
+
+    validatePassword = () => {
+        if (this.state.password == false) {
+            this.setState({ ...this.state, password_error: 'Please, fill in your password' })
+            return false
+        }
+        return true
+    }
+
+    onSubmitEditing = () => {        
+        this.setState({ ...this.state, username_error: '', password_error: '' })
+        if (this.validateUsername() && this.validatePassword()) {
+            // TODO request back end
+            console.log('LOG IN')
+            console.log(this.state.username)
+            console.log(this.state.password)
+        }
+    }
+
+
     componentDidMount() {
+        // TODO already authorised
         auth('').then(resp => {
 
         })
@@ -42,20 +83,33 @@ class AuthScreen extends Component {
         return (
             <View style={styles.inputGroup}>
                 <Input
-                    value={this.state.name}
+                    value={this.state.username}
                     color={resolve_front_color(this.props)}
-                    onChangeText={(val) => this.inputValueUpdate(val, 'name')}
-                    leftIcon={{ type: 'font-awesome', name: 'phone' }}
-                    placeholder="+xxx (xx) xxxxxxxxx"
-                    onSubmitEditing={this.onSubmitEditing}
-                    label={translate('Phone', this.props.root.language)}
+                    onChangeText={this.inputUsernameUpdate}
+                    leftIcon={{ type: 'font-awesome', name: 'user' }}
+                    onSubmitEditing={this.onSubmitEditingUsername}
+                    label={translate('Username', this.props.root.language)}
+                    errorMessage={this.state.username_error}
                 />
-                {/* <TouchableOpacity
-                    style={styles.addButton}
-                    onPress={() => this.props.navigation.navigate('AddTrainingScreen')}
-                >
-                    <Text style={{ fontSize: 25, color: resolve_back_color() }}>+</Text>
-                </TouchableOpacity> */}
+                <Input
+                    value={this.state.password}
+                    color={resolve_front_color(this.props)}
+                    onChangeText={this.inputPasswordUpdate}
+                    leftIcon={{ type: 'font-awesome', name: 'lock' }}
+                    onSubmitEditing={this.onSubmitEditing}
+                    label={translate('Password', this.props.root.language)}
+                    errorMessage={this.state.password_error}
+                    secureTextEntry={true}
+                />
+                <Button
+                    onPress={this.onSubmitEditing}
+                    title={translate('Log in', this.props.root.language)}
+                />
+                <Button
+                    type='clear'
+                    onPress={() => {this.props.navigation.navigate('RegistrationScreen');}}
+                    title={translate('Not registered yet?', this.props.root.language)}
+                />
             </View>
         )
     }
@@ -77,19 +131,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    addButton: {
-        borderWidth: 1,
-        borderColor: 'rgba(0,0,0,0.2)',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 70,
-        position: 'absolute',
-        bottom: 10,
-        right: 10,
-        height: 70,
-        backgroundColor: 'green',
-        borderRadius: 100
-    }
 })
 
 const mapStateToProps = state => {
