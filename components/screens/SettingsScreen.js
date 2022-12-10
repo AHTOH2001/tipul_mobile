@@ -81,7 +81,7 @@ class SettingsScreen extends Component {
                 theme: '',
                 isLoading: true,
             });
-            this.props.navigation.navigate('TrainingScreen');
+            this.props.navigation.navigate('MainScreen');
         })
             .catch((error) => {
                 console.error("Error: ", error);

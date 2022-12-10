@@ -13,7 +13,7 @@ russian_dictionary = {
     'Username': 'Имя пользователя',
     'Password': 'Пароль',
     'Log in': 'Войти',
-    'Register': 'Зарегистрироваться',
+    'Register': 'Регистрация',
     'Email': 'Электронная почта',
     'Not registered yet?': 'Еще не зарегистрировались?',
     'Already registered?': 'Уже зарегистрировались?',

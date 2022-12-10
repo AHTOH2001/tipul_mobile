@@ -32,7 +32,7 @@ function MyStack(props) {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#621FF6',
+          backgroundColor: '#0d98ba',
         },
         headerTintColor: '#fff',
         headerTitleStyle: {

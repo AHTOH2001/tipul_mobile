@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
 import { Input, Slider, Icon, Button, Text } from 'react-native-elements'
 import { connect } from 'react-redux';
 import { resolve_back_color, resolve_front_color } from '../../utils/settings-utils';
@@ -30,59 +30,54 @@ class MainScreen extends Component {
             )
         }
         return (
-            <View style={styles.mainGroup}>
-                <View style={styles.buttonsGroup}>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => { this.props.navigation.navigate('MedicineScreen') }}
-                    >
-                        <Text style={styles.text}>{translate('Medicine', this.props.root.language)}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => { this.props.navigation.navigate('StatisticScreen') }}
-                    >
-                        <Text style={styles.text}>{translate('Statistic', this.props.root.language)}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => { this.props.navigation.navigate('DoctorsScreen') }}
-                    >
-                        <Text style={styles.text}>{translate('Doctors', this.props.root.language)}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => { this.props.navigation.navigate('VisitsScreen') }}
-                    >
-                        <Text style={styles.text}>{translate('Visits', this.props.root.language)}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => { this.props.navigation.navigate('SettingsScreen') }}
-                    >
-                        <Text style={styles.text}>{translate('Settings', this.props.root.language)}</Text>
-                    </TouchableOpacity>
-                </View>
-            </View >
+            <ScrollView style={styles.mainGroup}>
+                <Button
+                    buttonStyle={styles.button}
+                    titleStyle={styles.button_text}
+                    title={translate('Medicine', this.props.root.language)}
+                    onPress={() => { this.props.navigation.navigate('MedicineScreen') }}
+                />
+                <Button
+                    buttonStyle={styles.button}
+                    titleStyle={styles.button_text}
+                    title={translate('Statistic', this.props.root.language)}
+                    onPress={() => { this.props.navigation.navigate('StatisticScreen') }}
+                />
+                <Button
+                    buttonStyle={styles.button}
+                    titleStyle={styles.button_text}
+                    title={translate('Doctors', this.props.root.language)}
+                    onPress={() => { this.props.navigation.navigate('DoctorsScreen') }}
+                />
+                <Button
+                    buttonStyle={styles.button}
+                    titleStyle={styles.button_text}
+                    title={translate('Visits', this.props.root.language)}
+                    onPress={() => { this.props.navigation.navigate('VisitsScreen') }}
+                />
+                <Button
+                    buttonStyle={styles.button}
+                    titleStyle={styles.button_text}
+                    title={translate('Settings', this.props.root.language)}
+                    onPress={() => { this.props.navigation.navigate('SettingsScreen') }}
+                />
+            </ScrollView >
         )
     }
 }
 
 const styles = StyleSheet.create({
     mainGroup: {
-        flex: 1,
         padding: 20,
         marginHorizontal: 13,
         marginBottom: 15,
     },
-    buttonsGroup: {
-        flex: 1,
-    },
     button: {
-        flex: 1,        
-        justifyContent: 'center'
+        padding: 20,
+        margin: 20,
+        borderRadius: 10
     },
-    text: {
+    button_text: {
         textAlign: 'center',
         textAlignVertical: 'center',
         fontSize: 30,

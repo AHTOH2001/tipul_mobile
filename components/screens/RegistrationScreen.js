@@ -143,6 +143,8 @@ class RegistrationScreen extends Component {
                 />
                 <Button
                     onPress={this.onSubmitEditing}
+                    buttonStyle={styles.button}
+                    titleStyle={styles.button_text}
                     title={translate('Register', this.props.root.language)}
                 />
                 <Button
@@ -158,8 +160,7 @@ class RegistrationScreen extends Component {
 const styles = StyleSheet.create({
     inputGroup: {
         flex: 1,
-        padding: 20,
-        marginHorizontal: 13,
+        padding: 20,        
         marginBottom: 15,
     },
     preloader: {
@@ -170,6 +171,16 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    button: {
+        padding: 20,
+        margin: 20,
+        borderRadius: 10
+    },
+    button_text: {
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        fontSize: 30,
     },
 })
 

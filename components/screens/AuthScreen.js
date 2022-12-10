@@ -103,11 +103,13 @@ class AuthScreen extends Component {
                     secureTextEntry={true}
                 />
                 <Button
+                    buttonStyle={styles.button}
+                    titleStyle={styles.button_text}
                     onPress={this.onSubmitEditing}
                     title={translate('Log in', this.props.root.language)}
                 />
                 <Button
-                    type='clear'
+                    type='clear'                    
                     onPress={() => { this.props.navigation.navigate('RegistrationScreen'); }}
                     title={translate('Not registered yet?', this.props.root.language)}
                 />
@@ -119,8 +121,7 @@ class AuthScreen extends Component {
 const styles = StyleSheet.create({
     inputGroup: {
         flex: 1,
-        padding: 20,
-        marginHorizontal: 13,
+        padding: 20,        
         marginBottom: 15,
     },
     preloader: {
@@ -131,6 +132,16 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    button: {
+        padding: 20,
+        margin: 20,
+        borderRadius: 10
+    },
+    button_text: {
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        fontSize: 30,
     },
 })
 
