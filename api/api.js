@@ -13,7 +13,7 @@ export async function medicine() {
                     "title": "джес",
                     "dose": 1.0,
                     "dose_type": "шт",
-                    "type": "Т"
+                    "type": "ТАБЛЕТКА"
                 },
                 "time": [
                     {

@@ -112,12 +112,12 @@ class SettingsScreen extends Component {
         return (
             <ScrollView style={{ backgroundColor: this.resolve_back_color() }}>
                 <ListItem.Accordion         // language
-                    containerStyle={{ backgroundColor: this.resolve_back_color() }}
+                    containerStyle={styles.containerStyle}
                     content={
                         <>
                             <Icon name="language" size={30} color={this.resolve_front_color()} />
                             <ListItem.Content>
-                                <ListItem.Title style={{ fontSize: this.resolve_font_size(20), paddingLeft: 20, color: this.resolve_front_color() }}>{translate('Select language', this.state.chosen_language)}</ListItem.Title>
+                                <ListItem.Title style={{ fontSize: this.resolve_font_size(20), paddingLeft: 20, color: this.resolve_front_color(), fontSize: 30 }}>{translate('Select language', this.state.chosen_language)}</ListItem.Title>
                             </ListItem.Content>
                         </>
                     }
@@ -130,12 +130,13 @@ class SettingsScreen extends Component {
                         <ListItem key={i} onPress={() => {
                             console.log(lang + ' lang chosen ')
                             this.setState({ language_expanded: false, chosen_language: lang })
+                            
                         }}
                             containerStyle={{ backgroundColor: lang == this.state.chosen_language ? 'lightgrey' : this.resolve_back_color() }}
                             bottomDivider>
 
                             <ListItem.Content>
-                                <ListItem.Title style={{ fontSize: this.resolve_font_size(20), color: this.resolve_front_color() }}>{lang}</ListItem.Title>
+                                <ListItem.Title style={{ fontSize: this.resolve_font_size(20), color: this.resolve_front_color(), fontSize: 30, paddingLeft: 20 }}>{lang}</ListItem.Title>
                             </ListItem.Content>
                         </ListItem>
                     ))}
@@ -223,7 +224,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center',
-    }
+    },
+    containerStyle: {        
+    }        
 })
 
 const mapStateToProps = state => {

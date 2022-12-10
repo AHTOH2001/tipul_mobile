@@ -29,7 +29,7 @@ class MainScreen extends Component {
                     titleStyle={styles.button_text}
                     title={translate('Medicine', this.props.root.language)}
                     onPress={() => { this.props.navigation.navigate('MedicineScreen') }}
-                    icon={{ type: 'font-awesome', name: 'stethoscope', size: 40 }}
+                    icon={{ type: 'font-awesome', name: 'stethoscope', size: 40, color: 'white' }}
                     iconContainerStyle={styles.iconContainerStyle}
                 />
                 <Button
@@ -37,7 +37,7 @@ class MainScreen extends Component {
                     titleStyle={styles.button_text}
                     title={translate('Statistic', this.props.root.language)}
                     onPress={() => { this.props.navigation.navigate('StatisticScreen') }}
-                    icon={{ type: 'font-awesome', name: 'signal', size: 40 }}
+                    icon={{ type: 'font-awesome', name: 'signal', size: 40, color: 'white' }}
                     iconContainerStyle={styles.iconContainerStyle}
                 />
                 <Button
@@ -45,7 +45,7 @@ class MainScreen extends Component {
                     titleStyle={styles.button_text}
                     title={translate('Doctors', this.props.root.language)}
                     onPress={() => { this.props.navigation.navigate('DoctorsScreen') }}
-                    icon={{ type: 'font-awesome', name: 'user-md', size: 40 }}
+                    icon={{ type: 'font-awesome', name: 'user-md', size: 40, color: 'white' }}
                     iconContainerStyle={styles.iconContainerStyle}
                 />
                 <Button
@@ -53,7 +53,7 @@ class MainScreen extends Component {
                     titleStyle={styles.button_text}
                     title={translate('Visits', this.props.root.language)}
                     onPress={() => { this.props.navigation.navigate('VisitsScreen') }}
-                    icon={{ type: 'font-awesome', name: 'ambulance', size: 40 }}
+                    icon={{ type: 'font-awesome', name: 'ambulance', size: 40, color: 'white' }}
                     iconContainerStyle={styles.iconContainerStyle}
                 />
                 <Button
@@ -61,7 +61,7 @@ class MainScreen extends Component {
                     titleStyle={styles.button_text}
                     title={translate('Settings', this.props.root.language)}
                     onPress={() => { this.props.navigation.navigate('SettingsScreen') }}
-                    icon={{ type: 'font-awesome', name: 'cogs', size: 40 }}
+                    icon={{ type: 'font-awesome', name: 'cogs', size: 40, color: 'white' }}
                     iconContainerStyle={styles.iconContainerStyle}
                 />
             </ScrollView >

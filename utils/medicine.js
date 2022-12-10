@@ -1,9 +1,9 @@
 // TODO change to english names
 export var type_to_icon = {
-    'УКОЛ': '',
-    'АМПУЛА': '',
-    'ТАБЛЕТКА': '',
-    'СУСПЕНЗИЯ': ''
+    'УКОЛ': 'syringe',
+    'АМПУЛА': 'thermometer',
+    'ТАБЛЕТКА': 'tablets',
+    'СУСПЕНЗИЯ': 'vial'
 }
 
 export var type_choices = [

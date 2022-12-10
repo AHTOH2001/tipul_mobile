@@ -42,8 +42,9 @@ class MedicineScreen extends Component {
                                 titleStyle={styles.button_text}
                                 title={medicine.cure.title}
                                 onPress={() => { this.props.navigation.navigate('MedicineDetail', { medicine: medicine }) }}
-                                icon={{ type: 'font-awesome', name: 'stethoscope', size: 40 }} // TODO get icon from type
+                                icon={{ type: 'font-awesome-5', name: type_to_icon[medicine.cure.type], size: 40, color: 'white' }} // TODO get icon from type
                                 iconContainerStyle={styles.iconContainerStyle}
+                                key={medicine.cure.title}
                             />
                         ))
                     }
@@ -61,12 +62,12 @@ class MedicineScreen extends Component {
                     {
                         type_choices.map(type => (
                             <SpeedDial.Action
-                                icon={{ name: type_to_icon[type], type: 'font-awesome', color: 'white' }}
+                                icon={{ name: type_to_icon[type], type: 'font-awesome-5', color: 'white', size: 19 }}
                                 color='#0d98ba'
                                 title={translate(type, this.props.root.language)}
                                 onPress={() => {
                                     this.setState({ medicines: [...this.state.medicines, create_medicine(type, this.state.medicines.length)] })
-                                    setTimeout(() => this.myRef.current.scrollToEnd({animated: true}), 200)
+                                    setTimeout(() => this.myRef.current.scrollToEnd({ animated: true }), 200)
 
                                 }}
                             />
