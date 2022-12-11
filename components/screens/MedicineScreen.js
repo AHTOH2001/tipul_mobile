@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, StyleSheet, View, TouchableOpacity, ScrollView, TouchableNativeFeedback } from 'react-native';
-import { Input, Slider, Icon, Button, Text, SpeedDial } from 'react-native-elements'
+import { ActivityIndicator, StyleSheet, View, TouchableOpacity, ScrollView, TouchableNativeFeedback, Alert } from 'react-native';
+import { Input, Slider, Icon, Button, Text, SpeedDial, ListItem } from 'react-native-elements'
 import { connect } from 'react-redux';
 import { resolve_back_color, resolve_front_color } from '../../utils/settings-utils';
 import translate from '../../utils/translate';
 import { type_to_icon, type_choices, create_empty_medicine } from '../../utils/medicine';
-import { medicine_list } from '../../api/api';
+import { medicine_list, delete_medicine } from '../../api/api';
 
 class MedicineScreen extends Component {
     constructor() {
@@ -24,6 +24,29 @@ class MedicineScreen extends Component {
         })
     }
 
+    onLongPress(medicine) {
+        console.log(medicine.id)
+        Alert.alert(translate('Medicine', this.props.root.language) + ' ' + medicine.cure.title, null,
+            [
+                {
+                    text: 'delete',
+                    onPress: () => {
+                        var state = this.state
+                        var med_pos = state.medicines.findIndex(med => med.id == medicine.id)
+                        state.medicines.splice(med_pos, 1)
+                        this.setState(state)
+                        delete_medicine(medicine.id)
+                    },
+                    style: 'destructive'
+                },
+                {
+                    text: 'cancel',
+                    style: 'cancel'
+                },
+            ])
+    }
+
+
     render() {
         if (this.state.isLoading) {
             return (
@@ -37,15 +60,20 @@ class MedicineScreen extends Component {
                 <ScrollView style={styles.mainGroup} ref={this.myRef}>
                     {
                         this.state.medicines.map(medicine => (
-                            <Button
-                                buttonStyle={styles.button}
-                                titleStyle={styles.button_text}
-                                title={medicine.cure.title}
+                            <ListItem
+                                style={{ borderRadius: 10, margin: 10 }}
+                                containerStyle={styles.button}
                                 onPress={() => { this.props.navigation.navigate('MedicineDetail', { medicine: medicine }) }}
+                                onLongPress={() => this.onLongPress(medicine)}
                                 icon={{ type: 'font-awesome-5', name: type_to_icon[medicine.cure.type], size: 40, color: 'white' }}
                                 iconContainerStyle={styles.iconContainerStyle}
                                 key={medicine.id}
-                            />
+                            >
+                                <ListItem.Content>
+                                    <ListItem.Title style={styles.button_text}>{medicine.cure.title}</ListItem.Title>
+                                </ListItem.Content>
+                                <ListItem.Chevron />
+                            </ListItem>
                         ))
                     }
                 </ScrollView >
@@ -89,14 +117,14 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     button: {
-        padding: 20,
-        margin: 15,
-        borderRadius: 10
+        borderRadius: 10,
+        backgroundColor: 'rgb(32, 137, 220)'
     },
     button_text: {
         textAlign: 'center',
         textAlignVertical: 'center',
         fontSize: 30,
+        color: 'white'
     },
     preloader: {
         left: 0,

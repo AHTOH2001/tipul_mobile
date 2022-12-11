@@ -77,3 +77,8 @@ export async function create_medicine(medicine) {
     await sleep(500)
     console.log('Create medicine')
 }
+
+export async function delete_medicine(id) {
+    await sleep(500)
+    console.log('Delete medicine')
+}
