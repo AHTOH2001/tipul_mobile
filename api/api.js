@@ -11,7 +11,7 @@ export async function auth(phone) {
 }
 
 export async function medicine_list() {
-    await sleep(500)
+    await sleep(200)
     return {
         "data": [
             {
@@ -26,9 +26,9 @@ export async function medicine_list() {
                     {
                         "time": "06:00:00"
                     },
-                    {
-                        "time": "08:00:00"
-                    }
+                    // {
+                    //     "time": "08:00:00"
+                    // }
                 ],
                 "schedule": {
                     "cycle_start": "2022-12-10",
@@ -42,7 +42,7 @@ export async function medicine_list() {
 }
 
 export async function medicine_detail(medicine_title) {
-    await sleep(500)
+    await sleep(200)
     return {
         "id": 1,
         "cure": {

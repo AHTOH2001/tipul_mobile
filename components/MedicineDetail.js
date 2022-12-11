@@ -18,6 +18,7 @@ class MedicineDetail extends Component {
             selectedDoseType: null,
             showCycleStartPicker: false,
             showCycleEndPicker: false,
+            showTimePicker: false,
         };
     }
 
@@ -52,6 +53,8 @@ class MedicineDetail extends Component {
 
 
     inputValueUpdate = (val, prop) => {
+        console.log(val)
+        console.log(prop)
         const state = this.state
         var keys = prop.split('.')
         var state_item = state
@@ -63,6 +66,7 @@ class MedicineDetail extends Component {
     }
 
     render() {
+        let time_index = -1;
         if (this.state.isLoading) {
             return (
                 <View style={{ ...styles.preloader }}>
@@ -104,14 +108,10 @@ class MedicineDetail extends Component {
                         title={this.state.medicine.schedule.cycle_start} />
                     {this.state.showCycleStartPicker && (
                         <DateTimePicker
-                            testID="dateTimePicker"
                             value={new Date(Date.parse(this.state.medicine.schedule.cycle_start))}
                             mode='date'
-                            is24Hour={true}
                             onChange={(res) => {
                                 if (res.type == 'set') {
-                                    console.log(res['nativeEvent'].timestamp)
-                                    console.log(typeof res['nativeEvent'].timestamp)
                                     this.inputValueUpdate(res['nativeEvent'].timestamp.toISOString().slice(0, 10), 'medicine.schedule.cycle_start')
                                 }
                                 this.setState({ ...this.state, showCycleStartPicker: false })
@@ -128,14 +128,10 @@ class MedicineDetail extends Component {
                         title={this.state.medicine.schedule.cycle_end} />
                     {this.state.showCycleEndPicker && (
                         <DateTimePicker
-                            testID="dateTimePicker"
                             value={new Date(Date.parse(this.state.medicine.schedule.cycle_end))}
                             mode='date'
-                            is24Hour={true}
                             onChange={(res) => {
                                 if (res.type == 'set') {
-                                    console.log(res['nativeEvent'].timestamp)
-                                    console.log(typeof res['nativeEvent'].timestamp)
                                     this.inputValueUpdate(res['nativeEvent'].timestamp.toISOString().slice(0, 10), 'medicine.schedule.cycle_end')
                                 }
                                 this.setState({ ...this.state, showCycleEndPicker: false })
@@ -143,6 +139,38 @@ class MedicineDetail extends Component {
                         />
                     )}
                 </View>
+                {
+                    this.state.medicine.time.map(({ time }) => {
+                        time_index++
+                        return (
+                            <View key={time_index}>
+                                <Button
+                                    buttonStyle={styles.button}
+                                    titleStyle={styles.button_text}
+                                    onPress={() => this.inputValueUpdate(true, `showTimePicker${time_index.toString()}`)}
+                                    title={time.slice(0, 5)}
+                                />
+                                {
+                                    this.state[`showTimePicker${time_index.toString()}`] && (
+                                        <DateTimePicker
+                                            value={new Date(Date.parse(`1900-01-01T${time}`))}
+                                            mode='time'
+                                            is24Hour={true}
+                                            timeZoneOffsetInMinutes={0}
+                                            onChange={(res) => {
+                                                console.log(res)
+                                                if (res.type == 'set') {
+                                                    this.inputValueUpdate(res['nativeEvent'].timestamp.toISOString().slice(11, 16), `medicine.time.${time_index}.time`)
+                                                }
+                                                this.inputValueUpdate(false, `showTimePicker${time_index.toString()}`)
+                                            }}
+                                        />
+                                    )
+                                }
+                            </View>
+                        )
+                    })
+                }
             </ScrollView>
         )
     }
