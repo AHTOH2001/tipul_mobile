@@ -4,7 +4,7 @@ import { Input, Slider, Icon, Button, Text, SpeedDial, ListItem } from 'react-na
 import { connect } from 'react-redux';
 import translate from '../../utils/translate';
 import { specialty_to_icon, specialty_choices } from '../../utils/doctor';
-import { doctors_list, delete_doctor } from '../../api/api';
+import { doctors_list, delete_doctor, create_doctor } from '../../api/api';
 
 class DosctorsScreen extends Component {
     constructor() {
@@ -46,7 +46,13 @@ class DosctorsScreen extends Component {
     }
 
     create_empty_doctor(specialty) {
+        create_doctor({
+            "first_name": translate('New', this.props.root.language),
+            "last_name": translate('Doctor', this.props.root.language),
+            "specialty": specialty
+        })
         return {
+            "id": this.state.doctors.length + + Math.floor(Math.random() * 9999),
             "first_name": translate('New', this.props.root.language),
             "last_name": translate('Doctor', this.props.root.language),
             "specialty": specialty

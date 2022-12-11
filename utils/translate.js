@@ -38,6 +38,9 @@ russian_dictionary = {
     'pill': 'Таблетка',
     'SUSPENSION': 'Суспензия',
     'New': 'Новый',
+    'First name': 'Имя',
+    'Last name': 'Фамилия',
+    'Specialty': 'Специальность',
 }
 
 export default translate = (text, language) => {

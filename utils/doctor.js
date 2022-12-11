@@ -19,6 +19,6 @@ export const specialty_to_icon = {
 }
 
 let index = 0;
-export const type_dropdown_data = specialty_choices.map(specialty => (
+export const specialty_dropdown_data = specialty_choices.map(specialty => (
     { key: index++, label: specialty }
 ))

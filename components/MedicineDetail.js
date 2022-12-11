@@ -4,7 +4,7 @@ import { Input, Icon, ListItem, Button, Text } from 'react-native-elements'
 import { connect } from 'react-redux';
 import translate from '../utils/translate';
 import { medicine_detail, update_medicine } from '../api/api'
-import { type_to_icon, dose_dropdown_data, type_dropdown_data } from '../utils/medicine'
+import { dose_dropdown_data, type_dropdown_data } from '../utils/medicine'
 import ModalSelector from 'react-native-modal-selector'
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -47,7 +47,9 @@ class MedicineDetail extends Component {
             ...this.state,
             isLoading: true,
         })
-        console.log(this.state.medicine)
+        this.props.navigation.setOptions({
+            headerRight: null
+        })
         update_medicine(this.state.medicine).then(resp => {
             this.props.navigation.goBack()
         })
@@ -66,12 +68,8 @@ class MedicineDetail extends Component {
     }
 
     deleteTimeRow = (time_index) => {
-        console.log('GERE')
         var state = this.state
-        // console.log(state.medicine.time)
-        console.log(time_index)
         state.medicine.time.splice(time_index, 1)
-        // console.log(state.medicine.time)
         this.setState(state)
     }
 
@@ -79,7 +77,7 @@ class MedicineDetail extends Component {
         this.inputValueUpdate(true, `showTimePicker${time_index.toString()}`)
     }
 
-    timePickerOnPress = (time_index, res) => {        
+    timePickerOnPress = (time_index, res) => {
         var state = this.state
         if (res.type == 'set') {
             state.medicine.time[time_index].time = res['nativeEvent'].timestamp.toISOString().slice(11, 16)
@@ -101,7 +99,6 @@ class MedicineDetail extends Component {
 
     render() {
         var time_index = -1
-        console.log(this.state)
         if (this.state.isLoading) {
             return (
                 <View style={{ ...styles.preloader }}>

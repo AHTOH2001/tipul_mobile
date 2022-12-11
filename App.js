@@ -13,6 +13,7 @@ import MainScreen from './components/screens/MainScreen'
 import MedicineScreen from './components/screens/MedicineScreen'
 import MedicineDetail from './components/MedicineDetail'
 import DoctorsScreen from './components/screens/DoctorsScreen'
+import DoctorDetail from './components/DoctorDetail'
 import { decode, encode } from 'base-64'
 import { ActivityIndicator, LogBox, StyleSheet, View } from 'react-native';
 import { connect, Provider } from 'react-redux'
@@ -30,7 +31,7 @@ if (!global.atob) { global.atob = decode; }
 const Stack = createStackNavigator();
 LogBox.ignoreAllLogs()
 // console.ignoredYellowBox = ['Setting a timer'];
-function MyStack(props) {  
+function MyStack(props) {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -57,7 +58,7 @@ function MyStack(props) {
         name="RegistrationScreen"
         component={RegistrationScreen}
         options={{ title: translate('Registration', props.props.root.language) }}
-      />      
+      />
       <Stack.Screen
         name="MedicineScreen"
         component={MedicineScreen}
@@ -72,6 +73,11 @@ function MyStack(props) {
         name="DoctorsScreen"
         component={DoctorsScreen}
         options={{ title: translate('Doctors', props.props.root.language) }}
+      />
+      <Stack.Screen
+        name="DoctorDetail"
+        component={DoctorDetail}
+        options={{ title: translate('Doctor', props.props.root.language) }}
       />
       <Stack.Screen
         name="TrainingScreen"

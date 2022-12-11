@@ -105,3 +105,19 @@ export async function delete_doctor(id) {
     await sleep(500)
     console.log('Delete doctor ' + id.toString())
 }
+
+export async function create_doctor(doctor) {
+    await sleep(500)
+    console.log('Create doctor')
+}
+
+
+export async function doctor_detail(id) {
+    var doctors = await doctors_list()
+    return doctors.find(doc => doc.id == id)
+}
+
+export async function update_doctor(doctor) {
+    await sleep(500)
+    console.log('Update doctor')
+}
