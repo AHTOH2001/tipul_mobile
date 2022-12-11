@@ -50,13 +50,7 @@ class DosctorsScreen extends Component {
             "first_name": translate('New', this.props.root.language),
             "last_name": translate('Doctor', this.props.root.language),
             "specialty": specialty
-        })
-        return {
-            "id": this.state.doctors.length + + Math.floor(Math.random() * 9999),
-            "first_name": translate('New', this.props.root.language),
-            "last_name": translate('Doctor', this.props.root.language),
-            "specialty": specialty
-        }
+        }).then(doctor => this.setState({ ...this.state, doctors: [...this.state.doctors, doctor] }))
     }
 
 
@@ -110,7 +104,7 @@ class DosctorsScreen extends Component {
                                 title={translate(specialty, this.props.root.language)}
                                 key={specialty}
                                 onPress={() => {
-                                    this.setState({ doctors: [...this.state.doctors, this.create_empty_doctor(specialty)] })
+                                    this.create_empty_doctor(specialty)
                                     setTimeout(() => this.myRef.current.scrollToEnd({ animated: true }), 200)
 
                                 }}

@@ -4,8 +4,8 @@ import { Input, Slider, Icon, Button, Text, SpeedDial, ListItem } from 'react-na
 import { connect } from 'react-redux';
 import { resolve_back_color, resolve_front_color } from '../../utils/settings-utils';
 import translate from '../../utils/translate';
-import { type_to_icon, type_choices, create_empty_medicine } from '../../utils/medicine';
-import { medicine_list, delete_medicine } from '../../api/api';
+import { type_to_icon, type_choices } from '../../utils/medicine';
+import { medicine_list, delete_medicine, create_medicine } from '../../api/api';
 
 class MedicineScreen extends Component {
     constructor() {
@@ -46,6 +46,22 @@ class MedicineScreen extends Component {
             ])
     }
 
+    create_empty_medicine(type) {
+        create_medicine({
+            "id": this.state.medicines.length + Math.floor(Math.random() * 9999),
+            "cure": {
+                "title": `New medicine ${this.state.medicines.length + 1}`,
+                "dose": 1.0,
+                "dose_type": "PCS",
+                "type": type
+            },
+            "time": [
+                {
+                    "time": `${new Date().getHours()}:${new Date().getMinutes()}:00`
+                }
+            ]
+        }).then(medicine => this.setState({ ...this.state, medicines: [...this.state.medicines, medicine] }))
+    }
 
     render() {
         if (this.state.isLoading) {
@@ -95,7 +111,7 @@ class MedicineScreen extends Component {
                                 title={translate(type, this.props.root.language)}
                                 key={type}
                                 onPress={() => {
-                                    this.setState({ medicines: [...this.state.medicines, create_empty_medicine(type, this.state.medicines.length)] })
+                                    this.create_empty_medicine(type)
                                     setTimeout(() => this.myRef.current.scrollToEnd({ animated: true }), 200)
 
                                 }}

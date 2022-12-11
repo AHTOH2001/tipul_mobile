@@ -1,3 +1,6 @@
+import axios from 'axios';
+
+const back_end_domain = 'https://anton123lll.pythonanywhere.com'
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -76,6 +79,7 @@ export async function update_medicine(medicine) {
 export async function create_medicine(medicine) {
     await sleep(500)
     console.log('Create medicine')
+    return medicine
 }
 
 export async function delete_medicine(id) {
@@ -84,40 +88,23 @@ export async function delete_medicine(id) {
 }
 
 export async function doctors_list() {
-    await sleep(200)
-    return [
-        {
-            "id": 1,
-            "first_name": "Victoria",
-            "last_name": "Sviridchik",
-            "specialty": "endocrinologist"
-        },
-        {
-            "id": 2,
-            "first_name": "Kukusha",
-            "last_name": "Sviridchik",
-            "specialty": "therapist"
-        }
-    ]
+    return (await axios.get(`${back_end_domain}/managment/doctor/`)).data
 }
 
 export async function delete_doctor(id) {
-    await sleep(500)
-    console.log('Delete doctor ' + id.toString())
+    await axios.delete(`${back_end_domain}/managment/doctor/${id}/`)
 }
 
 export async function create_doctor(doctor) {
-    await sleep(500)
-    console.log('Create doctor')
+    return (await axios.post(`${back_end_domain}/managment/doctor/`, doctor)).data
 }
 
 
 export async function doctor_detail(id) {
-    var doctors = await doctors_list()
-    return doctors.find(doc => doc.id == id)
+    return (await axios.get(`${back_end_domain}/managment/doctor/${id}/`)).data
 }
 
 export async function update_doctor(doctor) {
-    await sleep(500)
-    console.log('Update doctor')
+    console.log(doctor)
+    return (await axios.put(`${back_end_domain}/managment/doctor/${doctor.id}/`, doctor)).data
 }
