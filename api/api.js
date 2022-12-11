@@ -80,5 +80,28 @@ export async function create_medicine(medicine) {
 
 export async function delete_medicine(id) {
     await sleep(500)
-    console.log('Delete medicine')
+    console.log('Delete medicine ' + id.toString())
+}
+
+export async function doctors_list() {
+    await sleep(200)
+    return [
+        {
+            "id": 1,
+            "first_name": "Victoria",
+            "last_name": "Sviridchik",
+            "specialty": "endocrinologist"
+        },
+        {
+            "id": 2,
+            "first_name": "Kukusha",
+            "last_name": "Sviridchik",
+            "specialty": "therapist"
+        }
+    ]
+}
+
+export async function delete_doctor(id) {
+    await sleep(500)
+    console.log('Delete doctor ' + id.toString())
 }

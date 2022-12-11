@@ -79,10 +79,7 @@ class MedicineDetail extends Component {
         this.inputValueUpdate(true, `showTimePicker${time_index.toString()}`)
     }
 
-    timePickerOnPress = (time_index, res) => {
-        console.log('HEREEEEEEEEEEEEEEEE')
-        console.log(time_index)
-        console.log(res)
+    timePickerOnPress = (time_index, res) => {        
         var state = this.state
         if (res.type == 'set') {
             state.medicine.time[time_index].time = res['nativeEvent'].timestamp.toISOString().slice(11, 16)

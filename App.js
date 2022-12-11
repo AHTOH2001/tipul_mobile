@@ -12,6 +12,7 @@ import RegistrationScreen from './components/screens/RegistrationScreen'
 import MainScreen from './components/screens/MainScreen'
 import MedicineScreen from './components/screens/MedicineScreen'
 import MedicineDetail from './components/MedicineDetail'
+import DoctorsScreen from './components/screens/DoctorsScreen'
 import { decode, encode } from 'base-64'
 import { ActivityIndicator, LogBox, StyleSheet, View } from 'react-native';
 import { connect, Provider } from 'react-redux'
@@ -66,6 +67,11 @@ function MyStack(props) {
         name="MedicineDetail"
         component={MedicineDetail}
         options={{ title: translate('Medicine', props.props.root.language) }}
+      />
+      <Stack.Screen
+        name="DoctorsScreen"
+        component={DoctorsScreen}
+        options={{ title: translate('Doctors', props.props.root.language) }}
       />
       <Stack.Screen
         name="TrainingScreen"

@@ -2,40 +2,39 @@ import React, { Component } from 'react';
 import { ActivityIndicator, StyleSheet, View, TouchableOpacity, ScrollView, TouchableNativeFeedback, Alert } from 'react-native';
 import { Input, Slider, Icon, Button, Text, SpeedDial, ListItem } from 'react-native-elements'
 import { connect } from 'react-redux';
-import { resolve_back_color, resolve_front_color } from '../../utils/settings-utils';
 import translate from '../../utils/translate';
-import { type_to_icon, type_choices, create_empty_medicine } from '../../utils/medicine';
-import { medicine_list, delete_medicine } from '../../api/api';
+import { specialty_to_icon, specialty_choices } from '../../utils/doctor';
+import { doctors_list, delete_doctor } from '../../api/api';
 
-class MedicineScreen extends Component {
+class DosctorsScreen extends Component {
     constructor() {
         super();
         this.myRef = React.createRef();
         this.state = {
             isLoading: true,
-            medicines: [],
+            doctors: [],
             open: false
         };
     }
 
     componentDidMount() {
-        medicine_list().then(resp => {
-            this.setState({ ...this.state, medicines: resp.data, isLoading: false })
+        doctors_list().then(resp => {
+            this.setState({ ...this.state, doctors: resp, isLoading: false })
         })
     }
 
-    onLongPress(medicine) {
-        console.log(medicine.id)
-        Alert.alert(translate('Medicine', this.props.root.language) + ' ' + medicine.cure.title, null,
+    onLongPress(doctor) {
+        console.log(doctor.id)
+        Alert.alert(translate('Doctor', this.props.root.language) + ' ' + doctor.first_name + ' ' + doctor.last_name[0] + '.', null,
             [
                 {
                     text: 'delete',
                     onPress: () => {
                         var state = this.state
-                        var med_pos = state.medicines.findIndex(med => med.id == medicine.id)
-                        state.medicines.splice(med_pos, 1)
+                        var doc_pos = state.doctors.findIndex(doc => doc.id == doctor.id)
+                        state.doctors.splice(doc_pos, 1)
                         this.setState(state)
-                        delete_medicine(medicine.id)
+                        delete_doctor(doctor.id)
                     },
                     style: 'destructive'
                 },
@@ -46,11 +45,19 @@ class MedicineScreen extends Component {
             ])
     }
 
+    create_empty_doctor(specialty) {
+        return {
+            "first_name": translate('New', this.props.root.language),
+            "last_name": translate('Doctor', this.props.root.language),
+            "specialty": specialty
+        }
+    }
+
 
     render() {
         if (this.state.isLoading) {
             return (
-                <View style={{ ...styles.preloader, backgroundColor: resolve_back_color(this.props) }}>
+                <View style={{ ...styles.preloader }}>
                     <ActivityIndicator size="large" color="#9E9E9E" />
                 </View>
             )
@@ -59,18 +66,20 @@ class MedicineScreen extends Component {
             <View style={styles.container}>
                 <ScrollView style={styles.mainGroup} ref={this.myRef}>
                     {
-                        this.state.medicines.map(medicine => (
+                        this.state.doctors.map(doctor => (
                             <ListItem
                                 style={{ borderRadius: 10, margin: 10 }}
                                 containerStyle={styles.button}
-                                onPress={() => { this.props.navigation.navigate('MedicineDetail', { medicine: medicine }) }}
-                                onLongPress={() => this.onLongPress(medicine)}
-                                iconContainerStyle={styles.iconContainerStyle}
-                                key={medicine.id}
+                                onPress={() => { this.props.navigation.navigate('DoctorDetail', { doctor: doctor }) }}
+                                onLongPress={() => this.onLongPress(doctor)}
+                                key={doctor.id}
                             >
                                 <ListItem.Content style={styles.row}>
-                                    <Icon name={type_to_icon[medicine.cure.type]} type='font-awesome-5' size={40} color='white' />
-                                    <ListItem.Title style={styles.button_text}>{medicine.cure.title}</ListItem.Title>
+                                    <Icon style={{ paddingTop: 20 }} name={specialty_to_icon[doctor.specialty]} type='font-awesome-5' size={40} color='white' />
+                                    <View>
+                                        <ListItem.Title style={styles.button_text}>{doctor.first_name}</ListItem.Title>
+                                        <ListItem.Title style={styles.button_text}>{doctor.last_name}</ListItem.Title>
+                                    </View>
                                 </ListItem.Content>
                                 <ListItem.Chevron />
                             </ListItem>
@@ -88,14 +97,14 @@ class MedicineScreen extends Component {
                     background={TouchableNativeFeedback.Ripple('white', true, 150)}
                 >
                     {
-                        type_choices.map(type => (
+                        specialty_choices.map(specialty => (
                             <SpeedDial.Action
-                                icon={{ name: type_to_icon[type], type: 'font-awesome-5', color: 'white', size: 19 }}
+                                icon={{ name: specialty_to_icon[specialty], type: 'font-awesome-5', color: 'white', size: 19 }}
                                 color='#0d98ba'
-                                title={translate(type, this.props.root.language)}
-                                key={type}
+                                title={translate(specialty, this.props.root.language)}
+                                key={specialty}
                                 onPress={() => {
-                                    this.setState({ medicines: [...this.state.medicines, create_empty_medicine(type, this.state.medicines.length)] })
+                                    this.setState({ doctors: [...this.state.doctors, this.create_empty_doctor(specialty)] })
                                     setTimeout(() => this.myRef.current.scrollToEnd({ animated: true }), 200)
 
                                 }}
@@ -136,9 +145,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    iconContainerStyle: {
-        paddingRight: 20,
-    },
     row: {
         flex: 1,
         flexDirection: 'row',
@@ -152,4 +158,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(MedicineScreen)
+export default connect(mapStateToProps)(DosctorsScreen)
