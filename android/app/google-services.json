@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:790974388416:android:bf067ba15bb058ce36f525",
         "android_client_info": {
-          "package_name": "com.antoha007.Lab2_tabata_timer"
+          "package_name": "com.antoha007.tipul_mobile"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "790974388416-7b38eqco09chvn4lgoe72hb5de9ng4vk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.antoha007.Lab2_tabata_timer",
+            "package_name": "com.antoha007.tipul_mobile",
             "certificate_hash": "7f26fd233077139e01cb0fad5a9a12c6e3ef8fa2"
           }
         },

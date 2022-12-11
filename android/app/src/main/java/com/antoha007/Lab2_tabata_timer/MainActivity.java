@@ -1,6 +1,6 @@
 import android.content.res.Configuration;
 import android.content.Intent;
-package com.antoha007.Lab2_tabata_timer;
+package com.antoha007.tipul_mobile;
 
 import android.os.Bundle;
 

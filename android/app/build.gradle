@@ -131,7 +131,7 @@ android {
     }
 
     defaultConfig {
-        applicationId 'com.antoha007.Lab2_tabata_timer'
+        applicationId 'com.antoha007.tipul_mobile'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

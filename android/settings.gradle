@@ -1,4 +1,4 @@
-rootProject.name = 'Lab2_tabata_timer'
+rootProject.name = 'tipul_mobile'
 include ':react-native-background-timer'
 project(':react-native-background-timer').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-background-timer/android')
 
