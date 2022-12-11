@@ -33,6 +33,7 @@ russian_dictionary = {
     'Cycle start': 'Дата начала',
     'Cycle end': 'Дата окончания',
     'Add': 'Добавить',
+    'Type': 'Тип',
 }
 
 export default translate = (text, language) => {

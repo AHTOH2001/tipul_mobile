@@ -26,9 +26,9 @@ export async function medicine_list() {
                     {
                         "time": "06:00:00"
                     },
-                    // {
-                    //     "time": "08:00:00"
-                    // }
+                    {
+                        "time": "08:00:00"
+                    }
                 ],
                 "schedule": {
                     "cycle_start": "2022-12-10",
@@ -52,10 +52,10 @@ export async function medicine_detail(medicine_title) {
             "type": "pill"
         },
         "time": [
-            {                
+            {
                 "time": "06:00:00"
             },
-            {                
+            {
                 "time": "08:00:00"
             }
         ],
@@ -64,7 +64,7 @@ export async function medicine_detail(medicine_title) {
             "cycle_end": "2022-12-24",
             "frequency": 2,
             "strict_status": true
-        }
+        },
     }
 }
 

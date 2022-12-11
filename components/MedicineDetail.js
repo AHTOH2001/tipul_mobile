@@ -4,7 +4,7 @@ import { Input, Icon, ListItem, Button, Text } from 'react-native-elements'
 import { connect } from 'react-redux';
 import translate from '../utils/translate';
 import { medicine_detail, update_medicine } from '../api/api'
-import { type_to_icon, dose_dropdown_data } from '../utils/medicine'
+import { type_to_icon, dose_dropdown_data, type_dropdown_data } from '../utils/medicine'
 import ModalSelector from 'react-native-modal-selector'
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -15,9 +15,12 @@ class MedicineDetail extends Component {
         this.state = {
             medicine: {},
             isLoading: true,
+            initialDoseType: null,
+            initialCureType: null,
             selectedDoseType: null,
             showCycleStartPicker: false,
             showCycleEndPicker: false,
+            checked: false,
         };
     }
 
@@ -35,7 +38,7 @@ class MedicineDetail extends Component {
             title: medicine_title
         })
         medicine_detail(medicine_title).then(resp => {
-            this.setState({ ...this.state, isLoading: false, medicine: resp, initialDoseType: resp.cure.dose_type })
+            this.setState({ ...this.state, isLoading: false, medicine: resp, initialDoseType: resp.cure.dose_type, initialCureType: resp.cure.type })
         })
     }
 
@@ -118,6 +121,14 @@ class MedicineDetail extends Component {
                     label={translate('Title', this.props.root.language)}
                     errorMessage={this.state.title_error}
                 />
+                <View style={styles.row}>
+                    <Text style={{ flex: 1, textAlign: 'center', fontSize: 20, textAlignVertical: 'center' }}>{translate('Type', this.props.root.language) + ':'}</Text>
+                    <ModalSelector
+                        data={type_dropdown_data}
+                        initValue={this.state.initialCureType}
+                        onChange={({ label, key }) => this.inputValueUpdate(label, 'medicine.cure.type')}
+                        style={{ flex: 1, padding: 20, minWidth: '60%' }} />
+                </View>
                 <View style={styles.row}>
                     <Input
                         value={this.state.medicine.cure.dose.toString()}
