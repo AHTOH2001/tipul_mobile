@@ -19,8 +19,8 @@ export async function medicine_list() {
                 "cure": {
                     "title": "джес",
                     "dose": 1.0,
-                    "dose_type": "шт",
-                    "type": "ТАБЛЕТКА"
+                    "dose_type": "PCS",
+                    "type": "pill"
                 },
                 "time": [
                     {
@@ -29,7 +29,13 @@ export async function medicine_list() {
                     {
                         "time": "08:00:00"
                     }
-                ]
+                ],
+                "schedule": {
+                    "cycle_start": "2022-12-10",
+                    "cycle_end": "2022-12-24",
+                    "frequency": 2,
+                    "strict_status": true
+                }
             }
         ]
     }
@@ -42,8 +48,8 @@ export async function medicine_detail(medicine_title) {
         "cure": {
             "title": "джес детальный",
             "dose": 1.0,
-            "dose_type": "шт",
-            "type": "ТАБЛЕТКА"
+            "dose_type": "PCS",
+            "type": "pill"
         },
         "time": [
             {
@@ -52,7 +58,13 @@ export async function medicine_detail(medicine_title) {
             {
                 "time": "08:00:00"
             }
-        ]
+        ],
+        "schedule": {
+            "cycle_start": "2022-12-10",
+            "cycle_end": "2022-12-24",
+            "frequency": 2,
+            "strict_status": true
+        }
     }
 }
 

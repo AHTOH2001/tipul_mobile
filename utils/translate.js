@@ -27,6 +27,8 @@ russian_dictionary = {
     'Settings': 'Настройки',
     'Medicines': 'Медикаменты',
     'Medicine': 'Медикамент',
+    'Title': 'Заголовок',
+    'Dose': 'Доза',
 }
 
 export default translate = (text, language) => {
