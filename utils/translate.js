@@ -29,6 +29,9 @@ russian_dictionary = {
     'Medicine': 'Медикамент',
     'Title': 'Заголовок',
     'Dose': 'Доза',
+    'Reception frequency': 'Частота приёма',
+    'Cycle start': 'Дата начала',
+    'Cycle end': 'Дата окончания',
 }
 
 export default translate = (text, language) => {

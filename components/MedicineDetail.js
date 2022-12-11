@@ -6,7 +6,7 @@ import translate from '../utils/translate';
 import { medicine_detail, update_medicine } from '../api/api'
 import { type_to_icon, dose_dropdown_data } from '../utils/medicine'
 import ModalSelector from 'react-native-modal-selector'
-// import DatePicker from 'react-native-date-picker'
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 class MedicineDetail extends Component {
@@ -15,7 +15,9 @@ class MedicineDetail extends Component {
         this.state = {
             medicine: {},
             isLoading: true,
-            selectedDoseType: null
+            selectedDoseType: null,
+            showCycleStartPicker: false,
+            showCycleEndPicker: false,
         };
     }
 
@@ -92,9 +94,55 @@ class MedicineDetail extends Component {
                         onChange={({ label, key }) => this.inputValueUpdate(label, 'medicine.cure.dose_type')}
                         style={{ flex: 1, paddingTop: 10 }} />
                 </View>
-                <Text style={{ flex: 1, textAlign: 'center' }} h3>Частота приёма</Text>
-                {/* <DatePicker date={new Date()} onDateChange={(val) => this.inputValueUpdate(val, 'medicine.schedule.cycle_start')} /> */}
-                {/* Date.parse(this.state.medicine.schedule.cycle_start) */}
+                <Text style={{ flex: 1, textAlign: 'center' }} h3>{translate('Reception frequency', this.props.root.language)}</Text>
+                <View style={styles.row}>
+                    <Text style={{ flex: 1, textAlign: 'center', fontSize: 20, textAlignVertical: 'center' }}>{translate('Cycle start', this.props.root.language) + ':'}</Text>
+                    <Button
+                        buttonStyle={styles.button}
+                        titleStyle={styles.button_text}
+                        onPress={() => this.setState({ ...this.state, showCycleStartPicker: true })}
+                        title={this.state.medicine.schedule.cycle_start} />
+                    {this.state.showCycleStartPicker && (
+                        <DateTimePicker
+                            testID="dateTimePicker"
+                            value={new Date(Date.parse(this.state.medicine.schedule.cycle_start))}
+                            mode='date'
+                            is24Hour={true}
+                            onChange={(res) => {
+                                if (res.type == 'set') {
+                                    console.log(res['nativeEvent'].timestamp)
+                                    console.log(typeof res['nativeEvent'].timestamp)
+                                    this.inputValueUpdate(res['nativeEvent'].timestamp.toISOString().slice(0, 10), 'medicine.schedule.cycle_start')
+                                }
+                                this.setState({ ...this.state, showCycleStartPicker: false })
+                            }}
+                        />
+                    )}
+                </View>
+                <View style={styles.row}>
+                    <Text style={{ flex: 1, textAlign: 'center', fontSize: 20, textAlignVertical: 'center' }}>{translate('Cycle end', this.props.root.language) + ':'}</Text>
+                    <Button
+                        buttonStyle={styles.button}
+                        titleStyle={styles.button_text}
+                        onPress={() => this.setState({ ...this.state, showCycleEndPicker: true })}
+                        title={this.state.medicine.schedule.cycle_end} />
+                    {this.state.showCycleEndPicker && (
+                        <DateTimePicker
+                            testID="dateTimePicker"
+                            value={new Date(Date.parse(this.state.medicine.schedule.cycle_end))}
+                            mode='date'
+                            is24Hour={true}
+                            onChange={(res) => {
+                                if (res.type == 'set') {
+                                    console.log(res['nativeEvent'].timestamp)
+                                    console.log(typeof res['nativeEvent'].timestamp)
+                                    this.inputValueUpdate(res['nativeEvent'].timestamp.toISOString().slice(0, 10), 'medicine.schedule.cycle_end')
+                                }
+                                this.setState({ ...this.state, showCycleEndPicker: false })
+                            }}
+                        />
+                    )}
+                </View>
             </ScrollView>
         )
     }
@@ -119,7 +167,18 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
 
-    }
+    },
+    button: {
+        padding: 10,
+        margin: 10,
+        borderRadius: 10,
+        flex: 1,
+    },
+    button_text: {
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        fontSize: 15,
+    },
 })
 
 const mapStateToProps = state => {
