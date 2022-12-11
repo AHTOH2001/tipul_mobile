@@ -52,10 +52,10 @@ export async function medicine_detail(medicine_title) {
             "type": "pill"
         },
         "time": [
-            {
+            {                
                 "time": "06:00:00"
             },
-            {
+            {                
                 "time": "08:00:00"
             }
         ],

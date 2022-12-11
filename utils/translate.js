@@ -32,6 +32,7 @@ russian_dictionary = {
     'Reception frequency': 'Частота приёма',
     'Cycle start': 'Дата начала',
     'Cycle end': 'Дата окончания',
+    'Add': 'Добавить',
 }
 
 export default translate = (text, language) => {

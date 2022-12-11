@@ -18,7 +18,6 @@ class MedicineDetail extends Component {
             selectedDoseType: null,
             showCycleStartPicker: false,
             showCycleEndPicker: false,
-            showTimePicker: false,
         };
     }
 
@@ -53,8 +52,6 @@ class MedicineDetail extends Component {
 
 
     inputValueUpdate = (val, prop) => {
-        console.log(val)
-        console.log(prop)
         const state = this.state
         var keys = prop.split('.')
         var state_item = state
@@ -65,8 +62,46 @@ class MedicineDetail extends Component {
         this.setState(state)
     }
 
+    deleteTimeRow = (time_index) => {
+        console.log('GERE')
+        var state = this.state
+        // console.log(state.medicine.time)
+        console.log(time_index)
+        state.medicine.time.splice(time_index, 1)
+        // console.log(state.medicine.time)
+        this.setState(state)
+    }
+
+    showTimePicker = (time_index) => {
+        this.inputValueUpdate(true, `showTimePicker${time_index.toString()}`)
+    }
+
+    timePickerOnPress = (time_index, res) => {
+        console.log('HEREEEEEEEEEEEEEEEE')
+        console.log(time_index)
+        console.log(res)
+        var state = this.state
+        if (res.type == 'set') {
+            state.medicine.time[time_index].time = res['nativeEvent'].timestamp.toISOString().slice(11, 16)
+        }
+        state[`showTimePicker${time_index.toString()}`] = false
+        this.setState(state)
+    }
+
+    timePickerAddOnPress = (time_index, res) => {
+        var state = this.state
+        if (res.type == 'set') {
+            state.medicine.time.push({ 'time': res['nativeEvent'].timestamp.toISOString().slice(11, 16) })
+
+        }
+        state[`showTimePicker${time_index.toString()}`] = false
+        this.setState(state)
+    }
+
+
     render() {
-        let time_index = -1;
+        var time_index = -1
+        console.log(this.state)
         if (this.state.isLoading) {
             return (
                 <View style={{ ...styles.preloader }}>
@@ -143,12 +178,18 @@ class MedicineDetail extends Component {
                     this.state.medicine.time.map(({ time }) => {
                         time_index++
                         return (
-                            <View key={time_index}>
+                            <View key={time_index} style={styles.row}>
                                 <Button
-                                    buttonStyle={styles.button}
+                                    buttonStyle={{ ...styles.button, minWidth: '73%' }}
                                     titleStyle={styles.button_text}
-                                    onPress={() => this.inputValueUpdate(true, `showTimePicker${time_index.toString()}`)}
+                                    onPress={this.showTimePicker.bind(this, time_index)}
                                     title={time.slice(0, 5)}
+                                />
+                                <Button
+                                    buttonStyle={{ ...styles.button, minWidth: '15%', backgroundColor: 'red' }}
+                                    titleStyle={styles.button_text}
+                                    onPress={this.deleteTimeRow.bind(this, time_index)}
+                                    title={'X'}
                                 />
                                 {
                                     this.state[`showTimePicker${time_index.toString()}`] && (
@@ -157,13 +198,7 @@ class MedicineDetail extends Component {
                                             mode='time'
                                             is24Hour={true}
                                             timeZoneOffsetInMinutes={0}
-                                            onChange={(res) => {
-                                                console.log(res)
-                                                if (res.type == 'set') {
-                                                    this.inputValueUpdate(res['nativeEvent'].timestamp.toISOString().slice(11, 16), `medicine.time.${time_index}.time`)
-                                                }
-                                                this.inputValueUpdate(false, `showTimePicker${time_index.toString()}`)
-                                            }}
+                                            onChange={this.timePickerOnPress.bind(this, time_index)}
                                         />
                                     )
                                 }
@@ -171,6 +206,26 @@ class MedicineDetail extends Component {
                         )
                     })
                 }
+                <View key={time_index++}>
+                    <Button
+                        buttonStyle={styles.button}
+                        titleStyle={styles.button_text}
+                        onPress={this.showTimePicker.bind(this, time_index)}
+                        title={translate('Add', this.props.root.language)}
+                    />
+                    {
+                        this.state[`showTimePicker${time_index.toString()}`] && (
+                            <DateTimePicker
+                                value={new Date(Date.parse('1900-01-01T00:00:00'))}
+                                mode='time'
+                                is24Hour={true}
+                                timeZoneOffsetInMinutes={0}
+                                onChange={this.timePickerAddOnPress.bind(this, time_index)}
+                            />
+                        )
+                    }
+                </View>
+
             </ScrollView>
         )
     }
@@ -201,11 +256,12 @@ const styles = StyleSheet.create({
         margin: 10,
         borderRadius: 10,
         flex: 1,
+        minWidth: '48%',
     },
     button_text: {
         textAlign: 'center',
         textAlignVertical: 'center',
-        fontSize: 15,
+        fontSize: 20,
     },
 })
 
