@@ -41,6 +41,10 @@ russian_dictionary = {
     'First name': 'Имя',
     'Last name': 'Фамилия',
     'Specialty': 'Специальность',
+    'Log out': 'Выйти',
+    'Patient created': 'Пациент создан',
+    'You have been registered, now log in': 'Вы зарегистрировались, теперь войдите',
+    'Username or Password is not correct': 'Неверное имя пользователя или пароль',
 }
 
 export default translate = (text, language) => {

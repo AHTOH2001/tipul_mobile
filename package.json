@@ -8,6 +8,7 @@
     "expo": "expo start"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-native-community/datetimepicker": "3.5.2",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/stack": "^6.0.11",

@@ -4,17 +4,37 @@ import { Input, Slider, Icon, Button, Text } from 'react-native-elements'
 import { connect } from 'react-redux';
 import { resolve_back_color, resolve_front_color } from '../../utils/settings-utils';
 import translate from '../../utils/translate';
-import { auth } from '../../api/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class MainScreen extends Component {
     constructor() {
         super();
         this.state = {
-            isLoading: false,
+            isLoading: true,
+            auth_token: null,
         };
     }
 
+    componentDidMount() {
+        AsyncStorage.getItem('auth_token').then(value => {
+            if (value === null) {
+                console.log('No token in main screen')
+                this.props.navigation.reset({
+                    index: 0,
+                    routes: [
+                        {
+                            name: 'RegisterScreen',
+                        },
+                    ],
+                })
+            } else {
+                this.setState({ isLoading: false, auth_token: value })
+            }
+        })
+    }
+
     render() {
+        console.log(this.state)
         if (this.state.isLoading) {
             return (
                 <View style={{ ...styles.preloader, backgroundColor: resolve_back_color(this.props) }}>

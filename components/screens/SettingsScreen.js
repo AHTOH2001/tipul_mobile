@@ -5,6 +5,7 @@ import firestore, { db } from '../../firebase/firebaseDb';
 import { connect } from 'react-redux';
 import { change_font_size, change_language, change_theme } from '../../redux/action/root';
 import translate from '../../utils/translate';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class SettingsScreen extends Component {
     constructor() {
@@ -123,7 +124,7 @@ class SettingsScreen extends Component {
                         <ListItem key={i} onPress={() => {
                             console.log(lang + ' lang chosen ')
                             this.setState({ language_expanded: false, chosen_language: lang })
-                            
+
                         }}
                             containerStyle={{ backgroundColor: lang == this.state.chosen_language ? 'lightgrey' : this.resolve_back_color() }}
                             bottomDivider>
@@ -134,75 +135,24 @@ class SettingsScreen extends Component {
                         </ListItem>
                     ))}
                 </ListItem.Accordion>
-                {/* <ListItem.Accordion         // Theme
-                    containerStyle={{ backgroundColor: this.resolve_back_color() }}
-                    content={
-                        <>
-                            <Icon name="palette" size={30} color={this.resolve_front_color()} />
-                            <ListItem.Content>
-                                <ListItem.Title style={{ fontSize: this.resolve_font_size(20), paddingLeft: 20, color: this.resolve_front_color() }}>{translate('Select theme', this.state.chosen_language)}</ListItem.Title>
-                            </ListItem.Content>
-                        </>
-                    }
-                    isExpanded={this.state.theme_expanded}
+                <Button
+                    buttonStyle={styles.button}
+                    titleStyle={styles.button_text}
                     onPress={() => {
-                        this.setState({ 'theme_expanded': !this.state.theme_expanded })
+                        AsyncStorage.removeItem('auth_token').then(() => {
+                            console.log('Item removed, getting back to auth')
+                            this.props.navigation.reset({
+                                index: 0,
+                                routes: [
+                                    {
+                                        name: 'AuthScreen',
+                                    },
+                                ],
+                            })
+                        })
                     }}
-                >
-                    {this.state.themes.map((theme, i) => (
-                        <ListItem key={i} onPress={() => {
-                            console.log(theme + ' theme chosen')
-                            this.setState({ theme_expanded: false, theme: theme })
-                        }}
-                            containerStyle={{ backgroundColor: theme == this.state.theme ? 'lightgrey' : this.resolve_back_color() }}
-                            bottomDivider>
-
-                            <ListItem.Content>
-                                <ListItem.Title style={{ fontSize: this.resolve_font_size(20), color: this.resolve_front_color() }}>{translate(theme, this.state.chosen_language)}</ListItem.Title>
-                            </ListItem.Content>
-                        </ListItem>
-                    ))}
-                </ListItem.Accordion>
-                <ListItem       // font size                    
-                    bottomDivider
-                    containerStyle={{ flex: 1, backgroundColor: this.resolve_back_color() }}
-                >
-                    <Icon name='format-size' type='material-community' size={30} color={this.resolve_front_color()} />
-                    <Button
-                        type='clear'
-                        onPress={() => {
-                            if (this.state.font_size > 8) {
-                                this.setState({ font_size: this.state.font_size - 1 })
-                            }
-                        }}
-                        icon={{
-                            name: "minuscircle",
-                            type: 'antdesign',
-                            color: 'blue',
-                        }}
-                        style={{ padding: 0 }}
-                    />
-                    <ListItem.Content style={{
-                        flex: 3,
-                        alignItems: 'center'
-                    }}>
-                        <ListItem.Title style={{ fontSize: this.resolve_font_size(20), color: this.resolve_front_color() }}>{translate('Font size', this.state.chosen_language)} ({this.state.font_size})</ListItem.Title>
-                    </ListItem.Content>
-                    <Button
-                        type='clear'
-                        onPress={() => {
-                            if (this.state.font_size < 30) {
-                                this.setState({ font_size: this.state.font_size + 1 })
-                            }
-                        }}
-                        icon={{
-                            name: "pluscircle",
-                            type: 'antdesign',
-                            color: 'blue',
-                        }}
-                        style={{ padding: 0 }}
-                    />
-                </ListItem> */}
+                    title={translate('Log out', this.props.root.language)}
+                />
             </ScrollView>
         )
     }
@@ -218,8 +168,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    containerStyle: {        
-    }        
+    containerStyle: {
+    },
+    button: {
+        padding: 20,
+        margin: 20,
+        borderRadius: 10
+    },
+    button_text: {
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        fontSize: 30,
+    },
 })
 
 const mapStateToProps = state => {

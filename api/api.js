@@ -6,11 +6,19 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function auth(phone) {
-    await sleep(500)
-    return {
-        'token': '98sadjioasd89'
-    }
+export async function auth(username, password) {
+    return (await axios.post(`${back_end_domain}/api/v1/auth-token/token/login/`, {
+        'username': username,
+        'password': password
+    })).data
+}
+
+export async function register(email, username, password) {
+    return (await axios.post(`${back_end_domain}/api/v1/auth/users/`, {
+        'email': email,
+        'username': username,
+        'password': password
+    })).data
 }
 
 export async function medicine_list() {

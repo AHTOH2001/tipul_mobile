@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, StyleSheet, View } from 'react-native';
 import { Input, Slider, Icon, Button, TouchableOpacity, Text } from 'react-native-elements'
 import { connect } from 'react-redux';
 import { resolve_back_color, resolve_front_color } from '../../utils/settings-utils';
 import translate from '../../utils/translate';
 import { auth } from '../../api/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationAction } from '@react-navigation/native';
 
 class AuthScreen extends Component {
     constructor() {
         super();
         this.state = {
-            isLoading: false,
+            isLoading: true,
             username: '',
             username_error: '',
             password: '',
@@ -25,10 +27,12 @@ class AuthScreen extends Component {
     }
 
     inputUsernameUpdate = (val) => {
+        val = val.trim()
         this.inputValueUpdate(val, 'username')
     }
 
     inputPasswordUpdate = (val) => {
+        val = val.trim()
         this.inputValueUpdate(val, 'password')
     }
 
@@ -57,19 +61,51 @@ class AuthScreen extends Component {
     onSubmitEditing = () => {
         this.setState({ ...this.state, username_error: '', password_error: '' })
         if (this.validateUsername() && this.validatePassword()) {
-            // TODO request back end
             console.log('LOG IN')
             console.log(this.state.username)
             console.log(this.state.password)
-            this.props.navigation.navigate('MainScreen')
+            this.inputValueUpdate(true, 'isLoading')
+            auth(this.state.username, this.state.password).then(resp => {
+                AsyncStorage.setItem('auth_token', resp['auth_token']).then(() => {
+                    console.log('Auth token set')
+                    this.props.navigation.reset({
+                        index: 0,
+                        routes: [
+                            {
+                                name: 'MainScreen',
+                            },
+                        ],
+                    })
+                })
+            }).catch(error => {
+                this.handleErrors(error.response.data)
+                Alert.alert(translate('Username or Password is not correct', this.props.root.language))
+            })
         }
+    }
+
+    handleErrors(errors) {
+        var state = this.state
+        state.isLoading = false
+        this.setState(state)
     }
 
 
     componentDidMount() {
-        // TODO already authorised
-        auth('').then(resp => {
-
+        AsyncStorage.getItem('auth_token').then(value => {
+            if (value === null) {
+                this.inputValueUpdate(false, 'isLoading')
+            } else {
+                console.log('Auth token found in auth screen')
+                this.props.navigation.reset({
+                    index: 0,
+                    routes: [
+                        {
+                            name: 'MainScreen',
+                        },
+                    ],
+                })
+            }
         })
     }
 
@@ -110,7 +146,16 @@ class AuthScreen extends Component {
                 />
                 <Button
                     type='clear'
-                    onPress={() => { this.props.navigation.navigate('RegistrationScreen'); }}
+                    onPress={() => {
+                        this.props.navigation.reset({
+                            index: 0,
+                            routes: [
+                                {
+                                    name: 'RegistrationScreen',
+                                },
+                            ],
+                        })
+                    }}
                     title={translate('Not registered yet?', this.props.root.language)}
                 />
             </View>

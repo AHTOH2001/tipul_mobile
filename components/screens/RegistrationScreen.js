@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, StyleSheet, View } from 'react-native';
 import { Input, Slider, Icon, Button, TouchableOpacity, Text } from 'react-native-elements'
 import { connect } from 'react-redux';
 import { resolve_back_color, resolve_front_color } from '../../utils/settings-utils';
 import translate from '../../utils/translate';
-import { auth } from '../../api/api';
+import { register } from '../../api/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class RegistrationScreen extends Component {
     constructor() {
         super();
         this.state = {
-            isLoading: false,
+            isLoading: true,
             username: '',
             username_error: '',
             password: '',
@@ -20,6 +21,24 @@ class RegistrationScreen extends Component {
         };
     }
 
+    componentDidMount() {
+        AsyncStorage.getItem('auth_token').then(value => {
+            if (value === null) {
+                this.inputValueUpdate(false, 'isLoading')
+            } else {
+                console.log('Auth token found in register screen')
+                this.props.navigation.reset({
+                    index: 0,
+                    routes: [
+                        {
+                            name: 'MainScreen',
+                        },
+                    ],
+                })
+            }
+        })
+    }
+
     inputValueUpdate = (val, prop) => {
         const state = this.state;
         state[prop] = val;
@@ -27,14 +46,17 @@ class RegistrationScreen extends Component {
     }
 
     inputEmailUpdate = (val) => {
+        val = val.trim()
         this.inputValueUpdate(val, 'email')
     }
 
     inputUsernameUpdate = (val) => {
+        val = val.trim()
         this.inputValueUpdate(val, 'username')
     }
 
     inputPasswordUpdate = (val) => {
+        val = val.trim()
         this.inputValueUpdate(val, 'password')
     }
 
@@ -56,6 +78,7 @@ class RegistrationScreen extends Component {
         }
         if (!String(this.state.email)
             .toLowerCase()
+            .trim()
             .match(
                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
             )) {
@@ -99,8 +122,40 @@ class RegistrationScreen extends Component {
             console.log(this.state.email)
             console.log(this.state.username)
             console.log(this.state.password)
-            this.props.navigation.navigate('MainScreen')
+            this.inputValueUpdate(true, 'isLoading')
+            register(this.state.email, this.state.username, this.state.password).then(resp => {
+                Alert.alert(
+                    translate('Patient created', this.props.root.language),
+                    translate('You have been registered, now log in', this.props.root.language)
+                )
+                this.props.navigation.reset({
+                    index: 0,
+                    routes: [
+                        {
+                            name: 'AuthScreen',
+                        },
+                    ],
+                })
+            }).catch(error => {
+                this.handleErrors(error.response.data)
+                Alert.alert(translate('Registration data is incorrect', this.props.root.language))
+            })
         }
+    }
+
+    handleErrors(errors) {
+        var state = this.state
+        state.isLoading = false
+        if ('password' in errors) {
+            state.password_error = errors.password[0]
+        }
+        if ('username' in errors) {
+            state.username_error = errors.username[0]
+        }
+        if ('email' in errors) {
+            state.email_error = errors.email[0]
+        }
+        this.setState(state)
     }
 
     render() {
@@ -149,7 +204,16 @@ class RegistrationScreen extends Component {
                 />
                 <Button
                     type='clear'
-                    onPress={() => { this.props.navigation.navigate('AuthScreen') }}
+                    onPress={() => {
+                        this.props.navigation.reset({
+                            index: 0,
+                            routes: [
+                                {
+                                    name: 'AuthScreen',
+                                },
+                            ],
+                        })
+                    }}
                     title={translate('Already registered?', this.props.root.language)}
                 />
             </View>
@@ -160,7 +224,7 @@ class RegistrationScreen extends Component {
 const styles = StyleSheet.create({
     inputGroup: {
         flex: 1,
-        padding: 20,        
+        padding: 20,
         marginBottom: 15,
     },
     preloader: {

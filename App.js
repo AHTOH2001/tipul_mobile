@@ -29,7 +29,7 @@ if (!global.btoa) { global.btoa = encode; }
 if (!global.atob) { global.atob = decode; }
 
 const Stack = createStackNavigator();
-LogBox.ignoreAllLogs()
+// LogBox.ignoreAllLogs()
 // console.ignoredYellowBox = ['Setting a timer'];
 function MyStack(props) {
   return (
@@ -45,11 +45,6 @@ function MyStack(props) {
       }}
     >
       <Stack.Screen
-        name="MainScreen"
-        component={MainScreen}
-        options={{ title: translate('Main screen', props.props.root.language) }}
-      />
-      <Stack.Screen
         name="AuthScreen"
         component={AuthScreen}
         options={{ title: translate('Authorisation', props.props.root.language) }}
@@ -58,6 +53,11 @@ function MyStack(props) {
         name="RegistrationScreen"
         component={RegistrationScreen}
         options={{ title: translate('Registration', props.props.root.language) }}
+      />
+      <Stack.Screen
+        name="MainScreen"
+        component={MainScreen}
+        options={{ title: translate('Main screen', props.props.root.language) }}
       />
       <Stack.Screen
         name="MedicineScreen"
