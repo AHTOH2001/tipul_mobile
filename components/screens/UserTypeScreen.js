@@ -4,10 +4,10 @@ import { Input, Slider, Icon, Button, Text } from 'react-native-elements'
 import { connect } from 'react-redux';
 import { resolve_back_color, resolve_front_color } from '../../utils/settings-utils';
 import translate from '../../utils/translate';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { get_user_type } from '../../api/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-class MainScreen extends Component {
+class UserTypeScreen extends Component {
     constructor() {
         super();
         this.state = {
@@ -18,28 +18,29 @@ class MainScreen extends Component {
     componentDidMount() {
         AsyncStorage.getItem('auth_token').then(value => {
             if (value === null) {
+                console.log('No token in main screen')
                 this.props.navigation.reset({
                     index: 0,
                     routes: [
                         {
-                            name: 'RegistrationScreen',
+                            name: 'RegisterScreen',
                         },
                     ],
                 })
             } else {
                 get_user_type().then(resp => {
                     if (resp.type == 'nothing') {
-                        console.log(`User type ${resp.type} in main screen`)
+                        this.setState({ ...this.state, isLoading: false })
+                    } else {
+                        console.log(`Already ${resp.type}`)
                         this.props.navigation.reset({
                             index: 0,
                             routes: [
                                 {
-                                    name: 'UserTypeScreen',
+                                    name: 'MainScreen',
                                 },
                             ],
                         })
-                    } else {
-                        this.setState({ ...this.state, isLoading: false })
                     }
                 })
             }
@@ -60,41 +61,17 @@ class MainScreen extends Component {
                 <Button
                     buttonStyle={styles.button}
                     titleStyle={styles.button_text}
-                    title={translate('Medicines', this.props.root.language)}
-                    onPress={() => { this.props.navigation.navigate('MedicineScreen') }}
-                    icon={{ type: 'font-awesome', name: 'stethoscope', size: 40, color: 'white' }}
+                    title={translate('Patient', this.props.root.language)}
+                    onPress={() => { this.props.navigation.navigate('PatientScreen') }}
+                    icon={{ type: 'font-awesome-5', name: 'user-injured', size: 40, color: 'white' }}
                     iconContainerStyle={styles.iconContainerStyle}
                 />
                 <Button
                     buttonStyle={styles.button}
                     titleStyle={styles.button_text}
-                    title={translate('Statistic', this.props.root.language)}
-                    onPress={() => { this.props.navigation.navigate('StatisticScreen') }}
-                    icon={{ type: 'font-awesome', name: 'signal', size: 40, color: 'white' }}
-                    iconContainerStyle={styles.iconContainerStyle}
-                />
-                <Button
-                    buttonStyle={styles.button}
-                    titleStyle={styles.button_text}
-                    title={translate('Doctors', this.props.root.language)}
-                    onPress={() => { this.props.navigation.navigate('DoctorsScreen') }}
-                    icon={{ type: 'font-awesome', name: 'user-md', size: 40, color: 'white' }}
-                    iconContainerStyle={styles.iconContainerStyle}
-                />
-                <Button
-                    buttonStyle={styles.button}
-                    titleStyle={styles.button_text}
-                    title={translate('Visits', this.props.root.language)}
-                    onPress={() => { this.props.navigation.navigate('VisitsScreen') }}
-                    icon={{ type: 'font-awesome', name: 'ambulance', size: 40, color: 'white' }}
-                    iconContainerStyle={styles.iconContainerStyle}
-                />
-                <Button
-                    buttonStyle={styles.button}
-                    titleStyle={styles.button_text}
-                    title={translate('Settings', this.props.root.language)}
-                    onPress={() => { this.props.navigation.navigate('SettingsScreen') }}
-                    icon={{ type: 'font-awesome', name: 'cogs', size: 40, color: 'white' }}
+                    title={translate('Guardian', this.props.root.language)}
+                    onPress={() => { this.props.navigation.navigate('GuardianScreen') }}
+                    icon={{ type: 'font-awesome-5', name: 'user-shield', size: 40, color: 'white' }}
                     iconContainerStyle={styles.iconContainerStyle}
                 />
             </ScrollView >
@@ -137,4 +114,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(MainScreen)
+export default connect(mapStateToProps)(UserTypeScreen)

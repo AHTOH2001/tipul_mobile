@@ -14,6 +14,7 @@ import MedicineScreen from './components/screens/MedicineScreen'
 import MedicineDetail from './components/MedicineDetail'
 import DoctorsScreen from './components/screens/DoctorsScreen'
 import DoctorDetail from './components/DoctorDetail'
+import VisitsScreen from './components/screens/VisitsScreen'
 import { decode, encode } from 'base-64'
 import { ActivityIndicator, LogBox, StyleSheet, View } from 'react-native';
 import { connect, Provider } from 'react-redux'
@@ -21,6 +22,9 @@ import store from './redux/store';
 import { change_font_size, change_language, change_theme } from './redux/action/root';
 import firestore, { db } from './firebase/firebaseDb';
 import translate from './utils/translate';
+import UserTypeScreen from './components/screens/UserTypeScreen';
+import PatientScreen from './components/screens/PatientScreen';
+import GuardianScreen from './components/screens/GuardianScreen';
 global.crypto = require("@firebase/firestore");
 global.crypto.getRandomValues = byteArray => { for (let i = 0; i < byteArray.length; i++) { byteArray[i] = Math.floor(256 * Math.random()); } }
 
@@ -78,6 +82,26 @@ function MyStack(props) {
         name="DoctorDetail"
         component={DoctorDetail}
         options={{ title: translate('Doctor', props.props.root.language) }}
+      />
+      <Stack.Screen
+        name="VisitsScreen"
+        component={VisitsScreen}
+        options={{ title: translate('Visits', props.props.root.language) }}
+      />
+      <Stack.Screen
+        name="UserTypeScreen"
+        component={UserTypeScreen}
+        options={{ title: translate('User type', props.props.root.language) }}
+      />
+      <Stack.Screen
+        name="PatientScreen"
+        component={PatientScreen}
+        options={{ title: translate('Patient', props.props.root.language) }}
+      />
+      <Stack.Screen
+        name="GuardianScreen"
+        component={GuardianScreen}
+        options={{ title: translate('Guardian', props.props.root.language) }}
       />
       <Stack.Screen
         name="TrainingScreen"

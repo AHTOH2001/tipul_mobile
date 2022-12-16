@@ -31,7 +31,7 @@ class RegistrationScreen extends Component {
                     index: 0,
                     routes: [
                         {
-                            name: 'MainScreen',
+                            name: 'UserTypeScreen',
                         },
                     ],
                 })
@@ -61,13 +61,13 @@ class RegistrationScreen extends Component {
     }
 
     onSubmitEditingUsername = () => {
-        if (this.state.email !== '' || this.state.password !== '') {
+        if (this.state.email !== '' && this.state.password !== '') {
             this.onSubmitEditing()
         }
     }
 
     onSubmitEditingEmail = () => {
-        if (this.state.username !== '' || this.state.password !== '') {
+        if (this.state.username !== '' && this.state.password !== '') {
             this.onSubmitEditing()
         }
     }
@@ -117,7 +117,6 @@ class RegistrationScreen extends Component {
         }
         this.setState(new_state)
         if (!v1 && !v2 && !v3) {
-            // TODO request back end
             console.log('Register')
             console.log(this.state.email)
             console.log(this.state.username)
@@ -125,8 +124,8 @@ class RegistrationScreen extends Component {
             this.inputValueUpdate(true, 'isLoading')
             register(this.state.email, this.state.username, this.state.password).then(resp => {
                 Alert.alert(
-                    translate('Patient created', this.props.root.language),
-                    translate('You have been registered, now log in', this.props.root.language)
+                    translate('User created', this.props.root.language),
+                    translate('You have been registered, now choose your type', this.props.root.language)
                 )
                 this.props.navigation.reset({
                     index: 0,

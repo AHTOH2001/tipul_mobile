@@ -96,7 +96,14 @@ export async function delete_medicine(id) {
 }
 
 export async function doctors_list() {
-    return (await axios.get(`${back_end_domain}/managment/doctor/`)).data
+    try {
+        return (await axios.get(`${back_end_domain}/managment/doctor/`)).data
+    } catch (error) {
+        const { response } = error;
+        const { request, ...errorObject } = response; // take everything but 'request'
+        console.log(errorObject);
+        throw error
+    }
 }
 
 export async function delete_doctor(id) {
@@ -107,7 +114,6 @@ export async function create_doctor(doctor) {
     return (await axios.post(`${back_end_domain}/managment/doctor/`, doctor)).data
 }
 
-
 export async function doctor_detail(id) {
     return (await axios.get(`${back_end_domain}/managment/doctor/${id}/`)).data
 }
@@ -115,4 +121,26 @@ export async function doctor_detail(id) {
 export async function update_doctor(doctor) {
     console.log(doctor)
     return (await axios.put(`${back_end_domain}/managment/doctor/${doctor.id}/`, doctor)).data
+}
+
+export async function get_user_type() {
+    console.log('Get user type')
+    await sleep(200)
+    return {
+        'type': 'nothing'
+    }
+}
+
+export async function create_patient(first_name, last_name, age, phone) {
+    await sleep(200)
+    return {
+
+    }
+}
+
+export async function create_guardian(first_name, last_name, relationship, phone) {
+    await sleep(200)
+    return {
+        
+    }
 }

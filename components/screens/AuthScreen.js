@@ -72,7 +72,7 @@ class AuthScreen extends Component {
                         index: 0,
                         routes: [
                             {
-                                name: 'MainScreen',
+                                name: 'UserTypeScreen',
                             },
                         ],
                     })
@@ -101,7 +101,7 @@ class AuthScreen extends Component {
                     index: 0,
                     routes: [
                         {
-                            name: 'MainScreen',
+                            name: 'UserTypeScreen',
                         },
                     ],
                 })
