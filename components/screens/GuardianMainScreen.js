@@ -4,10 +4,10 @@ import { Input, Slider, Icon, Button, Text } from 'react-native-elements'
 import { connect } from 'react-redux';
 import { resolve_back_color, resolve_front_color } from '../../utils/settings-utils';
 import translate from '../../utils/translate';
-import { get_user_type } from '../../api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { get_user_type } from '../../api/api';
 
-class UserTypeScreen extends Component {
+class GuardianMainScreen extends Component {
     constructor() {
         super();
         this.state = {
@@ -18,44 +18,28 @@ class UserTypeScreen extends Component {
     componentDidMount() {
         AsyncStorage.getItem('auth_token').then(value => {
             if (value === null) {
-                console.log('No token in main screen')
                 this.props.navigation.reset({
                     index: 0,
                     routes: [
                         {
-                            name: 'RegisterScreen',
+                            name: 'RegistrationScreen',
                         },
                     ],
                 })
             } else {
                 get_user_type().then(resp => {
-                    if (resp.type == 'nothing') {
-                        this.setState({ ...this.state, isLoading: false })
+                    if (resp.type != 'patient') {
+                        console.log(`User type ${resp.type} in main screen`)
+                        this.props.navigation.reset({
+                            index: 0,
+                            routes: [
+                                {
+                                    name: 'UserTypeScreen',
+                                },
+                            ],
+                        })
                     } else {
-                        console.log(`Already ${resp.type}`)
-                        if (resp.type == 'patient') {
-                            this.props.navigation.reset({
-                                index: 0,
-                                routes: [
-                                    {
-                                        name: 'MainScreen',
-                                    },
-                                ],
-                            })
-                        } else {
-                            if (resp.type == 'guardian') {
-                                this.props.navigation.reset({
-                                    index: 0,
-                                    routes: [
-                                        {
-                                            name: 'GuardianMainScreen',
-                                        },
-                                    ],
-                                })
-                            } else {
-                                console.warn('Unknown type')
-                            }
-                        }
+                        this.setState({ ...this.state, isLoading: false })
                     }
                 })
             }
@@ -76,17 +60,9 @@ class UserTypeScreen extends Component {
                 <Button
                     buttonStyle={styles.button}
                     titleStyle={styles.button_text}
-                    title={translate('Patient', this.props.root.language)}
-                    onPress={() => { this.props.navigation.navigate('PatientScreen') }}
-                    icon={{ type: 'font-awesome-5', name: 'user-injured', size: 40, color: 'white' }}
-                    iconContainerStyle={styles.iconContainerStyle}
-                />
-                <Button
-                    buttonStyle={styles.button}
-                    titleStyle={styles.button_text}
-                    title={translate('Guardian', this.props.root.language)}
-                    onPress={() => { this.props.navigation.navigate('GuardianScreen') }}
-                    icon={{ type: 'font-awesome-5', name: 'user-shield', size: 40, color: 'white' }}
+                    title={translate('Reports', this.props.root.language)}
+                    onPress={() => { this.props.navigation.navigate('ReportsScreen') }}
+                    icon={{ type: 'font-awesome', name: 'signal', size: 40, color: 'white' }}
                     iconContainerStyle={styles.iconContainerStyle}
                 />
             </ScrollView >
@@ -129,4 +105,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(UserTypeScreen)
+export default connect(mapStateToProps)(GuardianMainScreen)

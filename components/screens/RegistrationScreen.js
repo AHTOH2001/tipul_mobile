@@ -125,7 +125,7 @@ class RegistrationScreen extends Component {
             register(this.state.email, this.state.username, this.state.password).then(resp => {
                 Alert.alert(
                     translate('User created', this.props.root.language),
-                    translate('You have been registered, now choose your type', this.props.root.language)
+                    translate('You have been registered, now log in', this.props.root.language)
                 )
                 this.props.navigation.reset({
                     index: 0,

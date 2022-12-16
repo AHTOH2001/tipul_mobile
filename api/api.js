@@ -1,4 +1,5 @@
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const back_end_domain = 'https://anton123lll.pythonanywhere.com'
 
@@ -124,23 +125,38 @@ export async function update_doctor(doctor) {
 }
 
 export async function get_user_type() {
-    console.log('Get user type')
-    await sleep(200)
-    return {
-        'type': 'nothing'
-    }
+    var token = await AsyncStorage.getItem('auth_token')
+    return (await axios.get(`${back_end_domain}/managment/whoiam/`, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })).data
 }
 
 export async function create_patient(first_name, last_name, age, phone) {
-    await sleep(200)
-    return {
-
-    }
+    var token = await AsyncStorage.getItem('auth_token')
+    return (await axios.post(`${back_end_domain}/managment/patients/`, {
+        "first_name": first_name,
+        "last_name": last_name,
+        "age": age,
+        "phone": phone,
+    }, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })).data
 }
 
 export async function create_guardian(first_name, last_name, relationship, phone) {
-    await sleep(200)
-    return {
-        
-    }
+    var token = await AsyncStorage.getItem('auth_token')
+    return (await axios.post(`${back_end_domain}/managment/guardians/`, {
+        "relationship": relationship,
+        "first_name": first_name,
+        "last_name": last_name,
+        "phone": phone
+    }, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })).data
 }

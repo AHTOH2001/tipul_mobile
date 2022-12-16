@@ -42,8 +42,8 @@ russian_dictionary = {
     'Last name': 'Фамилия',
     'Specialty': 'Специальность',
     'Log out': 'Выйти',
-    'Patient created': 'Пациент создан',
-    'You have been registered, now choose your type': 'Вы зарегистрировались, теперь выберите ваш тип',
+    'User created': 'Пользователь создан',
+    'You have been registered, now log in': 'Вы зарегистрировались, теперь авторизуйтесь',
     'Username or Password is not correct': 'Неверное имя пользователя или пароль',
     'Visits': 'Визиты',
     'User type': 'Тип пользователя',
@@ -62,6 +62,7 @@ russian_dictionary = {
     'Relationship': 'Взаимоотношение',
     'Please, fill in your relationship': 'Пожалуйста, введите кем вы приходитесь пациенту',
     'Guardian created': 'Опекун создан',
+    'Reports': 'Отчёты',
 }
 
 export default translate = (text, language) => {

@@ -172,6 +172,8 @@ class PatientScreen extends Component {
                     ],
                 })
             }).catch(error => {
+                console.log(error)
+                console.log(error.response)
                 this.handleErrors(error.response.data)
                 Alert.alert(translate('Registration data is incorrect', this.props.root.language))
             })
