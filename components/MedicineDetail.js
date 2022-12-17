@@ -25,7 +25,7 @@ class MedicineDetail extends Component {
     }
 
     componentDidMount() {
-        var medicine_title = this.props.route.params.medicine.cure.title
+        var medicine_title = this.props.route.params.medicine.title
         this.props.navigation.setOptions({
             headerRight: () => (
                 <Button
@@ -38,7 +38,7 @@ class MedicineDetail extends Component {
             title: medicine_title
         })
         medicine_detail(this.props.route.params.medicine.id).then(resp => {
-            this.setState({ ...this.state, isLoading: false, medicine: resp, initialDoseType: resp.cure.dose_type, initialCureType: resp.cure.type })
+            this.setState({ ...this.state, isLoading: false, medicine: resp, initialDoseType: resp.dose_type, initialCureType: resp.type })
         })
     }
 
@@ -69,7 +69,7 @@ class MedicineDetail extends Component {
 
     deleteTimeRow = (time_index) => {
         var state = this.state
-        state.medicine.time.splice(time_index, 1)
+        state.medicine.schedule.timesheet.splice(time_index, 1)
         this.setState(state)
     }
 
@@ -80,7 +80,7 @@ class MedicineDetail extends Component {
     timePickerOnPress = (time_index, res) => {
         var state = this.state
         if (res.type == 'set') {
-            state.medicine.time[time_index].time = res['nativeEvent'].timestamp.toISOString().slice(11, 16)
+            state.medicine.schedule.timesheet[time_index].time = res['nativeEvent'].timestamp.toISOString().slice(11, 16)
         }
         state[`showTimePicker${time_index.toString()}`] = false
         this.setState(state)
@@ -89,7 +89,7 @@ class MedicineDetail extends Component {
     timePickerAddOnPress = (time_index, res) => {
         var state = this.state
         if (res.type == 'set') {
-            state.medicine.time.push({ 'time': res['nativeEvent'].timestamp.toISOString().slice(11, 16) })
+            state.medicine.schedule.timesheet.push({ 'time': res['nativeEvent'].timestamp.toISOString().slice(11, 16) })
 
         }
         state[`showTimePicker${time_index.toString()}`] = false
@@ -109,8 +109,8 @@ class MedicineDetail extends Component {
         return (
             <ScrollView style={styles.inputGroup}>
                 <Input
-                    value={this.state.medicine.cure.title}
-                    onChangeText={(val) => this.inputValueUpdate(val, 'medicine.cure.title')}
+                    value={this.state.medicine.title}
+                    onChangeText={(val) => this.inputValueUpdate(val, 'medicine.title')}
                     leftIcon={{ type: 'font-awesome-5', name: 'file-signature' }}
                     label={translate('Title', this.props.root.language)}
                     errorMessage={this.state.title_error}
@@ -120,13 +120,13 @@ class MedicineDetail extends Component {
                     <ModalSelector
                         data={type_dropdown_data}
                         initValue={this.state.initialCureType}
-                        onChange={({ label, key }) => this.inputValueUpdate(label, 'medicine.cure.type')}
+                        onChange={({ label, key }) => this.inputValueUpdate(label, 'medicine.type')}
                         style={{ flex: 1, padding: 20, minWidth: '60%' }} />
                 </View>
                 <View style={styles.row}>
                     <Input
-                        value={this.state.medicine.cure.dose.toString()}
-                        onChangeText={(val) => this.inputValueUpdate(val, 'medicine.cure.dose')}
+                        value={this.state.medicine.dose.toString()}
+                        onChangeText={(val) => this.inputValueUpdate(val, 'medicine.dose')}
                         // leftIcon={{ type: 'font-awesome-5', name: 'file-signature' }}
                         label={translate('Dose', this.props.root.language)}
                         errorMessage={this.state.dose_error}
@@ -135,7 +135,7 @@ class MedicineDetail extends Component {
                     <ModalSelector
                         data={dose_dropdown_data}
                         initValue={this.state.initialDoseType}
-                        onChange={({ label, key }) => this.inputValueUpdate(label, 'medicine.cure.dose_type')}
+                        onChange={({ label, key }) => this.inputValueUpdate(label, 'medicine.dose_type')}
                         style={{ flex: 1, paddingTop: 10 }} />
                 </View>
                 <Text style={{ flex: 1, textAlign: 'center' }} h3>{translate('Reception frequency', this.props.root.language)}</Text>
@@ -180,7 +180,7 @@ class MedicineDetail extends Component {
                     )}
                 </View>
                 {
-                    this.state.medicine.time.map(({ time }) => {
+                    this.state.medicine.schedule.timesheet.map(({ time }) => {
                         time_index++
                         return (
                             <View key={time_index} style={styles.row}>

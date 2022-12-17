@@ -20,13 +20,13 @@ class MedicineScreen extends Component {
 
     componentDidMount() {
         medicine_list().then(resp => {
-            this.setState({ ...this.state, medicines: resp.data, isLoading: false })
+            this.setState({ ...this.state, medicines: resp, isLoading: false })
         })
     }
 
     onLongPress(medicine) {
         console.log(medicine.id)
-        Alert.alert(translate('Medicine', this.props.root.language) + ' ' + medicine.cure.title, null,
+        Alert.alert(translate('Medicine', this.props.root.language) + ' ' + medicine.title, null,
             [
                 {
                     text: 'delete',
@@ -62,8 +62,8 @@ class MedicineScreen extends Component {
                 }
             ],
             "schedule": {
-                "cycle_start": new Date().toISOString(),
-                "cycle_end": new Date().toISOString(),
+                "cycle_start": new Date().toISOString().slice(0, 10),
+                "cycle_end": new Date().toISOString().slice(0, 10),
                 "frequency": 0,
             }
         }).then(medicine => this.setState({ ...this.state, medicines: [...this.state.medicines, medicine] }))
@@ -91,8 +91,8 @@ class MedicineScreen extends Component {
                                 key={medicine.id}
                             >
                                 <ListItem.Content style={styles.row}>
-                                    <Icon name={type_to_icon[medicine.cure.type]} type='font-awesome-5' size={40} color='white' />
-                                    <ListItem.Title style={styles.button_text}>{medicine.cure.title}</ListItem.Title>
+                                    <Icon name={type_to_icon[medicine.type]} type='font-awesome-5' size={40} color='white' />
+                                    <ListItem.Title style={styles.button_text}>{medicine.title}</ListItem.Title>
                                 </ListItem.Content>
                                 <ListItem.Chevron />
                             </ListItem>

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const back_end_domain = 'https://anton123lll.pythonanywhere.com'
+// const back_end_domain = 'https://anton123lll.pythonanywhere.com'
+const back_end_domain = 'https://61f2-37-214-82-117.eu.ngrok.io'
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -23,99 +24,203 @@ export async function register(email, username, password) {
 }
 
 export async function medicine_list() {
-    await sleep(200)
-    return {
-        "data": [
-            {
-                "id": 1,
-                "cure": {
-                    "title": "джес",
-                    "dose": 1.0,
-                    "dose_type": "PCS",
-                    "type": "pill"
-                },
-                "time": [
-                    {
-                        "time": "06:00:00"
-                    },
-                    {
-                        "time": "08:00:00"
-                    }
-                ],
-                "schedule": {
-                    "cycle_start": "2022-12-10",
-                    "cycle_end": "2022-12-24",
-                    "frequency": 2,
-                    "strict_status": true
-                }
+    var token = await AsyncStorage.getItem('auth_token')
+    // return {
+    //     "data": [
+    //         {
+    //             "id": 1,
+    //             "cure": {
+    //                 "title": "джес",
+    //                 "dose": 1.0,
+    //                 "dose_type": "PCS",
+    //                 "type": "pill"
+    //             },
+    //             "time": [
+    //                 {
+    //                     "time": "06:00:00"
+    //                 },
+    //                 {
+    //                     "time": "08:00:00"
+    //                 }
+    //             ],
+    //             "schedule": {
+    //                 "cycle_start": "2022-12-10",
+    //                 "cycle_end": "2022-12-24",
+    //                 "frequency": 2,
+    //                 "strict_status": true
+    //             }
+    //         }
+    //     ]
+    // }
+    try {
+        return (await axios.get(`${back_end_domain}/main/cure/`, {
+            headers: {
+                'Authorization': `Token ${token}`
             }
-        ]
+        })).data
+    } catch (error) {
+        const { response } = error;
+        const { request, ...errorObject } = response; // take everything but 'request'
+        console.log(errorObject);
+        throw error
     }
 }
 
 export async function medicine_detail(medicine_id) {
-    await sleep(200)
-    return {
-        "id": 1,
-        "cure": {
-            "title": "джес детальный",
-            "dose": 1.0,
-            "dose_type": "PCS",
-            "type": "pill"
-        },
-        "time": [
-            {
-                "time": "06:00:00"
-            },
-            {
-                "time": "08:00:00"
+    var token = await AsyncStorage.getItem('auth_token')
+    // return {
+    //     "id": 1,
+    //     "cure": {
+    //         "title": "джес детальный",
+    //         "dose": 1.0,
+    //         "dose_type": "PCS",
+    //         "type": "pill"
+    //     },
+    //     "time": [
+    //         {
+    //             "time": "06:00:00"
+    //         },
+    //         {
+    //             "time": "08:00:00"
+    //         }
+    //     ],
+    //     "schedule": {
+    //         "cycle_start": "2022-12-10",
+    //         "cycle_end": "2022-12-24",
+    //         "frequency": 2,
+    //         "strict_status": true
+    //     },
+    // }
+    try {
+        return (await axios.get(`${back_end_domain}/main/cure/${medicine_id}/`, {
+            headers: {
+                'Authorization': `Token ${token}`
             }
-        ],
-        "schedule": {
-            "cycle_start": "2022-12-10",
-            "cycle_end": "2022-12-24",
-            "frequency": 2,
-            "strict_status": true
-        },
+        })).data
+    } catch (error) {
+        const { response } = error;
+        const { request, ...errorObject } = response; // take everything but 'request'
+        console.log(errorObject);
+        throw error
     }
 }
 
-export async function update_medicine({ cure, schedule, time }) {
-    await sleep(500)
-    console.log('Update medicine')
+export async function update_medicine(medicine) {
+    var token = await AsyncStorage.getItem('auth_token')
+
+    var cure = medicine
+    var schedule = medicine.schedule
+    var time = medicine.schedule.timesheet
+
+    delete cure.schedule
+    delete cure.patient
+    delete schedule.timesheet
+
+    var time_ids = []
+    for (let i = 0; i < time.length; i++) {
+        try {
+            var res = (await axios.put(`${back_end_domain}/main/time/${time[i].id}/`, time[i], {
+                headers: {
+                    'Authorization': `Token ${token}`
+                }
+            })).data
+        } catch (error) {
+            if (error.response.status == 404) {
+                try {
+                    var res = (await axios.post(`${back_end_domain}/main/time/`, time[i], {
+                        headers: {
+                            'Authorization': `Token ${token}`
+                        }
+                    })).data
+                } catch (error) {
+                    console.log(error.response)
+                    throw error
+                }
+            } else {
+                console.log(error.response)
+                throw error
+            }
+        }
+        time_ids.push(res.id)
+    }
+
+    schedule['timesheet'] = time_ids
+    try {
+        var res = (await axios.put(`${back_end_domain}/main/schedule/${schedule.id}/`, schedule, {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        })).data
+    } catch (error) {
+        console.log(error.response)
+        throw error
+    }
+
+
+    cure['schedule'] = res.id
+    try {
+        var res = (await axios.put(`${back_end_domain}/main/cure/${cure.id}/`, cure, {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        })).data
+    } catch (error) {
+        console.log(error.response)
+        throw error
+    }
+
 }
 
 export async function create_medicine({ cure, schedule, time }) {
     var token = await AsyncStorage.getItem('auth_token')
     var time_ids = []
     for (let i = 0; i < time.length; i++) {
-        res = await axios.post(`${back_end_domain}/main/time/`, time[i], {
-            headers: {
-                'Authorization': `Token ${token}`
-            }
-        })
+        try {
+            var res = (await axios.post(`${back_end_domain}/main/time/`, time[i], {
+                headers: {
+                    'Authorization': `Token ${token}`
+                }
+            })).data
+        } catch (error) {
+            console.log(error.response)
+            throw error
+        }
         time_ids.push(res.id)
     }
 
+    schedule['timesheet'] = time_ids
+    try {
+        var schedule_res = (await axios.post(`${back_end_domain}/main/schedule/`, schedule, {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        })).data
+    } catch (error) {
+        console.log(error.response)
+        throw error
+    }
 
-    var schedule_res = await axios.post(`${back_end_domain}/main/schedule/`, schedule, {
+    cure['schedule'] = schedule_res.id
+
+    try {
+        return (await axios.post(`${back_end_domain}/main/cure/`, cure, {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        })).data
+    } catch (error) {
+        console.log(error.response)
+        throw error
+    }
+}
+
+export async function delete_medicine(id) {
+    var token = await AsyncStorage.getItem('auth_token')
+    await axios.delete(`${back_end_domain}/main/cure/${id}/`, {
         headers: {
             'Authorization': `Token ${token}`
         }
     })
-
-    cure['id'] = schedule_res.id
-
-    return (await axios.post(`${back_end_domain}/main/cure/`, cure, {
-        headers: {
-            'Authorization': `Token ${token}`
-        }
-    })).data
-}
-
-export async function delete_medicine(id) {
-    await sleep(500)
-    console.log('Delete medicine ' + id.toString())
 }
 
 export async function doctors_list() {

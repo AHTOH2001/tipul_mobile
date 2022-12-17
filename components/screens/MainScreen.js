@@ -23,6 +23,7 @@ class MainScreen extends Component {
                     routes: [
                         {
                             name: 'RegistrationScreen',
+                            first_name: '',
                         },
                     ],
                 })
@@ -39,7 +40,12 @@ class MainScreen extends Component {
                             ],
                         })
                     } else {
-                        this.setState({ ...this.state, isLoading: false })
+                        this.setState({ ...this.state, isLoading: false, first_name: resp.user.first_name })
+                        this.props.navigation.setOptions({
+                            headerRight: () => (
+                                <Text style={{...styles.button_text, color: 'white', paddingRight: 10, fontSize: 20}}>{this.state.first_name}</Text>
+                            ),
+                        })
                     }
                 })
             }

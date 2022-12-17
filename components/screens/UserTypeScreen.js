@@ -39,6 +39,7 @@ class UserTypeScreen extends Component {
                                 routes: [
                                     {
                                         name: 'MainScreen',
+                                        params: { patient: resp.user },
                                     },
                                 ],
                             })
@@ -57,6 +58,23 @@ class UserTypeScreen extends Component {
                             }
                         }
                     }
+                }).catch(error => {
+                    if (error.response.status == 401) {
+                        console.log('Token invalid, so back to auth')
+                        AsyncStorage.removeItem('auth_token').then(() => {
+                            this.props.navigation.reset({
+                                index: 0,
+                                routes: [
+                                    {
+                                        name: 'AuthScreen',
+                                    },
+                                ],
+                            })
+                        })
+                    } else {
+                        console.log(error.response)
+                    }
+
                 })
             }
         })
