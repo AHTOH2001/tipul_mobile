@@ -64,6 +64,13 @@ russian_dictionary = {
     'Please, fill in your relationship': 'Пожалуйста, введите кем вы приходитесь пациенту',
     'Guardian created': 'Опекун создан',
     'Reports': 'Отчёты',
+    'Doctor visit': 'Визит к врачу',
+    'at': 'в',
+    'Create visit': 'Создать визит',
+    'Visit date': 'Дата визита',
+    'Visit time': 'Время визита',
+    'Error': 'Ошибка',
+    'You should choose a doctor': 'Вам следует выбрать доктора',
 }
 
 export default translate = (text, language) => {

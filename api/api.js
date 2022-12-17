@@ -311,3 +311,59 @@ export async function create_guardian(first_name, last_name, relationship, phone
         }
     })).data
 }
+
+
+export async function doctorvisits_list() {
+    var token = await AsyncStorage.getItem('auth_token')
+    try {
+        return (await axios.get(`${back_end_domain}/managment/doctorvisit/`, {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        })).data
+    } catch (error) {
+        const { response } = error;
+        const { request, ...errorObject } = response; // take everything but 'request'
+        console.log(errorObject);
+        throw error
+    }
+}
+
+export async function delete_doctorvisit(id) {
+    var token = await AsyncStorage.getItem('auth_token')
+    await axios.delete(`${back_end_domain}/managment/doctorvisit/${id}/`, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })
+}
+
+export async function create_doctorvisit(doctor_id, date) {
+    var token = await AsyncStorage.getItem('auth_token')
+    return (await axios.post(`${back_end_domain}/managment/doctorvisit/`, {
+        doctor: doctor_id,
+        date: date
+    }, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })).data
+}
+
+export async function doctorvisit_detail(id) {
+    var token = await AsyncStorage.getItem('auth_token')
+    return (await axios.get(`${back_end_domain}/managment/doctorvisit/${id}/`, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })).data
+}
+
+export async function update_doctorvisit(doctorvisit) {
+    var token = await AsyncStorage.getItem('auth_token')
+    return (await axios.put(`${back_end_domain}/managment/doctorvisit/${doctorvisit.id}/`, doctorvisit, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })).data
+}

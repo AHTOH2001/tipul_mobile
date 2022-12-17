@@ -4,7 +4,8 @@ import { Input, Slider, Icon, Button, Text, SpeedDial, ListItem } from 'react-na
 import { connect } from 'react-redux';
 import translate from '../../utils/translate';
 import { specialty_to_icon, specialty_choices } from '../../utils/doctor';
-import { doctors_list, delete_doctor, create_doctor } from '../../api/api';
+import { doctorvisits_list, delete_doctorvisit, create_doctorvisit } from '../../api/api';
+import moment from 'moment';
 
 class VisitsScreen extends Component {
     constructor() {
@@ -12,29 +13,37 @@ class VisitsScreen extends Component {
         this.myRef = React.createRef();
         this.state = {
             isLoading: true,
-            doctors: [],
-            open: false
+            doctorvisits: [],
         };
     }
 
     componentDidMount() {
-        doctors_list().then(resp => {
-            this.setState({ ...this.state, doctors: resp, isLoading: false })
-        })
+        this.focusSubscription = this.props.navigation.addListener(
+            'focus',
+            () => {
+                doctorvisits_list().then(resp => {
+                    this.setState({ ...this.state, doctorvisits: resp, isLoading: false })
+                })
+            }
+        );
     }
 
-    onLongPress(doctor) {
-        console.log(doctor.id)
-        Alert.alert(translate('Doctor', this.props.root.language) + ' ' + doctor.first_name + ' ' + doctor.last_name[0] + '.', null,
+    componentWillUnmount() {
+        this.focusSubscription();
+    }
+
+    onLongPress(doctorvisit) {
+        console.log(doctorvisit.id)
+        Alert.alert(translate('Doctor visit', this.props.root.language) + ' ' + doctorvisit.doctor.first_name + ' ' + doctorvisit.doctor.last_name[0] + '.', null,
             [
                 {
                     text: 'delete',
                     onPress: () => {
                         var state = this.state
-                        var doc_pos = state.doctors.findIndex(doc => doc.id == doctor.id)
-                        state.doctors.splice(doc_pos, 1)
+                        var doc_pos = state.doctorvisits.findIndex(doc => doc.id == doctorvisit.id)
+                        state.doctorvisits.splice(doc_pos, 1)
                         this.setState(state)
-                        delete_doctor(doctor.id)
+                        delete_doctorvisit(doctorvisit.id)
                     },
                     style: 'destructive'
                 },
@@ -45,12 +54,11 @@ class VisitsScreen extends Component {
             ])
     }
 
-    create_empty_doctor(specialty) {
-        create_doctor({
-            "first_name": translate('New', this.props.root.language),
-            "last_name": translate('Doctor', this.props.root.language),
-            "specialty": specialty
-        }).then(doctor => this.setState({ ...this.state, doctors: [...this.state.doctors, doctor] }))
+    create_empty_doctorvisit(specialty) {
+        return {
+            "doctor": null,
+            "date": new Date()
+        }
     }
 
 
@@ -66,52 +74,34 @@ class VisitsScreen extends Component {
             <View style={styles.container}>
                 <ScrollView style={styles.mainGroup} ref={this.myRef}>
                     {
-                        this.state.doctors.map(doctor => (
+                        this.state.doctorvisits.map(doctorvisit => (
                             <ListItem
                                 style={{ borderRadius: 10, margin: 10 }}
                                 containerStyle={styles.button}
-                                onPress={() => { this.props.navigation.navigate('DoctorDetail', { doctor: doctor }) }}
-                                onLongPress={() => this.onLongPress(doctor)}
-                                key={doctor.id}
+                                onPress={() => { this.props.navigation.navigate('DoctorvisitDetail', { doctorvisit: doctorvisit }) }}
+                                onLongPress={() => this.onLongPress(doctorvisit)}
+                                key={doctorvisit.id}
                             >
                                 <ListItem.Content style={styles.row}>
-                                    <Icon style={{ paddingTop: 20 }} name={specialty_to_icon[doctor.specialty]} type='font-awesome-5' size={40} color='white' />
+                                    <Icon name={specialty_to_icon[doctorvisit.doctor.specialty]} type='font-awesome-5' size={40} color='white' />
                                     <View>
-                                        <ListItem.Title style={styles.button_text}>{doctor.first_name}</ListItem.Title>
-                                        <ListItem.Title style={styles.button_text}>{doctor.last_name}</ListItem.Title>
+                                        <ListItem.Title style={styles.button_text}>{doctorvisit.doctor.first_name} {doctorvisit.doctor.last_name}</ListItem.Title>
+                                        <ListItem.Title style={{ color: 'white', paddingLeft: 60 }}>{moment(doctorvisit.date).format('DD-MM-YYYY')} {translate('at', this.props.root.language)} {moment(doctorvisit.date).format('h:mm')}</ListItem.Title>
                                     </View>
                                 </ListItem.Content>
-                                <ListItem.Chevron />
                             </ListItem>
                         ))
                     }
                 </ScrollView >
-                <SpeedDial
-                    isOpen={this.state.open}
-                    icon={{ name: 'plus', type: 'antdesign', color: 'white' }}
-                    openIcon={{ name: 'close', color: '#fff' }}
-                    onOpen={() => this.setState({ open: !this.state.open })}
-                    onClose={() => this.setState({ open: !this.state.open })}
-                    color='#0d98ba'
-                    buttonStyle={{ width: 70, height: 70, borderRadius: 120 }}
-                    background={TouchableNativeFeedback.Ripple('white', true, 150)}
-                >
-                    {
-                        specialty_choices.map(specialty => (
-                            <SpeedDial.Action
-                                icon={{ name: specialty_to_icon[specialty], type: 'font-awesome-5', color: 'white', size: 19 }}
-                                color='#0d98ba'
-                                title={translate(specialty, this.props.root.language)}
-                                key={specialty}
-                                onPress={() => {
-                                    this.create_empty_doctor(specialty)
-                                    setTimeout(() => this.myRef.current.scrollToEnd({ animated: true }), 200)
-
-                                }}
-                            />
-                        ))
-                    }
-                </SpeedDial>
+                <View style={{ alignItems: 'flex-end' }}>
+                    <Button
+                        icon={{ name: 'plus', type: 'antdesign', color: 'white' }}
+                        color='#0d98ba'
+                        buttonStyle={{ width: 70, height: 70, borderRadius: 120 }}
+                        onPress={() => { this.props.navigation.navigate('CreateVisit') }}
+                        background={TouchableNativeFeedback.Ripple('white', true, 150)}
+                    />
+                </View>
             </View>
         )
     }
@@ -124,6 +114,7 @@ const styles = StyleSheet.create({
     },
     mainGroup: {
         padding: 10,
+        flex: 1
     },
     button: {
         borderRadius: 10,
@@ -134,7 +125,7 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         fontSize: 30,
         color: 'white',
-        paddingLeft: 30,
+        paddingLeft: 10,
     },
     preloader: {
         left: 0,

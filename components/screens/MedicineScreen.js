@@ -19,9 +19,18 @@ class MedicineScreen extends Component {
     }
 
     componentDidMount() {
-        medicine_list().then(resp => {
-            this.setState({ ...this.state, medicines: resp, isLoading: false })
-        })
+        this.focusSubscription = this.props.navigation.addListener(
+            'focus',
+            () => {
+                medicine_list().then(resp => {
+                    this.setState({ ...this.state, medicines: resp, isLoading: false })
+                })
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.focusSubscription();
     }
 
     onLongPress(medicine) {
@@ -148,6 +157,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         color: 'white',
         paddingLeft: 30,
+        marginRight: 20,
     },
     preloader: {
         left: 0,

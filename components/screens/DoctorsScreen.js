@@ -18,10 +18,20 @@ class DosctorsScreen extends Component {
     }
 
     componentDidMount() {
-        doctors_list().then(resp => {
-            this.setState({ ...this.state, doctors: resp, isLoading: false })
-        })
+        this.focusSubscription = this.props.navigation.addListener(
+            'focus',
+            () => {
+                doctors_list().then(resp => {
+                    this.setState({ ...this.state, doctors: resp, isLoading: false })
+                })
+            }
+        );
     }
+
+    componentWillUnmount() {
+        this.focusSubscription();
+    }
+
 
     onLongPress(doctor) {
         console.log(doctor.id)
@@ -135,6 +145,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         color: 'white',
         paddingLeft: 30,
+        marginRight: 20
     },
     preloader: {
         left: 0,
