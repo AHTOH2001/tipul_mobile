@@ -37,7 +37,7 @@ class MedicineDetail extends Component {
             ),
             title: medicine_title
         })
-        medicine_detail(medicine_title).then(resp => {
+        medicine_detail(this.props.route.params.medicine.id).then(resp => {
             this.setState({ ...this.state, isLoading: false, medicine: resp, initialDoseType: resp.cure.dose_type, initialCureType: resp.cure.type })
         })
     }

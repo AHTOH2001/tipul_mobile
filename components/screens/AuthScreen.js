@@ -78,6 +78,7 @@ class AuthScreen extends Component {
                     })
                 })
             }).catch(error => {
+                console.log(error)
                 this.handleErrors(error.response.data)
                 Alert.alert(translate('Username or Password is not correct', this.props.root.language))
             })

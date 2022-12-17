@@ -53,7 +53,7 @@ export async function medicine_list() {
     }
 }
 
-export async function medicine_detail(medicine_title) {
+export async function medicine_detail(medicine_id) {
     await sleep(200)
     return {
         "id": 1,
@@ -80,15 +80,37 @@ export async function medicine_detail(medicine_title) {
     }
 }
 
-export async function update_medicine(medicine) {
+export async function update_medicine({ cure, schedule, time }) {
     await sleep(500)
     console.log('Update medicine')
 }
 
-export async function create_medicine(medicine) {
-    await sleep(500)
-    console.log('Create medicine')
-    return medicine
+export async function create_medicine({ cure, schedule, time }) {
+    var token = await AsyncStorage.getItem('auth_token')
+    var time_ids = []
+    for (let i = 0; i < time.length; i++) {
+        res = await axios.post(`${back_end_domain}/main/time/`, time[i], {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        })
+        time_ids.push(res.id)
+    }
+
+
+    var schedule_res = await axios.post(`${back_end_domain}/main/schedule/`, schedule, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })
+
+    cure['id'] = schedule_res.id
+
+    return (await axios.post(`${back_end_domain}/main/cure/`, cure, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })).data
 }
 
 export async function delete_medicine(id) {

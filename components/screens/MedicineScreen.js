@@ -48,18 +48,24 @@ class MedicineScreen extends Component {
 
     create_empty_medicine(type) {
         create_medicine({
-            "id": this.state.medicines.length + Math.floor(Math.random() * 9999),
             "cure": {
                 "title": `New medicine ${this.state.medicines.length + 1}`,
                 "dose": 1.0,
                 "dose_type": "PCS",
-                "type": type
+                "type": type,
+                "food": 'Before meals',
+                'strict_status': true,
             },
             "time": [
                 {
                     "time": `${new Date().getHours()}:${new Date().getMinutes()}:00`
                 }
-            ]
+            ],
+            "schedule": {
+                "cycle_start": new Date().toISOString(),
+                "cycle_end": new Date().toISOString(),
+                "frequency": 0,
+            }
         }).then(medicine => this.setState({ ...this.state, medicines: [...this.state.medicines, medicine] }))
     }
 
