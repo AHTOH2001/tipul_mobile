@@ -224,8 +224,13 @@ export async function delete_medicine(id) {
 }
 
 export async function doctors_list() {
+    var token = await AsyncStorage.getItem('auth_token')
     try {
-        return (await axios.get(`${back_end_domain}/managment/doctor/`)).data
+        return (await axios.get(`${back_end_domain}/managment/doctor/`, {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        })).data
     } catch (error) {
         const { response } = error;
         const { request, ...errorObject } = response; // take everything but 'request'
@@ -235,20 +240,39 @@ export async function doctors_list() {
 }
 
 export async function delete_doctor(id) {
-    await axios.delete(`${back_end_domain}/managment/doctor/${id}/`)
+    var token = await AsyncStorage.getItem('auth_token')
+    await axios.delete(`${back_end_domain}/managment/doctor/${id}/`, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })
 }
 
 export async function create_doctor(doctor) {
-    return (await axios.post(`${back_end_domain}/managment/doctor/`, doctor)).data
+    var token = await AsyncStorage.getItem('auth_token')
+    return (await axios.post(`${back_end_domain}/managment/doctor/`, doctor, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })).data
 }
 
 export async function doctor_detail(id) {
-    return (await axios.get(`${back_end_domain}/managment/doctor/${id}/`)).data
+    var token = await AsyncStorage.getItem('auth_token')
+    return (await axios.get(`${back_end_domain}/managment/doctor/${id}/`, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })).data
 }
 
 export async function update_doctor(doctor) {
-    console.log(doctor)
-    return (await axios.put(`${back_end_domain}/managment/doctor/${doctor.id}/`, doctor)).data
+    var token = await AsyncStorage.getItem('auth_token')
+    return (await axios.put(`${back_end_domain}/managment/doctor/${doctor.id}/`, doctor, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })).data
 }
 
 export async function get_user_type() {
