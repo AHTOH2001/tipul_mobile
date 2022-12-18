@@ -71,6 +71,7 @@ russian_dictionary = {
     'Visit time': 'Время визита',
     'Error': 'Ошибка',
     'You should choose a doctor': 'Вам следует выбрать доктора',
+    'Save': 'Сохранить',
 }
 
 export default translate = (text, language) => {

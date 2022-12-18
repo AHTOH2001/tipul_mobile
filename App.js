@@ -27,6 +27,7 @@ import PatientScreen from './components/screens/PatientScreen';
 import GuardianScreen from './components/screens/GuardianScreen';
 import GuardianMainScreen from './components/screens/GuardianMainScreen';
 import CreateVisit from './components/CreateVisit';
+import VisitDetail from './components/VisitDetail';
 global.crypto = require("@firebase/firestore");
 global.crypto.getRandomValues = byteArray => { for (let i = 0; i < byteArray.length; i++) { byteArray[i] = Math.floor(256 * Math.random()); } }
 
@@ -114,6 +115,11 @@ function MyStack(props) {
         name="CreateVisit"
         component={CreateVisit}
         options={{ title: translate('Create visit', props.props.root.language) }}
+      />
+      <Stack.Screen
+        name="VisitDetail"
+        component={VisitDetail}
+        options={{ title: translate('Doctor visit', props.props.root.language) }}
       />
       <Stack.Screen
         name="TrainingScreen"

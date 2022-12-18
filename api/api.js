@@ -2,7 +2,8 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // const back_end_domain = 'https://anton123lll.pythonanywhere.com'
-const back_end_domain = 'https://61f2-37-214-82-117.eu.ngrok.io'
+const back_end_domain = 'https://4c00-37-214-82-117.eu.ngrok.io'
+
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -359,9 +360,12 @@ export async function doctorvisit_detail(id) {
     })).data
 }
 
-export async function update_doctorvisit(doctorvisit) {
+export async function update_doctorvisit(visit_id, doctor_id, date) {
     var token = await AsyncStorage.getItem('auth_token')
-    return (await axios.put(`${back_end_domain}/managment/doctorvisit/${doctorvisit.id}/`, doctorvisit, {
+    return (await axios.put(`${back_end_domain}/managment/doctorvisit/${visit_id}/`, {
+        'doctor': doctor_id,
+        'date': date,
+    }, {
         headers: {
             'Authorization': `Token ${token}`
         }

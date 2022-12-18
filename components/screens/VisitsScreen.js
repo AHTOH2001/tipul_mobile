@@ -74,19 +74,19 @@ class VisitsScreen extends Component {
             <View style={styles.container}>
                 <ScrollView style={styles.mainGroup} ref={this.myRef}>
                     {
-                        this.state.doctorvisits.map(doctorvisit => (
+                        this.state.doctorvisits.map(visit => (
                             <ListItem
                                 style={{ borderRadius: 10, margin: 10 }}
                                 containerStyle={styles.button}
-                                onPress={() => { this.props.navigation.navigate('DoctorvisitDetail', { doctorvisit: doctorvisit }) }}
-                                onLongPress={() => this.onLongPress(doctorvisit)}
-                                key={doctorvisit.id}
+                                onPress={() => { this.props.navigation.navigate('VisitDetail', { visit_id: visit.id }) }}
+                                onLongPress={() => this.onLongPress(visit)}
+                                key={visit.id}
                             >
                                 <ListItem.Content style={styles.row}>
-                                    <Icon name={specialty_to_icon[doctorvisit.doctor.specialty]} type='font-awesome-5' size={40} color='white' />
+                                    <Icon name={specialty_to_icon[visit.doctor.specialty]} type='font-awesome-5' size={40} color='white' />
                                     <View>
-                                        <ListItem.Title style={styles.button_text}>{doctorvisit.doctor.first_name} {doctorvisit.doctor.last_name}</ListItem.Title>
-                                        <ListItem.Title style={{ color: 'white', paddingLeft: 60 }}>{moment(doctorvisit.date).format('DD-MM-YYYY')} {translate('at', this.props.root.language)} {moment(doctorvisit.date).format('h:mm')}</ListItem.Title>
+                                        <ListItem.Title style={styles.button_text}>{visit.doctor.first_name} {visit.doctor.last_name}</ListItem.Title>
+                                        <ListItem.Title style={{ color: 'white', paddingLeft: 60 }}>{moment(visit.date).format('DD-MM-YYYY')} {translate('at', this.props.root.language)} {moment(visit.date).format('h:mm')}</ListItem.Title>
                                     </View>
                                 </ListItem.Content>
                             </ListItem>
