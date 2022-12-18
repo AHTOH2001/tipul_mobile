@@ -2,11 +2,7 @@ import React, { Component } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Button } from 'react-native-elements'
-import AddTrainingScreen from './components/screens/AddTrainingScreen';
-import TrainingScreen from './components/screens/TrainingScreen';
-import TrainingDetailScreen from './components/screens/TrainingDetailScreen';
 import SettingsScreen from './components/screens/SettingsScreen'
-import ActionScreen from './components/screens/ActionScreen'
 import AuthScreen from './components/screens/AuthScreen'
 import RegistrationScreen from './components/screens/RegistrationScreen'
 import MainScreen from './components/screens/MainScreen'
@@ -36,7 +32,7 @@ if (!global.btoa) { global.btoa = encode; }
 if (!global.atob) { global.atob = decode; }
 
 const Stack = createStackNavigator();
-// LogBox.ignoreAllLogs()
+LogBox.ignoreAllLogs()
 // console.ignoredYellowBox = ['Setting a timer'];
 function MyStack(props) {
   return (
@@ -122,29 +118,9 @@ function MyStack(props) {
         options={{ title: translate('Doctor visit', props.props.root.language) }}
       />
       <Stack.Screen
-        name="TrainingScreen"
-        component={TrainingScreen}
-        options={{ title: 'Trainings List' }}
-      />
-      <Stack.Screen
-        name="AddTrainingScreen"
-        component={AddTrainingScreen}
-        options={{ title: 'Add Training' }}
-      />
-      <Stack.Screen
-        name="TrainingDetailScreen"
-        component={TrainingDetailScreen}
-        options={{ title: 'Training Detail' }}
-      />
-      <Stack.Screen
         name="SettingsScreen"
         component={SettingsScreen}
         options={{ title: translate('Settings', props.props.root.language) }}
-      />
-      <Stack.Screen
-        name="ActionScreen"
-        component={ActionScreen}
-        options={{ title: '' }}
       />
     </Stack.Navigator>
   );
