@@ -72,6 +72,13 @@ russian_dictionary = {
     'Error': 'Ошибка',
     'You should choose a doctor': 'Вам следует выбрать доктора',
     'Save': 'Сохранить',
+    'Take medicine?': 'Принять медикамент?',
+    'delete': 'удалить',
+    'take': 'принять',
+    'cancel': 'отмена',
+    'You should not take this medicine': 'Тебе не нужно принимать этот медикамент',
+    'Medicine taken, thanks for updates': 'Медикамент принят, спасибо за вашу информацию',
+    'Medicine taken, but late': 'Медикамент принят, но поздно',
 }
 
 export default translate = (text, language) => {

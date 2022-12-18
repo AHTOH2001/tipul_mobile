@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Button } from 'react-native-elements'
 import SettingsScreen from './components/screens/SettingsScreen'
 import AuthScreen from './components/screens/AuthScreen'
 import RegistrationScreen from './components/screens/RegistrationScreen'

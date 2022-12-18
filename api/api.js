@@ -371,3 +371,12 @@ export async function update_doctorvisit(visit_id, doctor_id, date) {
         }
     })).data
 }
+
+export async function take_medicine(id) {
+    var token = await AsyncStorage.getItem('auth_token')
+    return (await axios.get(`${back_end_domain}/medicine/take/cure/${id}/`, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })).data
+}
