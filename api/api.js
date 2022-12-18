@@ -380,3 +380,13 @@ export async function take_medicine(id) {
         }
     })).data
 }
+
+
+export async function list_taken_med(date) {
+    var token = await AsyncStorage.getItem('auth_token')
+    return (await axios.get(`${back_end_domain}/statistic/analytic/?date_data=${date}`, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })).data
+}

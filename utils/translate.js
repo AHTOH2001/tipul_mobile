@@ -79,6 +79,12 @@ russian_dictionary = {
     'You should not take this medicine': 'Тебе не нужно принимать этот медикамент',
     'Medicine taken, thanks for updates': 'Медикамент принят, спасибо за вашу информацию',
     'Medicine taken, but late': 'Медикамент принят, но поздно',
+    'Statistic date': 'Дата статистики',
+    'Statistic': 'Статистика',
+    'Taken meds': 'Принятые медикаменты',
+    'No taken meds in this day': 'Нет принятых медикаментов в этот день',
+    'Missed meds': 'Пропущенные медикаменты',
+    'No missed meds in this day': 'Нет пропущенных медикаментов в этот день',
 }
 
 export default translate = (text, language) => {

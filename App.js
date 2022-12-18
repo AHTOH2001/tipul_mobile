@@ -23,6 +23,8 @@ import GuardianScreen from './components/screens/GuardianScreen';
 import GuardianMainScreen from './components/screens/GuardianMainScreen';
 import CreateVisit from './components/CreateVisit';
 import VisitDetail from './components/VisitDetail';
+import StatisticDetail from './components/StatisticDetail';
+import StatisticScreen from './components/screens/StatisticScreen';
 global.crypto = require("@firebase/firestore");
 global.crypto.getRandomValues = byteArray => { for (let i = 0; i < byteArray.length; i++) { byteArray[i] = Math.floor(256 * Math.random()); } }
 
@@ -120,6 +122,16 @@ function MyStack(props) {
         name="SettingsScreen"
         component={SettingsScreen}
         options={{ title: translate('Settings', props.props.root.language) }}
+      />
+      <Stack.Screen
+        name="StatisticScreen"
+        component={StatisticScreen}
+        options={{ title: translate('Statistic date', props.props.root.language) }}
+      />
+      <Stack.Screen
+        name="StatisticDetail"
+        component={StatisticDetail}
+        options={{ title: translate('Statistic', props.props.root.language) }}
       />
     </Stack.Navigator>
   );

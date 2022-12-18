@@ -86,7 +86,7 @@ class VisitsScreen extends Component {
                                     <Icon name={specialty_to_icon[visit.doctor.specialty]} type='font-awesome-5' size={40} color='white' />
                                     <View>
                                         <ListItem.Title style={styles.button_text}>{visit.doctor.first_name} {visit.doctor.last_name}</ListItem.Title>
-                                        <ListItem.Title style={{ color: 'white', paddingLeft: 60 }}>{moment(visit.date).format('DD-MM-YYYY')} {translate('at', this.props.root.language)} {moment(visit.date).format('h:mm')}</ListItem.Title>
+                                        <ListItem.Title style={{ color: 'white', paddingLeft: 60 }}>{moment(visit.date).format('DD.MM.YYYY')} {translate('at', this.props.root.language)} {moment(visit.date).format('h:mm')}</ListItem.Title>
                                     </View>
                                 </ListItem.Content>
                             </ListItem>
