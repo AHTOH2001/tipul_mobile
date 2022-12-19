@@ -24,6 +24,7 @@ class StatisticDetail extends Component {
             () => {
                 var date = this.props.route.params.date
                 list_taken_med(date).then(resp => {
+                    console.log(resp.taken)
                     this.setState({ ...this.state, isLoading: false, taken: resp.taken, missed: resp.missed })
                 })
             }
@@ -124,11 +125,11 @@ const styles = StyleSheet.create({
     },
     taken: {
         borderRadius: 10,
-        backgroundColor: '#808080'
+        backgroundColor: '#4BA831'
     },
     late: {
         borderRadius: 10,
-        backgroundColor: '#4BA831'
+        backgroundColor: '#808080'
     },
     missed: {
         borderRadius: 10,

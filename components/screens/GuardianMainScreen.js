@@ -28,8 +28,8 @@ class GuardianMainScreen extends Component {
                 })
             } else {
                 get_user_type().then(resp => {
-                    if (resp.type != 'patient') {
-                        console.log(`User type ${resp.type} in main screen`)
+                    if (resp.type != 'guardian') {
+                        console.log(`User type ${resp.type} in guardian main screen`)
                         this.props.navigation.reset({
                             index: 0,
                             routes: [
@@ -63,6 +63,14 @@ class GuardianMainScreen extends Component {
                     title={translate('Reports', this.props.root.language)}
                     onPress={() => { this.props.navigation.navigate('ReportsScreen') }}
                     icon={{ type: 'font-awesome', name: 'signal', size: 40, color: 'white' }}
+                    iconContainerStyle={styles.iconContainerStyle}
+                />
+                <Button
+                    buttonStyle={styles.button}
+                    titleStyle={styles.button_text}
+                    title={translate('Settings', this.props.root.language)}
+                    onPress={() => { this.props.navigation.navigate('SettingsScreen') }}
+                    icon={{ type: 'font-awesome', name: 'cogs', size: 40, color: 'white' }}
                     iconContainerStyle={styles.iconContainerStyle}
                 />
             </ScrollView >

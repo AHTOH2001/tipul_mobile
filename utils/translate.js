@@ -43,6 +43,7 @@ russian_dictionary = {
     'Specialty': 'Специальность',
     'Log out': 'Выйти',
     'User created': 'Пользователь создан',
+    'Patient created': 'Пациент создан', 
     'You have been registered, now log in': 'Вы зарегистрировались, теперь авторизуйтесь',
     'Username or Password is not correct': 'Неверное имя пользователя или пароль',
     'Registration data is incorrect': 'Неверные данные для регистрации',
