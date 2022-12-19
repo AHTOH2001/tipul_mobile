@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import translate from '../utils/translate';
 import moment from 'moment';
 import { type_to_icon } from '../utils/medicine';
-import { list_taken_med } from '../api/api';
+import { list_guard_taken_med } from '../api/api';
 
-class StatisticDetail extends Component {
+class ReportDetail extends Component {
     constructor() {
         super();
         this.myRef = React.createRef();
@@ -23,7 +23,7 @@ class StatisticDetail extends Component {
             'focus',
             () => {
                 var date = this.props.route.params.date
-                list_taken_med(date).then(resp => {
+                list_guard_taken_med(date).then(resp => {
                     this.setState({ ...this.state, isLoading: false, taken: resp.taken, missed: resp.missed })
                 })
             }
@@ -53,7 +53,6 @@ class StatisticDetail extends Component {
                                     <ListItem
                                         style={{ borderRadius: 10, margin: 10 }}
                                         containerStyle={taken_med.is_late ? styles.late : styles.taken}
-                                        onPress={() => { this.props.navigation.navigate('MedicineDetail', { medicine: taken_med.med }) }}
                                         key={taken_med.id}
                                     >
                                         <ListItem.Content style={styles.row}>
@@ -86,7 +85,6 @@ class StatisticDetail extends Component {
                                     <ListItem
                                         style={{ borderRadius: 10, margin: 10 }}
                                         containerStyle={styles.missed}
-                                        onPress={() => { this.props.navigation.navigate('MedicineDetail', { medicine: missed_med.med }) }}
                                         key={missed_med.id}
                                     >
                                         <ListItem.Content style={styles.row}>
@@ -164,4 +162,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(StatisticDetail)
+export default connect(mapStateToProps)(ReportDetail)

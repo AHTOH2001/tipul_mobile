@@ -60,8 +60,8 @@ class GuardianMainScreen extends Component {
                 <Button
                     buttonStyle={styles.button}
                     titleStyle={styles.button_text}
-                    title={translate('Reports', this.props.root.language)}
-                    onPress={() => { this.props.navigation.navigate('ReportsScreen') }}
+                    title={translate('Report', this.props.root.language)}
+                    onPress={() => { this.props.navigation.navigate('ReportScreen') }}
                     icon={{ type: 'font-awesome', name: 'signal', size: 40, color: 'white' }}
                     iconContainerStyle={styles.iconContainerStyle}
                 />

@@ -390,3 +390,12 @@ export async function list_taken_med(date) {
         }
     })).data
 }
+
+export async function list_guard_taken_med(date) {
+    var token = await AsyncStorage.getItem('auth_token')
+    return (await axios.get(`${back_end_domain}/statistic/report/?date_data=${date}`, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })).data
+}

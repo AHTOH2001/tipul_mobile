@@ -25,6 +25,8 @@ import CreateVisit from './components/CreateVisit';
 import VisitDetail from './components/VisitDetail';
 import StatisticDetail from './components/StatisticDetail';
 import StatisticScreen from './components/screens/StatisticScreen';
+import ReportScreen from './components/screens/ReportScreen';
+import ReportDetail from './components/ReportDetail';
 global.crypto = require("@firebase/firestore");
 global.crypto.getRandomValues = byteArray => { for (let i = 0; i < byteArray.length; i++) { byteArray[i] = Math.floor(256 * Math.random()); } }
 
@@ -132,6 +134,16 @@ function MyStack(props) {
         name="StatisticDetail"
         component={StatisticDetail}
         options={{ title: translate('Statistic', props.props.root.language) }}
+      />
+      <Stack.Screen
+        name="ReportScreen"
+        component={ReportScreen}
+        options={{ title: translate('Report date', props.props.root.language) }}
+      />
+      <Stack.Screen
+        name="ReportDetail"
+        component={ReportDetail}
+        options={{ title: translate('Report', props.props.root.language) }}
       />
     </Stack.Navigator>
   );
