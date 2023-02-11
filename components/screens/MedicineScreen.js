@@ -89,9 +89,9 @@ class MedicineScreen extends Component {
     create_empty_medicine(type) {
         create_medicine({
             "cure": {
-                "title": `New medicine ${this.state.medicines.length + 1}`,
+                "title": `${translate('New medicine', this.props.root.language)}`,
                 "dose": 1.0,
-                "dose_type": "PCS",
+                "dose_type": "pcs",
                 "type": type,
                 "food": 'Before meals',
                 'strict_status': false,

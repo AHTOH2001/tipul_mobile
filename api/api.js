@@ -1,9 +1,6 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// const back_end_domain = 'https://anton123lll.pythonanywhere.com'
-const back_end_domain = 'https://4c00-37-214-82-117.eu.ngrok.io'
-
+import { back_end_domain } from './consts'
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));

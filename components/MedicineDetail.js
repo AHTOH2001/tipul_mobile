@@ -38,7 +38,12 @@ class MedicineDetail extends Component {
             title: medicine_title
         })
         medicine_detail(this.props.route.params.medicine.id).then(resp => {
-            this.setState({ ...this.state, isLoading: false, medicine: resp, initialDoseType: resp.dose_type, initialCureType: resp.type })
+            this.setState({
+                ...this.state, isLoading: false,
+                medicine: resp,
+                initialDoseType: translate(resp.dose_type, this.props.root.language),
+                initialCureType: translate(resp.type, this.props.root.language),
+            })
         })
     }
 
@@ -118,9 +123,9 @@ class MedicineDetail extends Component {
                 <View style={styles.row}>
                     <Text style={{ flex: 1, textAlign: 'center', fontSize: 20, textAlignVertical: 'center' }}>{translate('Type', this.props.root.language) + ':'}</Text>
                     <ModalSelector
-                        data={type_dropdown_data}
+                        data={type_dropdown_data[this.props.root.language]}
                         initValue={this.state.initialCureType}
-                        onChange={({ label, key }) => this.inputValueUpdate(label, 'medicine.type')}
+                        onChange={({ label, key, customKey }) => this.inputValueUpdate(customKey, 'medicine.type')}
                         style={{ flex: 1, padding: 20, minWidth: '60%' }} />
                 </View>
                 <View style={styles.row}>
@@ -133,9 +138,9 @@ class MedicineDetail extends Component {
                         containerStyle={{ width: '68%' }}
                     />
                     <ModalSelector
-                        data={dose_dropdown_data}
+                        data={dose_dropdown_data[this.props.root.language]}
                         initValue={this.state.initialDoseType}
-                        onChange={({ label, key }) => this.inputValueUpdate(label, 'medicine.dose_type')}
+                        onChange={({ label, key, customKey }) => this.inputValueUpdate(customKey, 'medicine.dose_type')}
                         style={{ flex: 1, paddingTop: 10 }} />
                 </View>
                 <Text style={{ flex: 1, textAlign: 'center' }} h3>{translate('Reception frequency', this.props.root.language)}</Text>

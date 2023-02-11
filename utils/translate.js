@@ -43,7 +43,7 @@ russian_dictionary = {
     'Specialty': 'Специальность',
     'Log out': 'Выйти',
     'User created': 'Пользователь создан',
-    'Patient created': 'Пациент создан', 
+    'Patient created': 'Пациент создан',
     'You have been registered, now log in': 'Вы зарегистрировались, теперь авторизуйтесь',
     'Username or Password is not correct': 'Неверное имя пользователя или пароль',
     'Registration data is incorrect': 'Неверные данные для регистрации',
@@ -77,7 +77,7 @@ russian_dictionary = {
     'delete': 'удалить',
     'take': 'принять',
     'cancel': 'отмена',
-    'You should not take this medicine': 'Тебе не нужно принимать этот медикамент',
+    'You should not take this medicine': 'Вам не нужно принимать этот медикамент',
     'Medicine taken, thanks for updates': 'Медикамент принят, спасибо за вашу информацию',
     'Medicine taken, but late': 'Медикамент принят, но поздно',
     'Statistic date': 'Дата статистики',
@@ -88,6 +88,14 @@ russian_dictionary = {
     'No taken meds in this day': 'Нет принятых медикаментов в этот день',
     'Missed meds': 'Пропущенные медикаменты',
     'No missed meds in this day': 'Нет пропущенных медикаментов в этот день',
+    'New medicine': 'Новый медикамент',
+    'injection': 'Укол',
+    'ampule': 'Ампула',
+    'pill': 'Таблетка',
+    'suspension': 'Суспензия',
+    'pcs': 'шт',
+    'ml': 'мл',
+    'Select a doctor': 'Выбрать доктора',
 }
 
 export default translate = (text, language) => {

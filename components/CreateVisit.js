@@ -77,6 +77,7 @@ class CreateVisit extends Component {
                         {translate('Doctor', this.props.root.language) + ':'}
                     </Text>
                     <ModalSelector
+                        initValue={translate('Select a doctor', this.props.root.language)}
                         data={this.state.doctors_dropdown_data}
                         onChange={({ label, key }) => this.setState({ ...this.state, doctor_id: key })}
                         style={{ flex: 1, paddingTop: 10 }} />
