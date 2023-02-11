@@ -65,7 +65,7 @@ class MedicineScreen extends Component {
                     take_medicine(medicine.id).then((resp) => {
                         console.log(resp)
                         if (resp.is_late) {
-                            Alert.alert(translate('Medicine taken, but late', this.props.root.language))
+                            Alert.alert(translate('Medicine taken, but not in time', this.props.root.language))
                         } else {
                             Alert.alert(translate('Medicine taken, thanks for updates', this.props.root.language))
                         }
