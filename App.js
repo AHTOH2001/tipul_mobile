@@ -10,12 +10,10 @@ import MedicineDetail from './components/MedicineDetail'
 import DoctorsScreen from './components/screens/DoctorsScreen'
 import DoctorDetail from './components/DoctorDetail'
 import VisitsScreen from './components/screens/VisitsScreen'
-import { decode, encode } from 'base-64'
-import { ActivityIndicator, LogBox, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, LogBox, StyleSheet, View, Text } from 'react-native';
 import { connect, Provider } from 'react-redux'
 import store from './redux/store';
 import { change_font_size, change_language, change_theme } from './redux/action/root';
-import firestore, { db } from './firebase/firebaseDb';
 import translate from './utils/translate';
 import UserTypeScreen from './components/screens/UserTypeScreen';
 import PatientScreen from './components/screens/PatientScreen';
@@ -27,15 +25,9 @@ import StatisticDetail from './components/StatisticDetail';
 import StatisticScreen from './components/screens/StatisticScreen';
 import ReportScreen from './components/screens/ReportScreen';
 import ReportDetail from './components/ReportDetail';
-global.crypto = require("@firebase/firestore");
-global.crypto.getRandomValues = byteArray => { for (let i = 0; i < byteArray.length; i++) { byteArray[i] = Math.floor(256 * Math.random()); } }
-
-if (!global.btoa) { global.btoa = encode; }
-
-if (!global.atob) { global.atob = decode; }
 
 const Stack = createStackNavigator();
-LogBox.ignoreAllLogs()
+// LogBox.ignoreAllLogs()
 // console.ignoredYellowBox = ['Setting a timer'];
 function MyStack(props) {
   return (
@@ -152,12 +144,12 @@ function MyStack(props) {
 class App extends Component {
   constructor() {
     super();
-    this.firestoreRef = firestore.collection(db, 'settings');
+    // this.firestoreRef = firestore.collection(db, 'settings');
     this.state = {
       language: undefined,
       theme: '',
       font_size: undefined,
-      isLoading: true
+      isLoading: false // VIKA! Should be True initially
     };
   }
 
@@ -174,10 +166,6 @@ class App extends Component {
       this.props.dispatch(change_language(language))
       this.props.dispatch(change_font_size(font_size))
     });
-  }
-
-  componentDidMount() {
-    this.unsubscribe = firestore.onSnapshot(this.firestoreRef, this.getCollection)
   }
 
   resolve_back_color = () => {

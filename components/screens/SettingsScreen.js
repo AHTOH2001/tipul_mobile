@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Icon, ListItem, Button } from 'react-native-elements'
 import { StyleSheet, ScrollView, ActivityIndicator, View } from 'react-native';
-import firestore, { db } from '../../firebase/firebaseDb';
 import { connect } from 'react-redux';
 import { change_font_size, change_language, change_theme } from '../../redux/action/root';
 import translate from '../../utils/translate';
@@ -10,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 class SettingsScreen extends Component {
     constructor() {
         super();
-        this.firestoreRef = firestore.collection(db, 'settings');
+        // this.firestoreRef = firestore.collection(db, 'settings');
         this.state = {
             languages: ['english', 'русский'],
             themes: ['light', 'dark'],
@@ -42,7 +41,7 @@ class SettingsScreen extends Component {
     }
 
     componentDidMount() {
-        this.unsubscribe = firestore.onSnapshot(this.firestoreRef, this.getCollection)
+        // this.unsubscribe = firestore.onSnapshot(this.firestoreRef, this.getCollection)
         this.props.navigation.setOptions({
             headerRight: () => (
                 <Button
@@ -58,9 +57,9 @@ class SettingsScreen extends Component {
         })
     }
 
-    componentWillUnmount() {
-        this.unsubscribe();
-    }
+    // componentWillUnmount() {
+    //     this.unsubscribe();
+    // }
 
     updateSettings() {
         this.setState({
