@@ -1,30 +1,26 @@
-import React, { Component } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import SettingsScreen from './components/screens/SettingsScreen'
-import AuthScreen from './components/screens/AuthScreen'
-import RegistrationScreen from './components/screens/RegistrationScreen'
-import MainScreen from './components/screens/MainScreen'
-import MedicineScreen from './components/screens/MedicineScreen'
-import MedicineDetail from './components/MedicineDetail'
-import DoctorsScreen from './components/screens/DoctorsScreen'
-import DoctorDetail from './components/DoctorDetail'
-import VisitsScreen from './components/screens/VisitsScreen'
-import { ActivityIndicator, LogBox, StyleSheet, View, Text } from 'react-native';
-import { connect, Provider } from 'react-redux'
-import store from './redux/store';
+import React, { Component } from 'react';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { connect } from 'react-redux';
+import CreateVisit from './components/CreateVisit';
+import DoctorDetail from './components/DoctorDetail';
+import MedicineDetail from './components/MedicineDetail';
+import ReportDetail from './components/ReportDetail';
+import StatisticDetail from './components/StatisticDetail';
+import VisitDetail from './components/VisitDetail';
+import AuthScreen from './components/screens/AuthScreen';
+import DoctorsScreen from './components/screens/DoctorsScreen';
+import MainScreen from './components/screens/MainScreen';
+import MedicineScreen from './components/screens/MedicineScreen';
+import PatientScreen from './components/screens/PatientScreen';
+import RegistrationScreen from './components/screens/RegistrationScreen';
+import ReportScreen from './components/screens/ReportScreen';
+import SettingsScreen from './components/screens/SettingsScreen';
+import StatisticScreen from './components/screens/StatisticScreen';
+import VisitsScreen from './components/screens/VisitsScreen';
 import { change_font_size, change_language, change_theme } from './redux/action/root';
 import translate from './utils/translate';
-import UserTypeScreen from './components/screens/UserTypeScreen';
-import PatientScreen from './components/screens/PatientScreen';
-import GuardianScreen from './components/screens/GuardianScreen';
-import GuardianMainScreen from './components/screens/GuardianMainScreen';
-import CreateVisit from './components/CreateVisit';
-import VisitDetail from './components/VisitDetail';
-import StatisticDetail from './components/StatisticDetail';
-import StatisticScreen from './components/screens/StatisticScreen';
-import ReportScreen from './components/screens/ReportScreen';
-import ReportDetail from './components/ReportDetail';
 
 const Stack = createStackNavigator();
 // LogBox.ignoreAllLogs()
@@ -83,24 +79,9 @@ function MyStack(props) {
         options={{ title: translate('Visits', props.props.root.language) }}
       />
       <Stack.Screen
-        name="UserTypeScreen"
-        component={UserTypeScreen}
-        options={{ title: translate('User type', props.props.root.language) }}
-      />
-      <Stack.Screen
         name="PatientScreen"
         component={PatientScreen}
         options={{ title: translate('Patient', props.props.root.language) }}
-      />
-      <Stack.Screen
-        name="GuardianScreen"
-        component={GuardianScreen}
-        options={{ title: translate('Guardian', props.props.root.language) }}
-      />
-      <Stack.Screen
-        name="GuardianMainScreen"
-        component={GuardianMainScreen}
-        options={{ title: translate('Guardian', props.props.root.language) }}
       />
       <Stack.Screen
         name="CreateVisit"

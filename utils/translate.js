@@ -44,7 +44,7 @@ russian_dictionary = {
     'Log out': 'Выйти',
     'User created': 'Пользователь создан',
     'Patient created': 'Пациент создан',
-    'You have been registered, now log in': 'Вы зарегистрировались, теперь авторизуйтесь',
+    'You have been registered, before logging in confirm your email': 'Вы зарегистрировались, перед авторизацией подтвердите свою почту',
     'Username or Password is not correct': 'Неверное имя пользователя или пароль',
     'Registration data is incorrect': 'Неверные данные для регистрации',
     'Visits': 'Визиты',

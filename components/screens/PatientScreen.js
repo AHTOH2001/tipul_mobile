@@ -36,10 +36,10 @@ class PatientScreen extends Component {
                 })
             } else {
                 get_user_type().then(resp => {
-                    if (resp.type == 'nothing') {
+                    if (!('patient' in resp)) {
                         this.setState({ ...this.state, isLoading: false })
                     } else {
-                        console.log(`Already ${resp.type}`)
+                        console.log('Already patient')
                         this.props.navigation.reset({
                             index: 0,
                             routes: [

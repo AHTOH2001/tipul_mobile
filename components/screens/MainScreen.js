@@ -29,13 +29,13 @@ class MainScreen extends Component {
                 })
             } else {
                 get_user_type().then(resp => {
-                    if (resp.type != 'patient') {
-                        console.log(`User type ${resp.type} in main screen`)
+                    if (!('patient' in resp)) {
+                        console.log('You are not patient')
                         this.props.navigation.reset({
                             index: 0,
                             routes: [
                                 {
-                                    name: 'UserTypeScreen',
+                                    name: 'RegistrationScreen',
                                 },
                             ],
                         })
