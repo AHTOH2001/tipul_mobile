@@ -6,7 +6,7 @@ const initialState = {
 }
 
 
-export default root = (state = initialState, action) => {
+const root = (state = initialState, action) => {
     switch (action.type) {
         case 'CHANGE_THEME':
             return {
@@ -27,3 +27,5 @@ export default root = (state = initialState, action) => {
             return state;
     }
 }
+
+export default root

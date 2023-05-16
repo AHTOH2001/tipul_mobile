@@ -1,4 +1,4 @@
-russian_dictionary = {
+let russian_dictionary = {
     'Select language': 'Выбрать язык',
     'Username': 'Имя пользователя',
     'Password': 'Пароль',
@@ -98,7 +98,7 @@ russian_dictionary = {
     'Select a doctor': 'Выбрать доктора',
 }
 
-export default translate = (text, language) => {
+const translate = (text, language) => {
     let res = null;
     switch (language) {
         case 'русский': res = russian_dictionary[text] || text; break;
@@ -108,3 +108,5 @@ export default translate = (text, language) => {
     return res
 
 }
+
+export default translate
