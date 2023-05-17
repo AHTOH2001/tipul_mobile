@@ -14,12 +14,12 @@ export const type_choices = [
 
 let index = 0;
 export const type_dropdown_data = {
-    'русский': [
+    'RUSSIAN': [
         { key: index++, label: 'Укол', customKey: 'injection' },
         { key: index++, label: 'Ампула', customKey: 'ampule' },
         { key: index++, label: 'Таблетка', customKey: 'pill' },
         { key: index++, label: 'Суспензия', customKey: 'suspension' }
-    ], 'english': [
+    ], 'ENGLISH': [
         { key: index++, label: 'Injection', customKey: 'injection' },
         { key: index++, label: 'Ampule', customKey: 'ampule' },
         { key: index++, label: 'Pill', customKey: 'pill' },
@@ -29,11 +29,11 @@ export const type_dropdown_data = {
 
 index = 0;
 export const dose_dropdown_data = {
-    'русский': [
+    'RUSSIAN': [
         { key: index++, label: 'шт', customKey: 'pcs' },
         { key: index++, label: 'мл', customKey: 'ml' },
     ],
-    'english': [
+    'ENGLISH': [
         { key: index++, label: 'pcs', customKey: 'pcs' },
         { key: index++, label: 'ml', customKey: 'ml' },
     ]

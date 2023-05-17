@@ -1,21 +1,21 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { Component } from 'react';
-import { Icon, ListItem, Button } from 'react-native-elements'
-import { StyleSheet, ScrollView, ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+import { Button, Icon, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
+import { set_settings } from '../../api/api';
 import { change_font_size, change_language, change_theme } from '../../redux/action/root';
 import translate from '../../utils/translate';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class SettingsScreen extends Component {
     constructor() {
         super();
-        // this.firestoreRef = firestore.collection(db, 'settings');
         this.state = {
-            languages: ['english', 'русский'],
+            languages: [{ key: 'ENGLISH', label: 'english' }, { key: 'RUSSIAN', label: 'русский' }],
             themes: ['light', 'dark'],
             language_expanded: false,
             isLoading: true,
-            chosen_language: 'english',
+            chosen_language: null,
             font_size: 0,
             theme: '',
             key: '',
@@ -23,25 +23,14 @@ class SettingsScreen extends Component {
         };
     }
 
-    getCollection = (querySnapshot) => {
-        // const {language} = querySnapshot[0].data()
-        querySnapshot.forEach((res) => {
-            const { language, font_size, theme } = res.data();
-            this.setState({
-                key: res.id,
-                res,
-                chosen_language: language || 'english',
-                theme: theme || 'light',
-                font_size: font_size || 20,
-            });
-        });
-        this.setState({
-            isLoading: false,
-        });
-    }
-
     componentDidMount() {
-        // this.unsubscribe = firestore.onSnapshot(this.firestoreRef, this.getCollection)
+        this.setState({
+            ...this.state,
+            chosen_language: this.props.root.language,
+            isLoading: false,
+            font_size: this.props.root.font_size,
+            theme: this.props.root.theme
+        })
         this.props.navigation.setOptions({
             headerRight: () => (
                 <Button
@@ -57,10 +46,6 @@ class SettingsScreen extends Component {
         })
     }
 
-    // componentWillUnmount() {
-    //     this.unsubscribe();
-    // }
-
     updateSettings() {
         this.setState({
             isLoading: true,
@@ -68,20 +53,14 @@ class SettingsScreen extends Component {
         this.props.dispatch(change_theme(this.state.theme))
         this.props.dispatch(change_language(this.state.chosen_language))
         this.props.dispatch(change_font_size(this.state.font_size))
-        const updateDBRef = firestore.doc(firestore.collection(db, 'settings'), this.state.key)
-        firestore.setDoc(updateDBRef, {
-            language: this.state.chosen_language,
-            font_size: this.state.font_size,
-            theme: this.state.theme
-        }).then((docRef) => {
-            this.props.navigation.goBack();
+
+        set_settings({
+            'language': this.state.chosen_language,
+            'font': this.state.font_size,
+            'color': this.state.theme
+        }).then(settings_resp => {
+            this.props.navigation.goBack()
         })
-            .catch((error) => {
-                console.error("Error: ", error);
-                this.setState({
-                    isLoading: false,
-                });
-            });
     }
 
     resolve_back_color = () => {
@@ -95,6 +74,7 @@ class SettingsScreen extends Component {
     }
 
     render() {
+        console.log(this.state)
         if (this.state.isLoading) {
             return (
                 <View style={{ ...styles.preloader, backgroundColor: this.resolve_back_color() }}>
@@ -121,15 +101,15 @@ class SettingsScreen extends Component {
                 >
                     {this.state.languages.map((lang, i) => (
                         <ListItem key={i} onPress={() => {
-                            console.log(lang + ' lang chosen ')
-                            this.setState({ language_expanded: false, chosen_language: lang })
+                            console.log(lang.key + ' lang chosen ')
+                            this.setState({ language_expanded: false, chosen_language: lang.key })
 
                         }}
-                            containerStyle={{ backgroundColor: lang == this.state.chosen_language ? 'lightgrey' : this.resolve_back_color() }}
+                            containerStyle={{ backgroundColor: lang.key == this.state.chosen_language ? 'lightgrey' : this.resolve_back_color() }}
                             bottomDivider>
 
                             <ListItem.Content>
-                                <ListItem.Title style={{ fontSize: this.resolve_font_size(20), color: this.resolve_front_color(), fontSize: 30, paddingLeft: 20 }}>{lang}</ListItem.Title>
+                                <ListItem.Title style={{ fontSize: this.resolve_font_size(20), color: this.resolve_front_color(), fontSize: 30, paddingLeft: 20 }}>{lang.label}</ListItem.Title>
                             </ListItem.Content>
                         </ListItem>
                     ))}
@@ -150,7 +130,7 @@ class SettingsScreen extends Component {
                             })
                         })
                     }}
-                    title={translate('Log out', this.props.root.language)}
+                    title={translate('Log out', this.state.chosen_language)}
                 />
             </ScrollView>
         )

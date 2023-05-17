@@ -329,3 +329,12 @@ export async function get_settings() {
         }
     })).data
 }
+
+export async function set_settings(settings) {
+    var token = await AsyncStorage.getItem('auth_token')
+    return (await axios.patch(`${back_end_domain}/managment/settings/99/`, settings, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })).data
+}

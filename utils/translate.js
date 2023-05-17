@@ -101,7 +101,7 @@ let russian_dictionary = {
 const translate = (text, language) => {
     let res = null;
     switch (language) {
-        case 'русский': res = russian_dictionary[text] || text; break;
+        case 'RUSSIAN': res = russian_dictionary[text] || text; break;
         default: res = text
     }
 
