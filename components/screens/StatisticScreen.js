@@ -29,6 +29,7 @@ class StatisticScreen extends Component {
                 mode='date'
                 onChange={(res) => {
                     if (res.type == 'set') {
+                        this.setState({...this.state, isLoading: true})
                         this.props.navigation.reset({
                             index: 1,
                             routes: [
@@ -37,7 +38,7 @@ class StatisticScreen extends Component {
                                 },
                                 {
                                     name: 'StatisticDetail',
-                                    params: { date: res['nativeEvent'].timestamp.toISOString().slice(0, -1) }
+                                    params: { date: new Date(res['nativeEvent'].timestamp).toISOString().slice(0, -1) }
                                 },
                             ],
                         })
