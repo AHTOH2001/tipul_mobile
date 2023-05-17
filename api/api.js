@@ -105,59 +105,9 @@ export async function medicine_detail(medicine_id) {
 
 export async function update_medicine(medicine) {
     var token = await AsyncStorage.getItem('auth_token')
-
-    var cure = medicine
-    var schedule = medicine.schedule
-    var time = medicine.schedule.timesheet
-
-    delete cure.schedule
-    delete cure.patient
-    delete schedule.timesheet
-
-    var time_ids = []
-    for (let i = 0; i < time.length; i++) {
-        try {
-            var res = (await axios.put(`${back_end_domain}/main/time/${time[i].id}/`, time[i], {
-                headers: {
-                    'Authorization': `Token ${token}`
-                }
-            })).data
-        } catch (error) {
-            if (error.response.status == 404) {
-                try {
-                    var res = (await axios.post(`${back_end_domain}/main/time/`, time[i], {
-                        headers: {
-                            'Authorization': `Token ${token}`
-                        }
-                    })).data
-                } catch (error) {
-                    console.log(error.response)
-                    throw error
-                }
-            } else {
-                console.log(error.response)
-                throw error
-            }
-        }
-        time_ids.push(res.id)
-    }
-
-    schedule['timesheet'] = time_ids
+    console.log(medicine)
     try {
-        var res = (await axios.put(`${back_end_domain}/main/schedule/${schedule.id}/`, schedule, {
-            headers: {
-                'Authorization': `Token ${token}`
-            }
-        })).data
-    } catch (error) {
-        console.log(error.response)
-        throw error
-    }
-
-
-    cure['schedule'] = res.id
-    try {
-        var res = (await axios.put(`${back_end_domain}/main/cure/${cure.id}/`, cure, {
+        return (await axios.put(`${back_end_domain}/main/cure/${medicine.id}/`, medicine, {
             headers: {
                 'Authorization': `Token ${token}`
             }
@@ -364,6 +314,16 @@ export async function list_taken_med(date) {
 export async function list_guard_taken_med(date) {
     var token = await AsyncStorage.getItem('auth_token')
     return (await axios.get(`${back_end_domain}/statistic/report/?date_data=${date}`, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })).data
+}
+
+
+export async function get_settings() {
+    var token = await AsyncStorage.getItem('auth_token')
+    return (await axios.get(`${back_end_domain}/managment/settings/`, {
         headers: {
             'Authorization': `Token ${token}`
         }

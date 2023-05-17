@@ -103,6 +103,9 @@ class MedicineDetail extends Component {
 
 
     render() {
+        console.log(JSON.stringify(this.state))
+        console.log(JSON.stringify(type_dropdown_data))
+        console.log(JSON.stringify(this.props.root.language))
         var time_index = -1
         if (this.state.isLoading) {
             return (

@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { Component } from 'react';
@@ -125,28 +126,33 @@ function MyStack(props) {
 class App extends Component {
   constructor() {
     super();
-    // this.firestoreRef = firestore.collection(db, 'settings');
     this.state = {
       language: undefined,
       theme: '',
       font_size: undefined,
-      isLoading: false // VIKA! Should be True initially
+      isLoading: true
     };
   }
 
-  getCollection = (querySnapshot) => {
-    querySnapshot.forEach((res) => {
-      const { language, font_size, theme } = res.data();
+  componentDidMount() {
+    AsyncStorage.getItem('settings').then(res => {
+      res = JSON.parse(res)
+      res = res || {
+        "color": "white",
+        "font": 14,
+        "language": "RUSSIAN",
+      }
       this.setState({
-        language: language || 'english',
-        theme: theme || 'light',
-        font_size: font_size || 20,
-        isLoading: false
-      });
-      this.props.dispatch(change_theme(theme))
-      this.props.dispatch(change_language(language))
-      this.props.dispatch(change_font_size(font_size))
-    });
+        ...this.state,
+        lanfuage: res.language,
+        theme: res.color,
+        font_size: res.font,
+        isLoading: false,
+      })
+      this.props.dispatch(change_theme(res.color))
+      this.props.dispatch(change_language(res.language))
+      this.props.dispatch(change_font_size(res.font))
+    })
   }
 
   resolve_back_color = () => {

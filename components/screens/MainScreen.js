@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
-import { ActivityIndicator, StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
-import { Input, Slider, Icon, Button, Text } from 'react-native-elements'
-import { connect } from 'react-redux';
-import { resolve_back_color, resolve_front_color } from '../../utils/settings-utils';
-import translate from '../../utils/translate';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { get_user_type } from '../../api/api';
+import React, { Component } from 'react';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+import { Button, Text } from 'react-native-elements';
+import { connect } from 'react-redux';
+import { get_settings, get_user_type } from '../../api/api';
+import { resolve_back_color } from '../../utils/settings-utils';
+import translate from '../../utils/translate';
+import { change_font_size, change_language, change_theme } from '../../redux/action/root';
 
 class MainScreen extends Component {
     constructor() {
@@ -40,11 +41,18 @@ class MainScreen extends Component {
                             ],
                         })
                     } else {
-                        this.setState({ ...this.state, isLoading: false, first_name: resp.patient.first_name })
-                        this.props.navigation.setOptions({
-                            headerRight: () => (
-                                <Text style={{...styles.button_text, color: 'white', paddingRight: 10, fontSize: 20}}>{this.state.first_name}</Text>
-                            ),
+                        get_settings().then(settings_resp => {
+                            settings = settings_resp[0]
+                            AsyncStorage.setItem('settings', JSON.stringify(settings))
+                            this.props.dispatch(change_theme(settings.color))
+                            this.props.dispatch(change_language(settings.language))
+                            this.props.dispatch(change_font_size(settings.font))
+                            this.setState({ ...this.state, isLoading: false, first_name: resp.patient.first_name })
+                            this.props.navigation.setOptions({
+                                headerRight: () => (
+                                    <Text style={{ ...styles.button_text, color: 'white', paddingRight: 10, fontSize: 20 }}>{this.state.first_name}</Text>
+                                ),
+                            })
                         })
                     }
                 })
