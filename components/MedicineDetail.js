@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { Alert, View, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
-import { Input, Icon, ListItem, Button, Text } from 'react-native-elements'
-import { connect } from 'react-redux';
-import translate from '../utils/translate';
-import { medicine_detail, update_medicine } from '../api/api'
-import { dose_dropdown_data, type_dropdown_data } from '../utils/medicine'
-import ModalSelector from 'react-native-modal-selector'
 import DateTimePicker from '@react-native-community/datetimepicker';
+import React, { Component } from 'react';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+import { Button, Input, Text } from 'react-native-elements';
+import ModalSelector from 'react-native-modal-selector';
+import { connect } from 'react-redux';
+import { medicine_detail, update_medicine } from '../api/api';
+import { dose_dropdown_data, type_dropdown_data } from '../utils/medicine';
+import translate from '../utils/translate';
 
 
 class MedicineDetail extends Component {
@@ -21,6 +21,9 @@ class MedicineDetail extends Component {
             showCycleStartPicker: false,
             showCycleEndPicker: false,
             checked: false,
+            showTimePicker: false,
+            showTimePickerNew: false,
+            chosenTime: null
         };
     }
 
@@ -72,41 +75,8 @@ class MedicineDetail extends Component {
         this.setState(state)
     }
 
-    deleteTimeRow = (time_index) => {
-        var state = this.state
-        state.medicine.schedule.timesheet.splice(time_index, 1)
-        this.setState(state)
-    }
-
-    showTimePicker = (time_index) => {
-        this.inputValueUpdate(true, `showTimePicker${time_index.toString()}`)
-    }
-
-    timePickerOnPress = (time_index, res) => {
-        var state = this.state
-        if (res.type == 'set') {
-            state.medicine.schedule.timesheet[time_index].time = res['nativeEvent'].timestamp.toISOString().slice(11, 16)
-        }
-        state[`showTimePicker${time_index.toString()}`] = false
-        this.setState(state)
-    }
-
-    timePickerAddOnPress = (time_index, res) => {
-        var state = this.state
-        if (res.type == 'set') {
-            state.medicine.schedule.timesheet.push({ 'time': res['nativeEvent'].timestamp.toISOString().slice(11, 16) })
-
-        }
-        state[`showTimePicker${time_index.toString()}`] = false
-        this.setState(state)
-    }
-
-
     render() {
         console.log(JSON.stringify(this.state))
-        console.log(JSON.stringify(type_dropdown_data))
-        console.log(JSON.stringify(this.props.root.language))
-        var time_index = -1
         if (this.state.isLoading) {
             return (
                 <View style={{ ...styles.preloader }}>
@@ -160,7 +130,7 @@ class MedicineDetail extends Component {
                             mode='date'
                             onChange={(res) => {
                                 if (res.type == 'set') {
-                                    this.inputValueUpdate(res['nativeEvent'].timestamp.toISOString().slice(0, 10), 'medicine.schedule.cycle_start')
+                                    this.inputValueUpdate(new Date(res['nativeEvent'].timestamp).toISOString().slice(0, 10), 'medicine.schedule.cycle_start')
                                 }
                                 this.setState({ ...this.state, showCycleStartPicker: false })
                             }}
@@ -180,7 +150,7 @@ class MedicineDetail extends Component {
                             mode='date'
                             onChange={(res) => {
                                 if (res.type == 'set') {
-                                    this.inputValueUpdate(res['nativeEvent'].timestamp.toISOString().slice(0, 10), 'medicine.schedule.cycle_end')
+                                    this.inputValueUpdate(new Date(res['nativeEvent'].timestamp).toISOString().slice(0, 10), 'medicine.schedule.cycle_end')
                                 }
                                 this.setState({ ...this.state, showCycleEndPicker: false })
                             }}
@@ -188,52 +158,73 @@ class MedicineDetail extends Component {
                     )}
                 </View>
                 {
-                    this.state.medicine.schedule.timesheet.map(({ time }) => {
-                        time_index++
+                    this.state.medicine.schedule.timesheet.map((time) => {
                         return (
-                            <View key={time_index} style={styles.row}>
+                            <View key={time.id} style={styles.row}>
                                 <Button
                                     buttonStyle={{ ...styles.button, minWidth: '73%' }}
                                     titleStyle={styles.button_text}
-                                    onPress={this.showTimePicker.bind(this, time_index)}
-                                    title={time.slice(0, 5)}
+                                    onPress={() => this.setState({ ...this.state, chosenTime: time, showTimePicker: true })}
+                                    title={time.time.slice(0, 5)}
                                 />
                                 <Button
                                     buttonStyle={{ ...styles.button, minWidth: '15%', backgroundColor: 'red' }}
                                     titleStyle={styles.button_text}
-                                    onPress={this.deleteTimeRow.bind(this, time_index)}
+                                    onPress={() => {
+                                        var state = this.state
+                                        state.medicine.schedule.timesheet = state.medicine.schedule.timesheet.filter(cur_time => cur_time.id != time.id)
+                                        this.setState(state)
+                                    }}
                                     title={'X'}
                                 />
-                                {
-                                    this.state[`showTimePicker${time_index.toString()}`] && (
-                                        <DateTimePicker
-                                            value={new Date(Date.parse(`1900-01-01T${time}`))}
-                                            mode='time'
-                                            is24Hour={true}
-                                            timeZoneOffsetInMinutes={0}
-                                            onChange={this.timePickerOnPress.bind(this, time_index)}
-                                        />
-                                    )
-                                }
                             </View>
                         )
                     })
                 }
-                <View key={time_index++}>
+                <View>
                     <Button
                         buttonStyle={styles.button}
                         titleStyle={styles.button_text}
-                        onPress={this.showTimePicker.bind(this, time_index)}
+                        onPress={() => {
+                            this.setState({ ...this.state, showTimePickerNew: true })
+                        }}
                         title={translate('Add', this.props.root.language)}
                     />
                     {
-                        this.state[`showTimePicker${time_index.toString()}`] && (
+                        this.state['showTimePicker'] && (
+                            <DateTimePicker
+                                value={new Date(Date.parse(`1900-01-01T${this.state.chosenTime.time}`))}
+                                mode='time'
+                                is24Hour={true}
+                                timeZoneOffsetInMinutes={0}
+                                onChange={(res) => {
+                                    var state = this.state
+                                    if (res.type == 'set') {
+                                        state.medicine.schedule.timesheet.find(time => time.id == state.chosenTime.id).time = new Date(res['nativeEvent'].timestamp).toISOString().slice(11, 16)
+                                        // state.medicine.schedule.timesheet[state.chosenTimeId]
+                                    }
+                                    state['showTimePicker'] = false
+                                    state['chosenTime'] = null
+                                    this.setState(state)
+                                }}
+                            />
+                        )
+                    }
+                    {
+                        this.state['showTimePickerNew'] && (
                             <DateTimePicker
                                 value={new Date(Date.parse('1900-01-01T00:00:00'))}
                                 mode='time'
                                 is24Hour={true}
                                 timeZoneOffsetInMinutes={0}
-                                onChange={this.timePickerAddOnPress.bind(this, time_index)}
+                                onChange={(res) => {
+                                    var state = this.state
+                                    if (res.type == 'set') {
+                                        state.medicine.schedule.timesheet.push({ 'time': new Date(res['nativeEvent'].timestamp).toISOString().slice(11, 16), 'id': Math.floor(Math.random() * 2784892397) })
+                                    }
+                                    state['showTimePickerNew'] = false
+                                    this.setState(state)
+                                }}
                             />
                         )
                     }
