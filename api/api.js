@@ -170,36 +170,9 @@ export async function update_medicine(medicine) {
 }
 
 export async function create_medicine({ cure, schedule, time }) {
+    schedule['timesheet'] = time
+    cure['schedule'] = schedule
     var token = await AsyncStorage.getItem('auth_token')
-    var time_ids = []
-    for (let i = 0; i < time.length; i++) {
-        try {
-            var res = (await axios.post(`${back_end_domain}/main/time/`, time[i], {
-                headers: {
-                    'Authorization': `Token ${token}`
-                }
-            })).data
-        } catch (error) {
-            console.log(error.response)
-            throw error
-        }
-        time_ids.push(res.id)
-    }
-
-    schedule['timesheet'] = time_ids
-    try {
-        var schedule_res = (await axios.post(`${back_end_domain}/main/schedule/`, schedule, {
-            headers: {
-                'Authorization': `Token ${token}`
-            }
-        })).data
-    } catch (error) {
-        console.log(error.response)
-        throw error
-    }
-
-    cure['schedule'] = schedule_res.id
-
     try {
         return (await axios.post(`${back_end_domain}/main/cure/`, cure, {
             headers: {
