@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Alert, View, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
-import { Input, Icon, ListItem, Button, Text } from 'react-native-elements'
-import { connect } from 'react-redux';
-import translate from '../utils/translate';
-import { doctorvisit_detail, doctors_list, update_doctorvisit } from '../api/api'
-import ModalSelector from 'react-native-modal-selector'
 import DateTimePicker from '@react-native-community/datetimepicker';
+import React, { Component } from 'react';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+import { Button, Text } from 'react-native-elements';
+import ModalSelector from 'react-native-modal-selector';
+import { connect } from 'react-redux';
+import { doctors_list, doctorvisit_detail, update_doctorvisit } from '../api/api';
+import translate from '../utils/translate';
 
 
 class VisitDetail extends Component {
@@ -102,9 +102,10 @@ class VisitDetail extends Component {
                             mode='date'
                             onChange={(res) => {
                                 if (res.type == 'set') {
-                                    this.setState({ ...this.state, date: res['nativeEvent'].timestamp })
+                                    this.setState({ ...this.state, date: new Date(res['nativeEvent'].timestamp), showDatePicker: false })
+                                } else {
+                                    this.setState({ ...this.state, showDatePicker: false })
                                 }
-                                this.setState({ ...this.state, showDatePicker: false })
                             }}
                         />
                     )}
@@ -125,9 +126,10 @@ class VisitDetail extends Component {
                             timeZoneOffsetInMinutes={0}
                             onChange={(res) => {
                                 if (res.type == 'set') {
-                                    this.setState({ ...this.state, time: res['nativeEvent'].timestamp })
+                                    this.setState({ ...this.state, time: new Date(res['nativeEvent'].timestamp), showTimePicker: false })
+                                } else {
+                                    this.setState({ ...this.state, showTimePicker: false })
                                 }
-                                this.setState({ ...this.state, showTimePicker: false })
                             }}
                         />
                     )}

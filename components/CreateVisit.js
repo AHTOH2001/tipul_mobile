@@ -97,9 +97,10 @@ class CreateVisit extends Component {
                             mode='date'
                             onChange={(res) => {
                                 if (res.type == 'set') {
-                                    this.setState({ ...this.state, date: res['nativeEvent'].timestamp })
+                                    this.setState({ ...this.state, date: new Date(res['nativeEvent'].timestamp), showDatePicker: false })
+                                } else {
+                                    this.setState({ ...this.state, showDatePicker: false })
                                 }
-                                this.setState({ ...this.state, showDatePicker: false })
                             }}
                         />
                     )}
@@ -120,9 +121,10 @@ class CreateVisit extends Component {
                             timeZoneOffsetInMinutes={0}
                             onChange={(res) => {
                                 if (res.type == 'set') {
-                                    this.setState({ ...this.state, time: res['nativeEvent'].timestamp })
+                                    this.setState({ ...this.state, time: new Date(res['nativeEvent'].timestamp), showTimePicker: false })
+                                } else {
+                                    this.setState({ ...this.state, showTimePicker: false })
                                 }
-                                this.setState({ ...this.state, showTimePicker: false })
                             }}
                         />
                     )}
