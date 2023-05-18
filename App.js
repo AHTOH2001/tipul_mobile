@@ -11,6 +11,7 @@ import ReportDetail from './components/ReportDetail';
 import StatisticDetail from './components/StatisticDetail';
 import VisitDetail from './components/VisitDetail';
 import AuthScreen from './components/screens/AuthScreen';
+import CameraScreen from './components/screens/CameraScreen';
 import DoctorsScreen from './components/screens/DoctorsScreen';
 import MainScreen from './components/screens/MainScreen';
 import MedicineScreen from './components/screens/MedicineScreen';
@@ -118,6 +119,11 @@ function MyStack(props) {
         name="ReportDetail"
         component={ReportDetail}
         options={{ title: translate('Report', props.props.root.language) }}
+      />
+      <Stack.Screen
+        name="CameraScreen"
+        component={CameraScreen}
+        options={{ title: translate('Camera', props.props.root.language) }}
       />
     </Stack.Navigator>
   );

@@ -8,7 +8,15 @@
     ],
     "android": {
       "package": "com.antoha007.tipul_mobile"
-    }
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+        }
+      ]
+    ]
   },
   "name": "tipul_mobile"
 }

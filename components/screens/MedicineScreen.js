@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, StyleSheet, View, Image, ScrollView, TouchableNativeFeedback, Alert } from 'react-native';
-import { Input, Slider, Icon, Button, Text, SpeedDial, ListItem } from 'react-native-elements'
+import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet, TouchableNativeFeedback, View } from 'react-native';
+import { Button, Icon, ListItem, SpeedDial } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { resolve_back_color, resolve_front_color } from '../../utils/settings-utils';
+import { create_medicine, delete_medicine, medicine_list, take_medicine } from '../../api/api';
+import { type_choices, type_to_icon } from '../../utils/medicine';
+import { resolve_back_color } from '../../utils/settings-utils';
 import translate from '../../utils/translate';
-import { type_to_icon, type_choices } from '../../utils/medicine';
-import { medicine_list, delete_medicine, create_medicine, take_medicine } from '../../api/api';
 
 class MedicineScreen extends Component {
     constructor() {
@@ -18,6 +18,7 @@ class MedicineScreen extends Component {
         };
     }
 
+
     componentDidMount() {
         this.focusSubscription = this.props.navigation.addListener(
             'focus',
@@ -27,6 +28,20 @@ class MedicineScreen extends Component {
                 })
             }
         );
+        this.props.navigation.setOptions({
+            headerRight: () => (
+                <Button
+                    onPress={() => { this.props.navigation.navigate('CameraScreen') }}
+                    color="#fff"
+                    type='clear'
+                    icon={{
+                        name: "camera",
+                        type: 'font-awesome-5',
+                        color: 'white',
+                    }}
+                />
+            ),
+        })
     }
 
     componentWillUnmount() {
@@ -156,7 +171,7 @@ class MedicineScreen extends Component {
                     onClose={() => this.setState({ open: !this.state.open })}
                     color='#0d98ba'
                     buttonStyle={{ width: 70, height: 70, borderRadius: 120 }}
-                    background={TouchableNativeFeedback.Ripple('white', true, 150)}
+                    background={TouchableNativeFeedback.Ripple('white', true, 35)}
                 >
                     {
                         type_choices.map(type => (
