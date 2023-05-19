@@ -1,6 +1,6 @@
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { back_end_domain } from './consts'
+import axios from 'axios';
+import { back_end_domain } from './consts';
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -335,6 +335,18 @@ export async function set_settings(settings) {
     return (await axios.patch(`${back_end_domain}/managment/settings/99/`, settings, {
         headers: {
             'Authorization': `Token ${token}`
+        }
+    })).data
+}
+
+export async function upload_photo(photo_url) {
+    var token = await AsyncStorage.getItem('auth_token')
+    var formData = new FormData()
+    formData.append("file", { uri: photo_url, name: 'my_file.jpg', type: 'image/jpg' })
+    return (await axios.post(`${back_end_domain}/medicine/photos/`, formData, {
+        headers: {
+            'Authorization': `Token ${token}`,
+            'Content-Type': 'multipart/form-data',
         }
     })).data
 }

@@ -1,6 +1,8 @@
-import { Camera, CameraType, takePictureAsync } from 'expo-camera';
+import { Camera, CameraType } from 'expo-camera';
+import * as FileSystem from 'expo-file-system';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { upload_photo } from '../../api/api';
 
 export default function CameraCreen() {
   const camera = React.useRef(null);
@@ -20,6 +22,11 @@ export default function CameraCreen() {
   const takePicture = () => {
     camera.current.takePictureAsync().then((camera_picture) => {
       console.log(camera_picture)
+      FileSystem.getContentUriAsync(camera_picture.uri).then(cUri => {
+        console.log(cUri)
+        upload_photo(cUri).then(resp => console.log(resp.data))
+      })
+
     })
   }
 
@@ -28,7 +35,7 @@ export default function CameraCreen() {
       <Camera style={styles.camera} type={CameraType.back} ImageType={"png"} ratio={'16:9'} ref={camera}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={() => takePicture()}>
-            <Text style={styles.text}>Take picture</Text>
+            <Text style={styles.text}>Take a picture</Text>
           </TouchableOpacity>
         </View>
       </Camera>
@@ -49,6 +56,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'transparent',
     margin: 64,
+    paddingBottom: 90
   },
   button: {
     flex: 1,
