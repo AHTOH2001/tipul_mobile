@@ -1,13 +1,18 @@
 import { Camera, CameraType } from 'expo-camera';
 import * as FileSystem from 'expo-file-system';
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
-import { upload_photo } from '../../api/api';
+import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSelector } from 'react-redux';
+import { take_medicine, upload_photo } from '../../api/api';
+import translate from '../../utils/translate';
+
+const selectLanguage = (state) => state.root.language
 
 export default function CameraCreen() {
   const camera = React.useRef(null);
   const [isLoading, setIsLoading] = useState(false)
   const [permission, requestPermission] = Camera.useCameraPermissions();
+  const language = useSelector(selectLanguage)
 
   if (!permission) {
     // Camera permissions are still loading
@@ -19,7 +24,24 @@ export default function CameraCreen() {
     requestPermission()
     return <View />;
   }
-
+  const takeMed = (medicine) => {
+    console.log('Taking med', medicine.title)
+    take_medicine(medicine.id).then((resp) => {
+      console.log(resp)
+      if (resp.is_late) {
+        Alert.alert(translate('Medicine taken, but not in time', language))
+      } else {
+        Alert.alert(translate('Medicine taken, thanks for updates', language))
+      }
+    }).catch(error => {
+      console.log(error.response.data)
+      if ('error' in error.response.data) {
+        Alert.alert(translate('You should not take this medicine', language))
+      } else {
+        console.log(error.response)
+      }
+    })
+  }
   const takePicture = () => {
     setIsLoading(true)
     camera.current.takePictureAsync().then((camera_picture) => {
@@ -27,6 +49,25 @@ export default function CameraCreen() {
       FileSystem.getContentUriAsync(camera_picture.uri).then(cUri => {
         console.log(cUri)
         upload_photo(cUri).then(resp => {
+          if (resp.length == 0 || resp[0].score < 30) {
+            Alert.alert(translate('Medicine not found :(', language), translate('Try hold your phone still', language))
+          } else if (resp[0].score > 80) {
+            takeMed(resp[0])
+          } else {
+            Alert.alert(resp[0].title, translate('Take medicine?', language), [
+              {
+                text: translate('take', language),
+                onPress: () => {
+                  takeMed(resp[0])
+                },
+              },
+              {
+                text: translate('cancel', language),
+                style: 'cancel'
+              },
+            ]
+            )
+          }
           console.log('RESP', resp)
         }).finally(() => setIsLoading(false))
       })

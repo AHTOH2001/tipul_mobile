@@ -71,7 +71,7 @@ class MedicineScreen extends Component {
     }
 
     onPressTakeMed(medicine) {
-        Alert.alert(translate('Take medicine?', this.props.root.language), medicine.title, [
+        Alert.alert(medicine.title, translate('Take medicine?', this.props.root.language), [
             {
                 text: translate('take', this.props.root.language),
                 onPress: () => {

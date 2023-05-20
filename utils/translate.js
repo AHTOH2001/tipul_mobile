@@ -96,6 +96,9 @@ let russian_dictionary = {
     'pcs': 'шт',
     'ml': 'мл',
     'Select a doctor': 'Выбрать доктора',
+    'Camera': 'Камера',
+    'Medicine not found :(': 'Медикамент не найден :(',
+    'Try hold your phone still': 'Постарайтесь держать телефон ровнее'
 }
 
 const translate = (text, language) => {
