@@ -342,7 +342,8 @@ export async function set_settings(settings) {
 export async function upload_photo(photo_url) {
     var token = await AsyncStorage.getItem('auth_token')
     var formData = new FormData()
-    formData.append("file", { uri: photo_url, name: 'my_file.jpg', type: 'image/jpg' })
+    let filename = photo_url.split('/').pop();
+    formData.append("file", { uri: photo_url, name: filename, type: 'image/jpg' })
     return (await axios.post(`${back_end_domain}/medicine/photos/`, formData, {
         headers: {
             'Authorization': `Token ${token}`,

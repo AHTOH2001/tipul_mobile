@@ -1,11 +1,12 @@
 import { Camera, CameraType } from 'expo-camera';
 import * as FileSystem from 'expo-file-system';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import { upload_photo } from '../../api/api';
 
 export default function CameraCreen() {
   const camera = React.useRef(null);
+  const [isLoading, setIsLoading] = useState(false)
   const [permission, requestPermission] = Camera.useCameraPermissions();
 
   if (!permission) {
@@ -20,13 +21,15 @@ export default function CameraCreen() {
   }
 
   const takePicture = () => {
+    setIsLoading(true)
     camera.current.takePictureAsync().then((camera_picture) => {
       console.log(camera_picture)
       FileSystem.getContentUriAsync(camera_picture.uri).then(cUri => {
         console.log(cUri)
-        upload_photo(cUri).then(resp => console.log(resp.data))
+        upload_photo(cUri).then(resp => {
+          console.log('RESP', resp)
+        }).finally(() => setIsLoading(false))
       })
-
     })
   }
 
@@ -34,9 +37,15 @@ export default function CameraCreen() {
     <View style={styles.container}>
       <Camera style={styles.camera} type={CameraType.back} ImageType={"png"} ratio={'16:9'} ref={camera}>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={() => takePicture()}>
-            <Text style={styles.text}>Take a picture</Text>
-          </TouchableOpacity>
+          {isLoading ?
+            <TouchableOpacity style={styles.button}>
+              <ActivityIndicator size="large" color="#9E9E9E" />
+            </TouchableOpacity>
+            :
+            <TouchableOpacity style={styles.button} onPress={() => takePicture()}>
+              <Text style={styles.text}>Take a picture</Text>
+            </TouchableOpacity>
+          }
         </View>
       </Camera>
     </View>
