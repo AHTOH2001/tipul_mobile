@@ -98,7 +98,14 @@ let russian_dictionary = {
     'Select a doctor': 'Выбрать доктора',
     'Camera': 'Камера',
     'Medicine not found :(': 'Медикамент не найден :(',
-    'Try hold your phone still': 'Постарайтесь держать телефон ровнее'
+    'Try hold your phone still': 'Постарайтесь держать телефон ровнее',
+    'Get my code': 'Получить мой код',
+    'Copied secret code': 'Секретный код скопирован',
+    'Now you can send this code to your guardian': 'Теперь вы можете отправить Ваш код опекуну',
+    'My code': 'Мой код',
+    'my id': 'мой id',
+    'Code': 'Код',
+    'ID': 'ID',
 }
 
 const translate = (text, language) => {

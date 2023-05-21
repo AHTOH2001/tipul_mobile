@@ -1,9 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Clipboard from 'expo-clipboard';
 import React, { Component } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Icon, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { set_settings } from '../../api/api';
+import { get_my_code, set_settings } from '../../api/api';
 import { change_font_size, change_language, change_theme } from '../../redux/action/root';
 import translate from '../../utils/translate';
 
@@ -19,7 +20,9 @@ class SettingsScreen extends Component {
             font_size: 0,
             theme: '',
             key: '',
-            theme_expanded: false
+            theme_expanded: false,
+            my_code: '',
+            my_id: null,
         };
     }
 
@@ -114,6 +117,34 @@ class SettingsScreen extends Component {
                         </ListItem>
                     ))}
                 </ListItem.Accordion>
+                {this.state.my_code
+                    ?
+                    <Button
+                        buttonStyle={styles.button}
+                        titleStyle={styles.button_text}
+                        onPress={() => {
+                            let code_message = `${translate('My code', this.props.root.language)}: ${this.state.my_code}, ${translate('my id', this.props.root.language)}: ${this.state.my_id}`
+                            Clipboard.setStringAsync(code_message).then((is_copied) => {
+                                if (is_copied) {
+                                    Alert.alert(translate('Copied secret code', this.props.root.language), translate('Now you can send this code to your guardian', this.props.root.language))
+                                }
+                            });
+                        }}
+                        title={`${translate('Code', this.props.root.language)}: ${this.state.my_code}\n${translate('ID', this.props.root.language)}: ${this.state.my_id}`}
+                    />
+                    :
+                    <Button
+                        buttonStyle={styles.button}
+                        titleStyle={styles.button_text}
+                        onPress={() => {
+                            get_my_code().then(resp => {
+                                this.setState({ ...this.state, my_code: resp.code, my_id: resp.id })
+                            })
+                        }}
+                        title={translate('Get my code', this.state.chosen_language)}
+                    />
+                }
+
                 <Button
                     buttonStyle={styles.button}
                     titleStyle={styles.button_text}

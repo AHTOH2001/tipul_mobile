@@ -351,3 +351,12 @@ export async function upload_photo(photo_url) {
         }
     })).data
 }
+
+export async function get_my_code() {
+    var token = await AsyncStorage.getItem('auth_token')
+    return (await axios.get(`${back_end_domain}/managment/code/`, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })).data
+}

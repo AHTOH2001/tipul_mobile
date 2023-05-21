@@ -1,11 +1,11 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { Component } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, View } from 'react-native';
-import { Input, Slider, Icon, Button, TouchableOpacity, Text } from 'react-native-elements'
+import { Button, Input } from 'react-native-elements';
 import { connect } from 'react-redux';
+import { register } from '../../api/api';
 import { resolve_back_color, resolve_front_color } from '../../utils/settings-utils';
 import translate from '../../utils/translate';
-import { register } from '../../api/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class RegistrationScreen extends Component {
     constructor() {
