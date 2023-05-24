@@ -6,6 +6,17 @@ import { create_medicine, delete_medicine, medicine_list, take_medicine } from '
 import { type_choices, type_to_icon } from '../../utils/medicine';
 import { resolve_back_color } from '../../utils/settings-utils';
 import translate from '../../utils/translate';
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+    }),
+});
 
 class MedicineScreen extends Component {
     constructor() {
@@ -14,12 +25,14 @@ class MedicineScreen extends Component {
         this.state = {
             isLoading: true,
             medicines: [],
-            open: false
+            open: false,
+            expoPushToken: '',
         };
     }
 
 
     componentDidMount() {
+        registerForPushNotificationsAsync().then(token => this.setState({...this.state, expoPushToken: token}))
         this.focusSubscription = this.props.navigation.addListener(
             'focus',
             () => {
@@ -167,7 +180,10 @@ class MedicineScreen extends Component {
                     isOpen={this.state.open}
                     icon={{ name: 'plus', type: 'antdesign', color: 'white' }}
                     openIcon={{ name: 'close', color: '#fff' }}
-                    onOpen={() => this.setState({ open: !this.state.open })}
+                    onOpen={() => {
+                        schedulePushNotification()
+                        this.setState({ open: !this.state.open })
+                    }}
                     onClose={() => this.setState({ open: !this.state.open })}
                     color='#0d98ba'
                     buttonStyle={{ width: 70, height: 70, borderRadius: 120 }}
@@ -248,6 +264,49 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
 })
+
+async function schedulePushNotification() {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "You've got mail! 📬",
+        body: 'Here is the notification body',
+        data: { data: 'goes here' },
+      },
+      trigger: { seconds: 2 },
+    });
+  }
+
+async function registerForPushNotificationsAsync() {
+    let token;
+
+    if (Platform.OS === 'android') {
+        await Notifications.setNotificationChannelAsync('default', {
+            name: 'default',
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: '#FF231F7C',
+        });
+    }
+
+    if (Device.isDevice) {
+        const { status: existingStatus } = await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+            alert('Failed to get push token for push notification!');
+            return;
+        }
+        token = (await Notifications.getExpoPushTokenAsync()).data;
+        console.log(token);
+    } else {
+        alert('Must use physical device for Push Notifications');
+    }
+
+    return token;
+}
 
 const mapStateToProps = state => {
     return {
