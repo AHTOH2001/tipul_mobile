@@ -11,7 +11,8 @@
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
-      ]
+      ],
+      "package": "com.antoha007.tipul_mobile"
     },
     "plugins": [
       [

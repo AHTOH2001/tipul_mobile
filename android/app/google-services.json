@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "790974388416",
-    "project_id": "ppo-lab2-tabata-timer",
-    "storage_bucket": "ppo-lab2-tabata-timer.appspot.com"
+    "project_number": "617718271193",
+    "project_id": "tipul-mobile",
+    "storage_bucket": "tipul-mobile.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:790974388416:android:bf067ba15bb058ce36f525",
+        "mobilesdk_app_id": "1:617718271193:android:bdff6af938585e5e7682c8",
         "android_client_info": {
           "package_name": "com.antoha007.tipul_mobile"
         }
       },
       "oauth_client": [
         {
-          "client_id": "790974388416-7b38eqco09chvn4lgoe72hb5de9ng4vk.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.antoha007.tipul_mobile",
-            "certificate_hash": "7f26fd233077139e01cb0fad5a9a12c6e3ef8fa2"
-          }
-        },
-        {
-          "client_id": "790974388416-s4o6ttvtpa3vvboo0vnc0e00teo82bm6.apps.googleusercontent.com",
+          "client_id": "617718271193-5a315miunb2d86o1gnvmqrkkdttk8emt.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA4p5gGA3cjBWdPL2bYJff8_DCdLEF6cCM"
+          "current_key": "AIzaSyDZultCd7_yCgYDtzikMXi-KsXBEFyrPgk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "790974388416-s4o6ttvtpa3vvboo0vnc0e00teo82bm6.apps.googleusercontent.com",
+              "client_id": "617718271193-5a315miunb2d86o1gnvmqrkkdttk8emt.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
