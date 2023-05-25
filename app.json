@@ -24,8 +24,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "f43c540a-44ac-455c-ba5f-0cf439874a71",
-        "buildType": "apk"
+        "projectId": "f43c540a-44ac-455c-ba5f-0cf439874a71"
       }
     }
   },
