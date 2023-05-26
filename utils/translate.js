@@ -106,6 +106,8 @@ let russian_dictionary = {
     'my id': 'мой id',
     'Code': 'Код',
     'ID': 'ID',
+    'Do not forget to take': 'Не забудьте принять',
+    'You should take it at': 'Вам нужно принять его в',
 }
 
 const translate = (text, language) => {

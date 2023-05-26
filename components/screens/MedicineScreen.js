@@ -1,3 +1,5 @@
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
 import React, { Component } from 'react';
 import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet, TouchableNativeFeedback, View } from 'react-native';
 import { Button, Icon, ListItem, SpeedDial } from 'react-native-elements';
@@ -6,8 +8,6 @@ import { create_medicine, delete_medicine, medicine_list, take_medicine } from '
 import { type_choices, type_to_icon } from '../../utils/medicine';
 import { resolve_back_color } from '../../utils/settings-utils';
 import translate from '../../utils/translate';
-import * as Device from 'expo-device';
-import * as Notifications from 'expo-notifications';
 
 
 Notifications.setNotificationHandler({
@@ -32,12 +32,15 @@ class MedicineScreen extends Component {
 
 
     componentDidMount() {
-        registerForPushNotificationsAsync().then(token => this.setState({...this.state, expoPushToken: token}))
+        registerForPushNotificationsAsync().then(token => this.setState({ ...this.state, expoPushToken: token }))
         this.focusSubscription = this.props.navigation.addListener(
             'focus',
             () => {
                 medicine_list().then(resp => {
                     this.setState({ ...this.state, medicines: resp, isLoading: false })
+                    Notifications.cancelAllScheduledNotificationsAsync().then(() => {
+                        schedulePushNotificationForMedicines(resp, this.props.root.language)
+                    })
                 })
             }
         );
@@ -180,10 +183,7 @@ class MedicineScreen extends Component {
                     isOpen={this.state.open}
                     icon={{ name: 'plus', type: 'antdesign', color: 'white' }}
                     openIcon={{ name: 'close', color: '#fff' }}
-                    onOpen={() => {
-                        schedulePushNotification()
-                        this.setState({ open: !this.state.open })
-                    }}
+                    onOpen={() => this.setState({ open: !this.state.open })}
                     onClose={() => this.setState({ open: !this.state.open })}
                     color='#0d98ba'
                     buttonStyle={{ width: 70, height: 70, borderRadius: 120 }}
@@ -265,16 +265,26 @@ const styles = StyleSheet.create({
     },
 })
 
-async function schedulePushNotification() {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "You've got mail! 📬",
-        body: 'Here is the notification body',
-        data: { data: 'goes here' },
-      },
-      trigger: { seconds: 2 },
-    });
-  }
+async function schedulePushNotificationForMedicines(medicines, lang) {
+    for (med of medicines) {
+        for ({ time } of med.schedule.timesheet) {
+            const trigger = new Date(Date.parse(`1900-01-10T${time}`) - 10 * 60 * 1000); // 10 mins before due time
+            console.log(med.title, time.slice(0, 5))
+            await Notifications.scheduleNotificationAsync({
+                content: {
+                    title: translate('Do not forget to take', lang) + ' ' + med.title,
+                    body: translate('You should take it at', lang) + ' ' + time.slice(0, 5),
+                },
+                identifier: `${med.title} ${time}`,
+                trigger: {
+                    hour: trigger.getHours(),
+                    minute: trigger.getMinutes(),
+                    repeats: true,
+                },
+            });
+        }
+    }
+}
 
 async function registerForPushNotificationsAsync() {
     let token;
