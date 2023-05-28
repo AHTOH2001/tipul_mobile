@@ -1,14 +1,14 @@
+import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import React, { Component } from 'react';
 import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet, TouchableNativeFeedback, View } from 'react-native';
-import { Button, Icon, ListItem, SpeedDial } from 'react-native-elements';
+import { Button, FAB, Icon, ListItem, SpeedDial } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { create_medicine, delete_medicine, medicine_list, take_medicine } from '../../api/api';
 import { type_choices, type_to_icon } from '../../utils/medicine';
 import { resolve_back_color } from '../../utils/settings-utils';
 import translate from '../../utils/translate';
-import { FAB } from 'react-native-elements';
 
 
 Notifications.setNotificationHandler({
@@ -23,16 +23,19 @@ class MedicineScreen extends Component {
     constructor() {
         super();
         this.myRef = React.createRef();
+        console.log('CONSTRUCTOR')
         this.state = {
             isLoading: true,
             medicines: [],
             is_open_add: false,
             expoPushToken: '',
+            show_date_picker: false,
         };
     }
 
 
     componentDidMount() {
+        console.log('DID MOUNT')
         registerForPushNotificationsAsync().then(token => this.setState({ ...this.state, expoPushToken: token }))
         this.focusSubscription = this.props.navigation.addListener(
             'focus',
@@ -213,7 +216,26 @@ class MedicineScreen extends Component {
                     color='#0d98ba'
                     buttonStyle={{ width: 70, height: 70, borderRadius: 120 }}
                     background={TouchableNativeFeedback.Ripple('white', true, 35)}
+                    onPress={() => this.setState({ ...this.state, show_date_picker: true })}
                 />
+                {
+                    this.state.show_date_picker
+                        ?
+                        <DateTimePicker
+                            value={new Date()}
+                            mode='date'
+                            onChange={(res) => {
+                                if (res.type == 'set') {
+                                    this.props.navigation.navigate('MedsByDateScreen', { date: res['nativeEvent'].timestamp })
+                                    this.setState({ ...this.state, show_date_picker: false })
+                                } else {
+                                    this.setState({ ...this.state, show_date_picker: false })
+                                }
+                            }}
+                        />
+                        :
+                        null
+                }
             </View>
         )
     }

@@ -38,7 +38,7 @@ class DosctorsScreen extends Component {
         Alert.alert(translate('Doctor', this.props.root.language) + ' ' + doctor.first_name + ' ' + doctor.last_name[0] + '.', null,
             [
                 {
-                    text: 'delete',
+                    text: translate('delete', this.props.root.language),
                     onPress: () => {
                         var state = this.state
                         var doc_pos = state.doctors.findIndex(doc => doc.id == doctor.id)
@@ -49,7 +49,7 @@ class DosctorsScreen extends Component {
                     style: 'destructive'
                 },
                 {
-                    text: 'cancel',
+                    text: translate('cancel', this.props.root.language),
                     style: 'cancel'
                 },
             ])
