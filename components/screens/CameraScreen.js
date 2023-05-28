@@ -29,14 +29,14 @@ export default function CameraCreen() {
     take_medicine(medicine.id).then((resp) => {
       console.log(resp)
       if (resp.is_late) {
-        Alert.alert(translate('Medicine taken, but not in time', language))
+        Alert.alert(translate('Medicine taken, but not in time', language), medicine.title)
       } else {
-        Alert.alert(translate('Medicine taken, thanks for updates', language))
+        Alert.alert(translate('Medicine taken, thanks for updates', language), medicine.title)
       }
     }).catch(error => {
       console.log(error.response.data)
       if ('error' in error.response.data) {
-        Alert.alert(translate('You should not take this medicine', language))
+        Alert.alert(translate('You should not take this medicine', language), medicine.title)
       } else {
         console.log(error.response)
       }
