@@ -51,7 +51,7 @@ export async function medicine_list() {
     //     ]
     // }
     try {
-        return (await axios.get(`${back_end_domain}/main/cure/`, {
+        return (await axios.get(`${back_end_domain}/main/cure/?as_patient`, {
             headers: {
                 'Authorization': `Token ${token}`
             }
@@ -90,7 +90,7 @@ export async function medicine_detail(medicine_id) {
     //     },
     // }
     try {
-        return (await axios.get(`${back_end_domain}/main/cure/${medicine_id}/`, {
+        return (await axios.get(`${back_end_domain}/main/cure/${medicine_id}/?as_patient`, {
             headers: {
                 'Authorization': `Token ${token}`
             }
@@ -107,7 +107,7 @@ export async function update_medicine(medicine) {
     var token = await AsyncStorage.getItem('auth_token')
     console.log(medicine)
     try {
-        return (await axios.put(`${back_end_domain}/main/cure/${medicine.id}/`, medicine, {
+        return (await axios.put(`${back_end_domain}/main/cure/${medicine.id}/?as_patient`, medicine, {
             headers: {
                 'Authorization': `Token ${token}`
             }
@@ -124,7 +124,7 @@ export async function create_medicine({ cure, schedule, time }) {
     cure['schedule'] = schedule
     var token = await AsyncStorage.getItem('auth_token')
     try {
-        return (await axios.post(`${back_end_domain}/main/cure/`, cure, {
+        return (await axios.post(`${back_end_domain}/main/cure/?as_patient`, cure, {
             headers: {
                 'Authorization': `Token ${token}`
             }
@@ -137,7 +137,7 @@ export async function create_medicine({ cure, schedule, time }) {
 
 export async function delete_medicine(id) {
     var token = await AsyncStorage.getItem('auth_token')
-    await axios.delete(`${back_end_domain}/main/cure/${id}/`, {
+    await axios.delete(`${back_end_domain}/main/cure/${id}/?as_patient`, {
         headers: {
             'Authorization': `Token ${token}`
         }
@@ -147,7 +147,7 @@ export async function delete_medicine(id) {
 export async function doctors_list() {
     var token = await AsyncStorage.getItem('auth_token')
     try {
-        return (await axios.get(`${back_end_domain}/managment/doctor/`, {
+        return (await axios.get(`${back_end_domain}/managment/doctor/?as_patient`, {
             headers: {
                 'Authorization': `Token ${token}`
             }
@@ -162,7 +162,7 @@ export async function doctors_list() {
 
 export async function delete_doctor(id) {
     var token = await AsyncStorage.getItem('auth_token')
-    await axios.delete(`${back_end_domain}/managment/doctor/${id}/`, {
+    await axios.delete(`${back_end_domain}/managment/doctor/${id}/?as_patient`, {
         headers: {
             'Authorization': `Token ${token}`
         }
@@ -171,7 +171,7 @@ export async function delete_doctor(id) {
 
 export async function create_doctor(doctor) {
     var token = await AsyncStorage.getItem('auth_token')
-    return (await axios.post(`${back_end_domain}/managment/doctor/`, doctor, {
+    return (await axios.post(`${back_end_domain}/managment/doctor/?as_patient`, doctor, {
         headers: {
             'Authorization': `Token ${token}`
         }
@@ -180,7 +180,7 @@ export async function create_doctor(doctor) {
 
 export async function doctor_detail(id) {
     var token = await AsyncStorage.getItem('auth_token')
-    return (await axios.get(`${back_end_domain}/managment/doctor/${id}/`, {
+    return (await axios.get(`${back_end_domain}/managment/doctor/${id}/?as_patient`, {
         headers: {
             'Authorization': `Token ${token}`
         }
@@ -189,7 +189,7 @@ export async function doctor_detail(id) {
 
 export async function update_doctor(doctor) {
     var token = await AsyncStorage.getItem('auth_token')
-    return (await axios.put(`${back_end_domain}/managment/doctor/${doctor.id}/`, doctor, {
+    return (await axios.put(`${back_end_domain}/managment/doctor/${doctor.id}/?as_patient`, doctor, {
         headers: {
             'Authorization': `Token ${token}`
         }
@@ -219,25 +219,10 @@ export async function create_patient(first_name, last_name, age, phone) {
     })).data
 }
 
-export async function create_guardian(first_name, last_name, relationship, phone) {
-    var token = await AsyncStorage.getItem('auth_token')
-    return (await axios.post(`${back_end_domain}/managment/guardians/`, {
-        "relationship": relationship,
-        "first_name": first_name,
-        "last_name": last_name,
-        "phone": phone
-    }, {
-        headers: {
-            'Authorization': `Token ${token}`
-        }
-    })).data
-}
-
-
 export async function doctorvisits_list() {
     var token = await AsyncStorage.getItem('auth_token')
     try {
-        return (await axios.get(`${back_end_domain}/managment/doctorvisit/`, {
+        return (await axios.get(`${back_end_domain}/managment/doctorvisit/?as_patient`, {
             headers: {
                 'Authorization': `Token ${token}`
             }
@@ -252,7 +237,7 @@ export async function doctorvisits_list() {
 
 export async function delete_doctorvisit(id) {
     var token = await AsyncStorage.getItem('auth_token')
-    await axios.delete(`${back_end_domain}/managment/doctorvisit/${id}/`, {
+    await axios.delete(`${back_end_domain}/managment/doctorvisit/${id}/?as_patient`, {
         headers: {
             'Authorization': `Token ${token}`
         }
@@ -261,7 +246,7 @@ export async function delete_doctorvisit(id) {
 
 export async function create_doctorvisit(doctor_id, date) {
     var token = await AsyncStorage.getItem('auth_token')
-    return (await axios.post(`${back_end_domain}/managment/doctorvisit/`, {
+    return (await axios.post(`${back_end_domain}/managment/doctorvisit/?as_patient`, {
         doctor: doctor_id,
         date: date
     }, {
@@ -282,7 +267,7 @@ export async function doctorvisit_detail(id) {
 
 export async function update_doctorvisit(visit_id, doctor_id, date) {
     var token = await AsyncStorage.getItem('auth_token')
-    return (await axios.put(`${back_end_domain}/managment/doctorvisit/${visit_id}/`, {
+    return (await axios.put(`${back_end_domain}/managment/doctorvisit/${visit_id}/?as_patient`, {
         'doctor': doctor_id,
         'date': date,
     }, {

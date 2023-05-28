@@ -97,7 +97,7 @@ class AuthScreen extends Component {
             if (value === null) {
                 this.inputValueUpdate(false, 'isLoading')
             } else {
-                console.log('Auth token found in auth screen')
+                console.log('Auth token found in auth screen: ', value)
                 this.props.navigation.reset({
                     index: 0,
                     routes: [

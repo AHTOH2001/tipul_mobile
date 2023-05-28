@@ -43,6 +43,7 @@ class MainScreen extends Component {
                     } else {
                         get_settings().then(settings_resp => {
                             settings = settings_resp[0]
+                            console.log('Settings: ', settings_resp)
                             AsyncStorage.setItem('settings', JSON.stringify(settings))
                             this.props.dispatch(change_theme(settings.color))
                             this.props.dispatch(change_language(settings.language))
