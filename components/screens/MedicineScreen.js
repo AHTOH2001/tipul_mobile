@@ -8,6 +8,7 @@ import { create_medicine, delete_medicine, medicine_list, take_medicine } from '
 import { type_choices, type_to_icon } from '../../utils/medicine';
 import { resolve_back_color } from '../../utils/settings-utils';
 import translate from '../../utils/translate';
+import { FAB } from 'react-native-elements';
 
 
 Notifications.setNotificationHandler({
@@ -25,7 +26,7 @@ class MedicineScreen extends Component {
         this.state = {
             isLoading: true,
             medicines: [],
-            open: false,
+            is_open_add: false,
             expoPushToken: '',
         };
     }
@@ -141,6 +142,7 @@ class MedicineScreen extends Component {
     }
 
     render() {
+        console.log(this.state)
         if (this.state.isLoading) {
             return (
                 <View style={{ ...styles.preloader, backgroundColor: resolve_back_color(this.props) }}>
@@ -180,11 +182,11 @@ class MedicineScreen extends Component {
                     }
                 </ScrollView >
                 <SpeedDial
-                    isOpen={this.state.open}
+                    isOpen={this.state.is_open_add}
                     icon={{ name: 'plus', type: 'antdesign', color: 'white' }}
                     openIcon={{ name: 'close', color: '#fff' }}
-                    onOpen={() => this.setState({ open: !this.state.open })}
-                    onClose={() => this.setState({ open: !this.state.open })}
+                    onOpen={() => this.setState({ is_open_add: !this.state.is_open_add })}
+                    onClose={() => this.setState({ is_open_add: !this.state.is_open_add })}
                     color='#0d98ba'
                     buttonStyle={{ width: 70, height: 70, borderRadius: 120 }}
                     background={TouchableNativeFeedback.Ripple('white', true, 35)}
@@ -197,7 +199,7 @@ class MedicineScreen extends Component {
                                 title={translate(type, this.props.root.language)}
                                 key={type}
                                 onPress={() => {
-                                    this.setState({ ...this.state, open: false })
+                                    this.setState({ ...this.state, is_open_add: false })
                                     this.create_empty_medicine(type)
                                     setTimeout(() => this.myRef.current.scrollToEnd({ animated: true }), 200)
                                 }}
@@ -205,6 +207,13 @@ class MedicineScreen extends Component {
                         ))
                     }
                 </SpeedDial>
+                <FAB
+                    icon={{ name: 'calendar-alt', type: 'font-awesome-5', color: 'white', size: 24 }}
+                    placement='left'
+                    color='#0d98ba'
+                    buttonStyle={{ width: 70, height: 70, borderRadius: 120 }}
+                    background={TouchableNativeFeedback.Ripple('white', true, 35)}
+                />
             </View>
         )
     }
