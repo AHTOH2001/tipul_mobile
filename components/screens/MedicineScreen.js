@@ -23,7 +23,6 @@ class MedicineScreen extends Component {
     constructor() {
         super();
         this.myRef = React.createRef();
-        console.log('CONSTRUCTOR')
         this.state = {
             isLoading: true,
             medicines: [],
@@ -35,8 +34,13 @@ class MedicineScreen extends Component {
 
 
     componentDidMount() {
-        console.log('DID MOUNT')
         registerForPushNotificationsAsync().then(token => this.setState({ ...this.state, expoPushToken: token }))
+        medicine_list().then(resp => {
+            this.setState({ ...this.state, medicines: resp, isLoading: false })
+            Notifications.cancelAllScheduledNotificationsAsync().then(() => {
+                schedulePushNotificationForMedicines(resp, this.props.root.language)
+            })
+        })
         this.focusSubscription = this.props.navigation.addListener(
             'focus',
             () => {
