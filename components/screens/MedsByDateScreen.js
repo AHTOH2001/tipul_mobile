@@ -3,18 +3,16 @@ import React, { Component } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 import { Icon, ListItem, Text } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { list_taken_med } from '../../api/api';
+import { list_meds_by_date } from '../../api/api';
 import { type_to_icon } from '../../utils/medicine';
 import translate from '../../utils/translate';
 
 class MedsByDateScreen extends Component {
     constructor() {
         super();
-        this.myRef = React.createRef();
         this.state = {
             isLoading: true,
-            taken: [],
-            missed: [],
+            meds: [],
         };
     }
 
@@ -24,8 +22,8 @@ class MedsByDateScreen extends Component {
             () => {
                 var timestamp = this.props.route.params.date
 
-                list_taken_med(new Date(timestamp).toISOString().slice(0, -1)).then(resp => {
-                    this.setState({ ...this.state, isLoading: false, taken: resp.taken, missed: resp.missed })
+                list_meds_by_date(new Date(timestamp).toISOString().slice(0, -1)).then(resp => {
+                    this.setState({ ...this.state, isLoading: false, meds: resp })
                 })
             }
         );
@@ -46,22 +44,41 @@ class MedsByDateScreen extends Component {
         return (
             <ScrollView style={styles.container}>
                 {
-                    this.state.taken.length != 0 && (
-                        <View style={styles.mainGroup} ref={this.myRef}>
-                            <Text style={{ flex: 1, textAlign: 'center', fontSize: 20, textAlignVertical: 'center', minWidth: '10%' }}>{translate('Taken meds', this.props.root.language) + ':'}</Text>
+                    this.state.meds.length != 0 && (
+                        <View style={styles.mainGroup}>
                             {
-                                this.state.taken.map(taken_med => (
+                                this.state.meds.map(med => (
                                     <ListItem
                                         style={{ borderRadius: 10, margin: 10 }}
-                                        containerStyle={taken_med.is_late ? styles.late : styles.taken}
-                                        onPress={() => { this.props.navigation.navigate('MedicineDetail', { medicine: taken_med.med }) }}
-                                        key={taken_med.id}
+                                        containerStyle={styles.button}
+                                        onPress={() => { this.props.navigation.navigate('MedicineDetail', { medicine: med }) }}
+                                        key={med.id}
                                     >
                                         <ListItem.Content style={styles.row}>
-                                            <Icon name={type_to_icon[taken_med.med.type]} type='font-awesome-5' size={40} color='white' style={{ flex: 1, justifyContent: 'center' }} />
+                                            <Icon name={type_to_icon[med.type]} type='font-awesome-5' size={40} color='white' style={{ flex: 1, justifyContent: 'center' }} />
                                             <View>
-                                                <ListItem.Title style={styles.button_text}>{taken_med.med.title}</ListItem.Title>
-                                                <ListItem.Title style={{ color: 'white', paddingLeft: 60 }}>{moment(taken_med.date).format('DD.MM.YYYY')} {translate('at', this.props.root.language)} {moment(taken_med.date).format('h:mm')}</ListItem.Title>
+                                                <ListItem.Title style={styles.button_text}>{med.title}</ListItem.Title>
+                                                {med.schedule.timesheet.map(({ time, id }) => {
+                                                    let timedelta = (moment(time, 'HH:mm').add(59, 'seconds') - moment()) / 1000
+                                                    let hours = Math.trunc(timedelta / 60 / 60)
+                                                    let minutes = Math.trunc(timedelta / 60)
+                                                    let delta_human = ''
+                                                    if (timedelta < 0) {
+                                                        delta_human = translate('In the past', this.props.root.language)
+                                                    } else if (minutes == 0) {
+                                                        delta_human = translate('It is time to take', this.props.root.language)
+                                                    } else if (hours == 0) {
+                                                        delta_human = translate('In', this.props.root.language) + ' ' + minutes.toString() + ' ' + translate('min', this.props.root.language)
+                                                    } else {
+                                                        delta_human = translate('In', this.props.root.language) + ' ' + hours.toString() + ' ' + translate('h', this.props.root.language)
+                                                    }
+                                                    return (
+                                                        <ListItem.Title style={{ color: 'white', paddingLeft: 60 }} key={id}>
+                                                            {translate('At', this.props.root.language)} {time.slice(0, 5)} ({delta_human})
+                                                        </ListItem.Title>
+                                                    )
+                                                }
+                                                )}
                                             </View>
                                         </ListItem.Content>
                                         <ListItem.Chevron />
@@ -72,41 +89,8 @@ class MedsByDateScreen extends Component {
                     )
                 }
                 {
-                    this.state.taken.length == 0 && (
-                        <Text style={{ flex: 1, textAlign: 'center', fontSize: 20, textAlignVertical: 'center', minWidth: '10%' }}>{translate('No taken meds in this day', this.props.root.language)}</Text>
-                    )
-                }
-
-
-                {
-                    this.state.missed.length != 0 && (
-                        <View style={styles.mainGroup} ref={this.myRef}>
-                            <Text style={{ flex: 1, textAlign: 'center', fontSize: 20, textAlignVertical: 'center', minWidth: '10%' }}>{translate('Missed meds', this.props.root.language) + ':'}</Text>
-                            {
-                                this.state.missed.map(missed_med => (
-                                    <ListItem
-                                        style={{ borderRadius: 10, margin: 10 }}
-                                        containerStyle={styles.missed}
-                                        onPress={() => { this.props.navigation.navigate('MedicineDetail', { medicine: missed_med.med }) }}
-                                        key={missed_med.id}
-                                    >
-                                        <ListItem.Content style={styles.row}>
-                                            <Icon name={type_to_icon[missed_med.med.type]} type='font-awesome-5' size={40} color='white' style={{ flex: 1, justifyContent: 'center' }} />
-                                            <View>
-                                                <ListItem.Title style={styles.button_text}>{missed_med.med.title}</ListItem.Title>
-                                                <ListItem.Title style={{ color: 'white', paddingLeft: 60 }}>{moment(missed_med.date).format('DD.MM.YYYY')} {translate('at', this.props.root.language)} {moment(missed_med.date).format('h:mm')}</ListItem.Title>
-                                            </View>
-                                        </ListItem.Content>
-                                        <ListItem.Chevron />
-                                    </ListItem>
-                                ))
-                            }
-                        </View >
-                    )
-                }
-                {
-                    this.state.missed.length == 0 && (
-                        <Text style={{ flex: 1, textAlign: 'center', fontSize: 20, textAlignVertical: 'center', minWidth: '10%' }}>{translate('No missed meds in this day', this.props.root.language)}</Text>
+                    this.state.meds.length == 0 && (
+                        <Text style={{ flex: 1, textAlign: 'center', fontSize: 20, textAlignVertical: 'center', minWidth: '10%' }}>{translate('No medicines in this day', this.props.root.language)}</Text>
                     )
                 }
             </ScrollView>
@@ -123,17 +107,10 @@ const styles = StyleSheet.create({
         padding: 10,
         flex: 1
     },
-    taken: {
+    button: {
         borderRadius: 10,
-        backgroundColor: '#4BA831'
-    },
-    late: {
-        borderRadius: 10,
-        backgroundColor: '#808080'
-    },
-    missed: {
-        borderRadius: 10,
-        backgroundColor: '#cc0000'
+        backgroundColor: 'rgb(32, 137, 220)',
+        minWidth: '84%',
     },
     button_text: {
         textAlign: 'center',
