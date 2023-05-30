@@ -118,6 +118,7 @@ let russian_dictionary = {
     'h': 'ч',
     'No visits in this day': 'Нет визитов на этот день',
     'Visits by date': 'Визиты на дату',
+    'Scan': 'Сканировать',
 }
 
 const translate = (text, language) => {

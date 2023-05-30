@@ -84,7 +84,7 @@ export default function CameraCreen() {
             </TouchableOpacity>
             :
             <TouchableOpacity style={styles.button} onPress={() => takePicture()}>
-              <Text style={styles.text}>Take a picture</Text>
+              <Text style={styles.text}>{translate('Scan', language)}</Text>
             </TouchableOpacity>
           }
         </View>
