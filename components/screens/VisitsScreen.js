@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { ActivityIndicator, StyleSheet, View, TouchableOpacity, ScrollView, TouchableNativeFeedback, Alert } from 'react-native';
-import { Input, Slider, Icon, Button, Text, SpeedDial, ListItem } from 'react-native-elements'
+import { Input, Slider, Icon, Button, Text, SpeedDial, ListItem, FAB } from 'react-native-elements'
 import { connect } from 'react-redux';
 import translate from '../../utils/translate';
 import { specialty_to_icon, specialty_choices } from '../../utils/doctor';
 import { doctorvisits_list, delete_doctorvisit, create_doctorvisit } from '../../api/api';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 
 class VisitsScreen extends Component {
@@ -14,6 +15,7 @@ class VisitsScreen extends Component {
         this.state = {
             isLoading: true,
             doctorvisits: [],
+            show_date_picker: false,
         };
     }
 
@@ -89,19 +91,45 @@ class VisitsScreen extends Component {
                                         <ListItem.Title style={{ color: 'white', paddingLeft: 60 }}>{moment(visit.date).format('DD.MM.YYYY')} {translate('at', this.props.root.language)} {moment(visit.date).format('h:mm')}</ListItem.Title>
                                     </View>
                                 </ListItem.Content>
+                                <ListItem.Chevron />
                             </ListItem>
                         ))
                     }
                 </ScrollView >
-                <View style={{ alignItems: 'flex-end' }}>
-                    <Button
+                <FAB
                         icon={{ name: 'plus', type: 'antdesign', color: 'white' }}
+                        placement='right'
                         color='#0d98ba'
                         buttonStyle={{ width: 70, height: 70, borderRadius: 120 }}
                         onPress={() => { this.props.navigation.navigate('CreateVisit') }}
-                        background={TouchableNativeFeedback.Ripple('white', true, 150)}
+                        background={TouchableNativeFeedback.Ripple('white', true, 35)}
                     />
-                </View>
+                <FAB
+                    icon={{ name: 'calendar-alt', type: 'font-awesome-5', color: 'white', size: 24 }}
+                    placement='left'
+                    color='#0d98ba'
+                    buttonStyle={{ width: 70, height: 70, borderRadius: 120 }}
+                    background={TouchableNativeFeedback.Ripple('white', true, 35)}
+                    onPress={() => this.setState({ ...this.state, show_date_picker: true })}
+                />
+                {
+                    this.state.show_date_picker
+                        ?
+                        <DateTimePicker
+                            value={new Date()}
+                            mode='date'
+                            onChange={(res) => {
+                                if (res.type == 'set') {
+                                    this.props.navigation.navigate('VisitsByDateScreen', { date: res['nativeEvent'].timestamp })
+                                    this.setState({ ...this.state, show_date_picker: false })
+                                } else {
+                                    this.setState({ ...this.state, show_date_picker: false })
+                                }
+                            }}
+                        />
+                        :
+                        null
+                }
             </View>
         )
     }

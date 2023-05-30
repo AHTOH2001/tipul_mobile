@@ -24,6 +24,7 @@ import VisitsScreen from './components/screens/VisitsScreen';
 import { change_font_size, change_language, change_theme } from './redux/action/root';
 import translate from './utils/translate';
 import MedsByDateScreen from './components/screens/MedsByDateScreen';
+import VisitsByDateScreen from './components/screens/VisitsByDateScreen';
 
 const Stack = createStackNavigator();
 // LogBox.ignoreAllLogs()
@@ -130,6 +131,11 @@ function MyStack(props) {
         name="MedsByDateScreen"
         component={MedsByDateScreen}
         options={{ title: translate('Medicines', props.props.root.language) }}
+      />
+      <Stack.Screen
+        name="VisitsByDateScreen"
+        component={VisitsByDateScreen}
+        options={{ title: translate('Visits', props.props.root.language) }}
       />
     </Stack.Navigator>
   );

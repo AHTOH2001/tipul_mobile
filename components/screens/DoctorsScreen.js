@@ -104,7 +104,7 @@ class DosctorsScreen extends Component {
                     onClose={() => this.setState({ open: !this.state.open })}
                     color='#0d98ba'
                     buttonStyle={{ width: 70, height: 70, borderRadius: 120 }}
-                    background={TouchableNativeFeedback.Ripple('white', true, 150)}
+                    background={TouchableNativeFeedback.Ripple('white', true, 35)}
                 >
                     {
                         specialty_choices.map(specialty => (
