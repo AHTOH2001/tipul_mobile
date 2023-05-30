@@ -355,3 +355,12 @@ export async function list_meds_by_date(date) {
         }
     })).data
 }
+
+export async function list_visits_by_date(date) {
+    var token = await AsyncStorage.getItem('auth_token')
+    return (await axios.get(`${back_end_domain}/managment/doctorvisit_date/?date=${date}`, {
+        headers: {
+            'Authorization': `Token ${token}`
+        }
+    })).data
+}

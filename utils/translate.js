@@ -109,13 +109,15 @@ let russian_dictionary = {
     'Do not forget to take': 'Не забудьте принять',
     'You should take it at': 'Вам нужно принять его в',
     'Medicines by date': 'Медикаменты за дату',
-    'No medicines in this day': 'Нету медикаментов на этот день',
+    'No medicines in this day': 'Нет медикаментов на этот день',
     'At': 'В',
     'In the past': 'В прошлом',
     'It is time to take': 'Пора принимать',
     'In': 'Через',
     'min': 'мин',
     'h': 'ч',
+    'No visits in this day': 'Нет визитов на этот день',
+    'Visits by date': 'Визиты на дату',
 }
 
 const translate = (text, language) => {

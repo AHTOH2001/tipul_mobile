@@ -93,10 +93,10 @@ class MedsByDateScreen extends Component {
             )
         }
         return (
-            <ScrollView style={styles.container}>
+            <View style={styles.container}>
                 {
                     this.state.meds.length != 0 && (
-                        <View style={styles.mainGroup}>
+                        <ScrollView style={styles.mainGroup}>
                             {
                                 this.state.meds.map(med => (
                                     <View style={styles.row} key={med.id}>
@@ -146,7 +146,7 @@ class MedsByDateScreen extends Component {
                                     </View>
                                 ))
                             }
-                        </View >
+                        </ScrollView >
                     )
                 }
                 {
@@ -154,7 +154,7 @@ class MedsByDateScreen extends Component {
                         <Text style={{ flex: 1, textAlign: 'center', fontSize: 20, textAlignVertical: 'center', minWidth: '10%' }}>{translate('No medicines in this day', this.props.root.language)}</Text>
                     )
                 }
-            </ScrollView>
+            </View>
         )
     }
 }

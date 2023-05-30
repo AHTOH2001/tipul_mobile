@@ -135,7 +135,7 @@ function MyStack(props) {
       <Stack.Screen
         name="VisitsByDateScreen"
         component={VisitsByDateScreen}
-        options={{ title: translate('Visits', props.props.root.language) }}
+        options={{ title: translate('Visits by date', props.props.root.language) }}
       />
     </Stack.Navigator>
   );

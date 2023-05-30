@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { ActivityIndicator, StyleSheet, View, TouchableOpacity, ScrollView, TouchableNativeFeedback, Alert } from 'react-native';
-import { Input, Slider, Icon, Button, Text, SpeedDial, ListItem, FAB } from 'react-native-elements'
-import { connect } from 'react-redux';
-import translate from '../../utils/translate';
-import { specialty_to_icon, specialty_choices } from '../../utils/doctor';
-import { doctorvisits_list, delete_doctorvisit, create_doctorvisit } from '../../api/api';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
+import React, { Component } from 'react';
+import { ActivityIndicator, Alert, ScrollView, StyleSheet, TouchableNativeFeedback, View } from 'react-native';
+import { FAB, Icon, ListItem } from 'react-native-elements';
+import { connect } from 'react-redux';
+import { delete_doctorvisit, doctorvisits_list } from '../../api/api';
+import { specialty_to_icon } from '../../utils/doctor';
+import translate from '../../utils/translate';
 
 class VisitsScreen extends Component {
     constructor() {
