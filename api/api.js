@@ -258,7 +258,7 @@ export async function create_doctorvisit(doctor_id, date) {
 
 export async function doctorvisit_detail(id) {
     var token = await AsyncStorage.getItem('auth_token')
-    return (await axios.get(`${back_end_domain}/managment/doctorvisit/${id}/`, {
+    return (await axios.get(`${back_end_domain}/managment/doctorvisit/${id}/?as_patient`, {
         headers: {
             'Authorization': `Token ${token}`
         }
