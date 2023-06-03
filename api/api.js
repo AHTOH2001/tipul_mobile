@@ -349,7 +349,7 @@ export async function get_my_code() {
 
 export async function list_meds_by_date(date) {
     var token = await AsyncStorage.getItem('auth_token')
-    return (await axios.get(`${back_end_domain}/medicine/cure_date/?date=${date}`, {
+    return (await axios.get(`${back_end_domain}/medicine/cure_date/?date=${date}&as_patient`, {
         headers: {
             'Authorization': `Token ${token}`
         }
@@ -358,7 +358,7 @@ export async function list_meds_by_date(date) {
 
 export async function list_visits_by_date(date) {
     var token = await AsyncStorage.getItem('auth_token')
-    return (await axios.get(`${back_end_domain}/managment/doctorvisit_date/?date=${date}`, {
+    return (await axios.get(`${back_end_domain}/managment/doctorvisit_date/?date=${date}&as_patient`, {
         headers: {
             'Authorization': `Token ${token}`
         }
